@@ -21,4 +21,4 @@
 // log information from other files
 Configuration &getConfig();
 
-constexpr auto PaperLogger = Paper::ConstLoggerContext("second-mod");
+constexpr auto PaperLogger = Paper::ConstLoggerContext("TooManyFireworks");

@@ -3,12 +3,12 @@
   "sharedDir": "shared",
   "dependenciesDir": "extern",
   "info": {
-    "name": "Second Mod",
-    "id": "second-mod",
+    "name": "Too Many Fireworks",
+    "id": "too-many-fireworks",
     "version": "0.1.0",
     "url": null,
     "additionalData": {
-      "overrideSoName": "libsecond-mod.so",
+      "overrideSoName": "libtoomanyfireworks.so",
       "cmake": true
     }
   },
@@ -45,7 +45,7 @@
       "./extern/libs"
     ],
     "qmodIncludeFiles": [],
-    "qmodOutput": "./Second Mod.qmod"
+    "qmodOutput": "./Too Many Fireworks.qmod"
   },
   "dependencies": [
     {

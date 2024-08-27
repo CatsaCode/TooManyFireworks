@@ -43,7 +43,7 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/strip.cmake)
 # stop symbols leaking
 # TODO: Fix
 # add_link_options(-Wl, --exclude-libs, ALL)
-project( second-mod
+project( toomanyfireworks
         VERSION ${PACKAGE_VERSION})
 
 # Set COMPILE_ID for qpm purposes

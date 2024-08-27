@@ -1,6 +1,6 @@
-# Second Mod
+# Too Many Fireworks
 
-Playing around with mod stuff
+Tweak the high score fireworks in more ways than you asked for.
 
 Use `qpm s build` to build
 Same goes for `qpm s copy` and `qpm s qmod`

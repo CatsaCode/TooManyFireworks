@@ -6,8 +6,8 @@
   "author": "CatsaCode",
   "version": "0.1.0",
   "packageId": "com.beatgames.beatsaber",
-  "packageVersion": "1.35.0_8016709773",
-  "description": "Playing around with mod stuff",
+  "packageVersion": "1.37.0_9064817954",
+  "description": "Tweak the high score fireworks in more ways than you asked for",
   "dependencies": [],
   "modFiles": ["${binary}"],
 
