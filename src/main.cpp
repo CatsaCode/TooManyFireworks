@@ -6,6 +6,8 @@
 #include "UnityEngine/GameObject.hpp"
 #include "HMUI/CurvedTextMeshPro.hpp"
 
+#include "GlobalNamespace/FireworksController.hpp"
+
 #include "scotland2/shared/modloader.h"
 
 static modloader::ModInfo modInfo{MOD_ID, VERSION, 0};
@@ -16,8 +18,8 @@ static modloader::ModInfo modInfo{MOD_ID, VERSION, 0};
 // other config tools such as config-utils don't use this config, so it can be
 // removed if those are in use
 Configuration &getConfig() {
-  static Configuration config(modInfo);
-  return config;
+    static Configuration config(modInfo);
+    return config;
 }
 
 // Create a hook struct named LevelUIHook
@@ -31,8 +33,7 @@ Configuration &getConfig() {
 // }
 
 
-MAKE_HOOK_MATCH(LevelUIHook, &GlobalNamespace::StandardLevelDetailViewController::ShowContent, void,
- GlobalNamespace::StandardLevelDetailViewController* self, ::GlobalNamespace::__StandardLevelDetailViewController__ContentType contentType, ::StringW errorText) {
+MAKE_HOOK_MATCH(LevelUIHook, &GlobalNamespace::StandardLevelDetailViewController::ShowContent, void, GlobalNamespace::StandardLevelDetailViewController* self, ::GlobalNamespace::__StandardLevelDetailViewController__ContentType contentType, ::StringW errorText) {
     // Run the original method before our code.
     // Note that you can run the original method after our code or even in the middle
     // if you want to change arguments or do something before it runs.
@@ -49,25 +50,36 @@ MAKE_HOOK_MATCH(LevelUIHook, &GlobalNamespace::StandardLevelDetailViewController
     actionButtonText->set_text("YEET!");
 }
 
+// Hook to reduce the time delay between fireworks
+MAKE_HOOK_MATCH(MoreFireworks, &GlobalNamespace::FireworksController::OnEnable, void, GlobalNamespace::FireworksController* self) {
+    // Reduce time between fireworks
+    self->____minSpawnInterval = 0.05;
+    self->____maxSpawnInterval = 0.05;
+
+    // Run original function
+    MoreFireworks(self);
+}
+
 // Called at the early stages of game loading
 MOD_EXTERN_FUNC void setup(CModInfo *info) noexcept {
-  *info = modInfo.to_c();
+    *info = modInfo.to_c();
 
-  getConfig().Load();
+    getConfig().Load();
 
-  // File logging
-  Paper::Logger::RegisterFileContextId(PaperLogger.tag);
+    // File logging
+    Paper::Logger::RegisterFileContextId(PaperLogger.tag);
 
-  PaperLogger.info("Completed setup!");
+    PaperLogger.info("Completed setup!");
 }
 
 // Called later on in the game loading - a good time to install function hooks
 MOD_EXTERN_FUNC void late_load() noexcept {
-  il2cpp_functions::Init();
+    il2cpp_functions::Init();
 
-  PaperLogger.info("Installing hooks...");
+    PaperLogger.info("Installing hooks...");
 
-  INSTALL_HOOK(PaperLogger, LevelUIHook);
+    INSTALL_HOOK(PaperLogger, LevelUIHook);
+    INSTALL_HOOK(PaperLogger,  MoreFireworks)
 
-  PaperLogger.info("Installed all hooks!");
+    PaperLogger.info("Installed all hooks!");
 }
