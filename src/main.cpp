@@ -7,6 +7,11 @@
 #include "HMUI/CurvedTextMeshPro.hpp"
 
 #include "GlobalNamespace/FireworksController.hpp"
+#include "GlobalNamespace/FireworkItemController.hpp"
+#include "GlobalNamespace/ResultsViewController.hpp"
+#include "GlobalNamespace/LevelCompletionResults.hpp"
+#include "GlobalNamespace/SongPreviewPlayer.hpp"
+#include "UnityEngine/AudioClip.hpp"
 
 #include "scotland2/shared/modloader.h"
 
@@ -51,14 +56,51 @@ MAKE_HOOK_MATCH(LevelUIHook, &GlobalNamespace::StandardLevelDetailViewController
 }
 
 // Hook to reduce the time delay between fireworks
-MAKE_HOOK_MATCH(MoreFireworks, &GlobalNamespace::FireworksController::OnEnable, void, GlobalNamespace::FireworksController* self) {
+MAKE_HOOK_MATCH(MoreFireworksHook, &GlobalNamespace::FireworksController::OnEnable, void, GlobalNamespace::FireworksController* self) {
     // Reduce time between fireworks
-    self->____minSpawnInterval = 0.05;
-    self->____maxSpawnInterval = 0.05;
+    self->_minSpawnInterval = 0.05;
+    self->_maxSpawnInterval = 0.05;
 
     // Run original function
-    MoreFireworks(self);
+    MoreFireworksHook(self);
 }
+
+// // Hook to enable random color fireworks
+// MAKE_HOOK_MATCH(FireworkSettingsHook, &GlobalNamespace::FireworkItemController::Awake, void, GlobalNamespace::FireworkItemController* self) {
+//     // Run original function
+//     FireworkSettingsHook(self);
+
+//     // This seems to enable random picking from a gradient, which is set to full white by default
+//     // self->____randomizeColor = true;
+// }
+
+MAKE_HOOK_MATCH(
+    FireworksStartHook,
+    &GlobalNamespace::ResultsViewController::DidActivate,
+    void,
+    GlobalNamespace::ResultsViewController* self,
+    bool firstActivation, 
+    bool addedToHierarchy, 
+    bool screenSystemEnabling
+) {
+    // Run original function
+    FireworksStartHook(self, firstActivation, addedToHierarchy, screenSystemEnabling);
+
+    // Check that is in the original function before starting fireworks
+    if(!addedToHierarchy) return;
+
+    // Don't play if level wasn't cleared
+    if(self->_levelCompletionResults->levelEndStateType != GlobalNamespace::LevelCompletionResults::LevelEndStateType::Cleared) return;
+    // Don't play if the original function already started playing it
+    if(self->_newHighScore) return;
+
+    // Enable fireworks manually. Can't figure out coroutines like the original function
+    self->_fireworksController->enabled = true;
+    // Call the audio function in the original function
+	self->_songPreviewPlayer->CrossfadeTo(self->_levelClearedAudioClip, -4, 0, self->_levelClearedAudioClip->length, nullptr);
+}
+
+
 
 // Called at the early stages of game loading
 MOD_EXTERN_FUNC void setup(CModInfo *info) noexcept {
@@ -79,7 +121,9 @@ MOD_EXTERN_FUNC void late_load() noexcept {
     PaperLogger.info("Installing hooks...");
 
     INSTALL_HOOK(PaperLogger, LevelUIHook);
-    INSTALL_HOOK(PaperLogger,  MoreFireworks)
+    INSTALL_HOOK(PaperLogger, MoreFireworksHook);
+    // INSTALL_HOOK(PaperLogger, FireworkSettingsHook);
+    INSTALL_HOOK(PaperLogger, FireworksStartHook);
 
     PaperLogger.info("Installed all hooks!");
 }
