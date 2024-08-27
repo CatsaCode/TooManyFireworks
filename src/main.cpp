@@ -13,6 +13,8 @@
 #include "GlobalNamespace/SongPreviewPlayer.hpp"
 #include "UnityEngine/AudioClip.hpp"
 #include "UnityEngine/Color.hpp"
+#include "UnityEngine/Transform.hpp"
+#include "UnityEngine/Vector3.hpp"
 
 #include "scotland2/shared/modloader.h"
 
@@ -59,8 +61,12 @@ MAKE_HOOK_MATCH(LevelUIHook, &GlobalNamespace::StandardLevelDetailViewController
 // Hook to reduce the time delay between fireworks
 MAKE_HOOK_MATCH(MoreFireworksHook, &GlobalNamespace::FireworksController::OnEnable, void, GlobalNamespace::FireworksController* self) {
     // Reduce time between fireworks
-    self->_minSpawnInterval = 0.05;
-    self->_maxSpawnInterval = 0.05;
+    self->_minSpawnInterval = 0.05f;
+    self->_maxSpawnInterval = 0.05f;
+
+    // Set spawn range
+    self->_spawnSize = UnityEngine::Vector3(1, 1, 1);
+    self->transform->position = UnityEngine::Vector3(0, 0, 0);
 
     // Run original function
     MoreFireworksHook(self);
