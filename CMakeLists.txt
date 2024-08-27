@@ -13,7 +13,7 @@ set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_compile_definitions(MOD_ID="${CMAKE_PROJECT_NAME}")
 add_compile_definitions(VERSION="${CMAKE_PROJECT_VERSION}")
 
-add_compile_options(-frtti -fexceptions -fvisibility=hidden -fPIE -fPIC)
+add_compile_options(-frtti -fexceptions -fvisibility=hidden -fPIE -fPIC -fms-extensions)
 
 # Include. Include order matters!
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/utils.cmake)
