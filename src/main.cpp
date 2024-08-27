@@ -12,6 +12,7 @@
 #include "GlobalNamespace/LevelCompletionResults.hpp"
 #include "GlobalNamespace/SongPreviewPlayer.hpp"
 #include "UnityEngine/AudioClip.hpp"
+#include "UnityEngine/Color.hpp"
 
 #include "scotland2/shared/modloader.h"
 
@@ -65,15 +66,24 @@ MAKE_HOOK_MATCH(MoreFireworksHook, &GlobalNamespace::FireworksController::OnEnab
     MoreFireworksHook(self);
 }
 
-// // Hook to enable random color fireworks
-// MAKE_HOOK_MATCH(FireworkSettingsHook, &GlobalNamespace::FireworkItemController::Awake, void, GlobalNamespace::FireworkItemController* self) {
-//     // Run original function
-//     FireworkSettingsHook(self);
+// Hook to enable random color fireworks
+MAKE_HOOK_MATCH(FireworkSettingsHook, &GlobalNamespace::FireworkItemController::Awake, void, GlobalNamespace::FireworkItemController* self) {
+    // Run original function
+    FireworkSettingsHook(self);
 
-//     // This seems to enable random picking from a gradient, which is set to full white by default
-//     // self->____randomizeColor = true;
-// }
+    // // Set firework to be red
+    // self->_lightsColor.r = 1.0f;
+    // self->_lightsColor.g = 0.0f;
+    // self->_lightsColor.b = 0.0f;
 
+    // Set the firework to be a randomly generated color
+    float h = (rand() % 256) / 256.0f;
+    float s = 1.0f;
+    float v = 1.0f;
+    self->_lightsColor = UnityEngine::Color::HSVToRGB(h, s, v);
+}
+
+// Hook to enable fireworks even without a high score
 MAKE_HOOK_MATCH(
     FireworksStartHook,
     &GlobalNamespace::ResultsViewController::DidActivate,
@@ -122,7 +132,7 @@ MOD_EXTERN_FUNC void late_load() noexcept {
 
     INSTALL_HOOK(PaperLogger, LevelUIHook);
     INSTALL_HOOK(PaperLogger, MoreFireworksHook);
-    // INSTALL_HOOK(PaperLogger, FireworkSettingsHook);
+    INSTALL_HOOK(PaperLogger, FireworkSettingsHook);
     INSTALL_HOOK(PaperLogger, FireworksStartHook);
 
     PaperLogger.info("Installed all hooks!");
