@@ -1,8 +1,11 @@
 #include "main.hpp"
 
+#include "scotland2/shared/modloader.h"
+
 #include "hookInstallers.hpp"
 
-#include "scotland2/shared/modloader.h"
+#include "bsml/shared/BSML.hpp"
+#include "UI/modConfigMenu.hpp"
 
 static modloader::ModInfo modInfo{MOD_ID, VERSION, 0};
 // Stores the ID and version of our mod, and is sent to
@@ -24,6 +27,10 @@ MOD_EXTERN_FUNC void setup(CModInfo *info) noexcept {
 // Called later on in the game loading - a good time to install function hooks
 MOD_EXTERN_FUNC void late_load() noexcept {
     il2cpp_functions::Init();
+
+    // Initialize BSML UI
+    BSML::Init();
+    BSML::Register::RegisterMainMenuViewControllerMethod("testTitle", "testButtonText", "testHoverHint", DidActivate);
 
     PaperLogger.info("Installing hooks...");
 
