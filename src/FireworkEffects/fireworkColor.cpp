@@ -22,6 +22,8 @@ MAKE_HOOK_MATCH(
     // Run original function
     FireworkColorHook(self);
 
+    // TODO This Awake hook is only called ONCE. Also, setting _lightsColor after InitializeParticleSystem will not extend the new colors to the subparticles
+
     // Set specific color
     self->_lightsColor = getModConfig().color.GetValue();
 

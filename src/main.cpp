@@ -30,8 +30,9 @@ MOD_EXTERN_FUNC void late_load() noexcept {
 
     // Initialize BSML UI
     BSML::Init();
-    BSML::Register::RegisterMainMenuViewControllerMethod("testTitle", "testButtonText", "testHoverHint", DidActivate);
+    InitModConfigMenu();
 
+    // Install hooks to execute custom code
     PaperLogger.info("Installing hooks...");
 
     InstallFireworkFrequencyHook();
