@@ -1,6 +1,7 @@
 #include "main.hpp"
 
 #include "GlobalNamespace/FireworksController.hpp"
+#include "modConfig.hpp"
 
 // Hook to reduce the time delay between fireworks
 MAKE_HOOK_MATCH(
@@ -10,8 +11,9 @@ MAKE_HOOK_MATCH(
     GlobalNamespace::FireworksController* self
 ) {
     // Reduce time between fireworks
-    self->_minSpawnInterval = 0.05f;
-    self->_maxSpawnInterval = 0.05f;
+    // Min and max is backwards because higher fireworks per second results in a smaller interval between spawns
+    self->_minSpawnInterval = 1.0f / getModConfig().maxFrequency.GetValue();
+    self->_maxSpawnInterval = 1.0f / getModConfig().minFrequency.GetValue();
 
     // Run original function
     FireworkFrequencyHook(self);

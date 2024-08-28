@@ -2,8 +2,8 @@
 
 #include "GlobalNamespace/ResultsViewController.hpp"
 #include "GlobalNamespace/LevelCompletionResults.hpp"
-
 #include "GlobalNamespace/SongPreviewPlayer.hpp"
+
 #include "UnityEngine/AudioClip.hpp"
 
 // Hook to enable fireworks when level was cleared but no high score
@@ -18,6 +18,9 @@ MAKE_HOOK_MATCH(
 ) {
     // Run original function
     FireworksOnLevelClearHook(self, firstActivation, addedToHierarchy, screenSystemEnabling);
+
+    // Return if not enabled
+    if(!getModConfig().enableOnLevelClear.GetValue()) return;
 
     // Check that is in the original function before starting fireworks
     if(!addedToHierarchy) return;

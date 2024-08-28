@@ -8,19 +8,12 @@ static modloader::ModInfo modInfo{MOD_ID, VERSION, 0};
 // Stores the ID and version of our mod, and is sent to
 // the modloader upon startup
 
-// Loads the config from disk using our modInfo, then returns it for use
-// other config tools such as config-utils don't use this config, so it can be
-// removed if those are in use
-Configuration &getConfig() {
-    static Configuration config(modInfo);
-    return config;
-}
 
 // Called at the early stages of game loading
 MOD_EXTERN_FUNC void setup(CModInfo *info) noexcept {
     *info = modInfo.to_c();
 
-    getConfig().Load();
+    getModConfig().Init(modInfo);
 
     // File logging
     Paper::Logger::RegisterFileContextId(PaperLogger.tag);

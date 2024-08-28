@@ -3,7 +3,6 @@
 #include "GlobalNamespace/FireworksController.hpp"
 
 #include "UnityEngine/Transform.hpp"
-#include "UnityEngine/Vector3.hpp"
 
 // Hook to resize and move the firework spawn range
 MAKE_HOOK_MATCH(
@@ -13,8 +12,8 @@ MAKE_HOOK_MATCH(
     GlobalNamespace::FireworksController* self
 ) {
     // Set spawn range of fireworks
-    self->_spawnSize = UnityEngine::Vector3(1, 1, 1);
-    self->transform->position = UnityEngine::Vector3(0, 0, 0);
+    self->transform->position = getModConfig().spawnOrigin.GetValue();
+    self->_spawnSize = getModConfig().spawnSize.GetValue();
 
     // Run original function
     FireworkSpawnVolumeHook(self);

@@ -4,6 +4,14 @@
 
 #include "UnityEngine/Color.hpp"
 
+// Return a highly saturated color with a random hue
+UnityEngine::Color RandomSaturatedColor() {
+    float h = (rand() % 256) / 256.0f;
+    float s = 1.0f;
+    float v = 1.0f;
+    return UnityEngine::Color::HSVToRGB(h, s, v);
+}
+
 // Hook to enable random color fireworks
 MAKE_HOOK_MATCH(
     FireworkColorHook, 
@@ -14,16 +22,11 @@ MAKE_HOOK_MATCH(
     // Run original function
     FireworkColorHook(self);
 
-    // Set the firework to be a randomly generated color
-    float h = (rand() % 256) / 256.0f;
-    float s = 1.0f;
-    float v = 1.0f;
-    self->_lightsColor = UnityEngine::Color::HSVToRGB(h, s, v);
+    // Set specific color
+    self->_lightsColor = getModConfig().color.GetValue();
 
-    // // Set the firework to be red
-    // self->_lightsColor.r = 1.0f;
-    // self->_lightsColor.g = 0.0f;
-    // self->_lightsColor.b = 0.0f;
+    // Set the firework to be a color of random hue
+    if(getModConfig().rainbow.GetValue()) self->_lightsColor = RandomSaturatedColor();
 }
 
 void InstallFireworkColorHook() {
