@@ -1,7 +1,9 @@
 #pragma once
 
-void InstallFireworkFrequencyHook();
-void InstallFireworkColorHook();
-void InstallFireworkSpawnVolumeHook();
+namespace TooManyFireworks {
 
-void InstallFireworksOnLevelClearHook();
+    void InstallFindFireworksControllerHook();
+    void InstallFireworkItemControllerSettingsHook();
+    void InstallFireworksOnLevelClearHook();
+
+}

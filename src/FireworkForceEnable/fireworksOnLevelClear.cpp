@@ -2,40 +2,39 @@
 
 #include "GlobalNamespace/ResultsViewController.hpp"
 #include "GlobalNamespace/LevelCompletionResults.hpp"
-#include "GlobalNamespace/SongPreviewPlayer.hpp"
 
-#include "UnityEngine/AudioClip.hpp"
+namespace TooManyFireworks {
 
-// Hook to enable fireworks when level was cleared but no high score
-MAKE_HOOK_MATCH(
-    FireworksOnLevelClearHook,
-    &GlobalNamespace::ResultsViewController::DidActivate,
-    void,
-    GlobalNamespace::ResultsViewController* self,
-    bool firstActivation, 
-    bool addedToHierarchy, 
-    bool screenSystemEnabling
-) {
-    // Run original function
-    FireworksOnLevelClearHook(self, firstActivation, addedToHierarchy, screenSystemEnabling);
+    // Hook to enable fireworks when level was cleared but no high score
+    MAKE_HOOK_MATCH(
+        FireworksOnLevelClearHook,
+        &GlobalNamespace::ResultsViewController::DidActivate,
+        void,
+        GlobalNamespace::ResultsViewController* self,
+        bool firstActivation, 
+        bool addedToHierarchy, 
+        bool screenSystemEnabling
+    ) {
+        // Run original function
+        FireworksOnLevelClearHook(self, firstActivation, addedToHierarchy, screenSystemEnabling);
 
-    // Return if not enabled
-    if(!getModConfig().enableOnLevelClear.GetValue()) return;
+        // Return if not enabled
+        if(!getModConfig().enableOnLevelClear.GetValue()) return;
 
-    // Check that is in the original function before starting fireworks
-    if(!addedToHierarchy) return;
+        // Check that is in the original function before starting fireworks
+        if(!addedToHierarchy) return;
 
-    // Don't play if level wasn't cleared
-    if(self->_levelCompletionResults->levelEndStateType != GlobalNamespace::LevelCompletionResults::LevelEndStateType::Cleared) return;
-    // Don't play if the original function already started playing it
-    if(self->_newHighScore) return;
+        // Don't play if level wasn't cleared
+        if(self->_levelCompletionResults->levelEndStateType != GlobalNamespace::LevelCompletionResults::LevelEndStateType::Cleared) return;
+        // Don't play if the original function already started playing it
+        if(self->_newHighScore) return;
 
-    // Enable fireworks manually. Can't figure out coroutines like the original function
-    self->_fireworksController->enabled = true;
-    // Call the audio function in the original function
-	self->_songPreviewPlayer->CrossfadeTo(self->_levelClearedAudioClip, -4, 0, self->_levelClearedAudioClip->length, nullptr);
-}
+        // Enable fireworks manually. Can't figure out coroutines like the original function
+        self->_fireworksController->enabled = true;
+    }
 
-void InstallFireworksOnLevelClearHook() {
-    INSTALL_HOOK(PaperLogger, FireworksOnLevelClearHook);
+    void InstallFireworksOnLevelClearHook() {
+        INSTALL_HOOK(PaperLogger, FireworksOnLevelClearHook);
+    }
+
 }

@@ -1,3 +1,7 @@
 #pragma once
 
-void InitModConfigMenu();
+namespace TooManyFireworks {
+
+    void InitModConfigMenu();
+
+}

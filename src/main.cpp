@@ -30,16 +30,14 @@ MOD_EXTERN_FUNC void late_load() noexcept {
 
     // Initialize BSML UI
     BSML::Init();
-    InitModConfigMenu();
+    TooManyFireworks::InitModConfigMenu();
 
     // Install hooks to execute custom code
     PaperLogger.info("Installing hooks...");
 
-    InstallFireworkFrequencyHook();
-    InstallFireworkColorHook();
-    InstallFireworkSpawnVolumeHook();
-
-    InstallFireworksOnLevelClearHook();
+    TooManyFireworks::InstallFindFireworksControllerHook();
+    TooManyFireworks::InstallFireworkItemControllerSettingsHook();
+    TooManyFireworks::InstallFireworksOnLevelClearHook();
 
     PaperLogger.info("Installed all hooks!");
 }
