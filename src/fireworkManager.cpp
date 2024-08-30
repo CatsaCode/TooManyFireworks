@@ -56,7 +56,9 @@ namespace TooManyFireworks {
         return UnityEngine::Color::HSVToRGB(h, s, v);
     }
 
+    // Force update the settings on a FireworkItemController
     void UpdateFireworkItemController(FireworkItemController* fireworkItemController) {
+        // Color
         // Get the color for the fireworks
         Color color = getModConfig().color.GetValue();
         // Switch the color to be random if enabled
@@ -68,6 +70,17 @@ namespace TooManyFireworks {
         // Or it might just be that you can't set the color of particles that have already been launched...?
         fireworkItemController->_particleSystems[0]->_particleSystem->main.startColor = UnityEngine::ParticleSystem::MinMaxGradient(UnityEngine::ParticleSystemGradientMode::Color, nullptr, nullptr, color, color);
 
+        // Brightness
+        // Loop through all 4 TubeBloomPrePassLight components
+        for(int i = 0; i < fireworkItemController->_lights->get_Length(); i++) {
+            // fireworkItemController->_lights[i]->bloomFogIntensityMultiplier = 10; // Undefined
+            // fireworkItemController->_lights[i]->_bloomFogIntensityMultiplier = 10; // Undefined
+            // fireworkItemController->_lights[i]->set_bloomFogIntensityMultiplier(10); // Undefined
+            // fireworkItemController->_lights[i]->__cordl_internal_set__bloomFogIntensityMultiplier(10); // Undefined
+            fireworkItemController->_lights[i]->____bloomFogIntensityMultiplier = getModConfig().brightness.GetValue(); // Only one that's defined. If I don't make further comments, it will seem like I know what I'm doing
+        }
+        
+        // Gravity
         fireworkItemController->_particleSystems[0]->_particleSystem->main.gravityModifierMultiplier = getModConfig().gravity.GetValue();
     }
 
@@ -119,6 +132,18 @@ namespace TooManyFireworks {
     // Set the fireworks to use a random hue
     void SetSaveRainbow(bool rainbow) {
         getModConfig().rainbow.SetValue(rainbow);
+        // Clear the pool of FireworkItemControllers so that currently disabled fireworks will have to call FireworkItemControllerSettingsHook again
+        fireworksController->_fireworkItemPool->Clear();
+        // Loop through and update all of the enabled FireworkItemControllers on the FireworksController
+        for(int i = 0; i < fireworksController->_activeFireworks->Count; i++) UpdateFireworkItemController(fireworksController->_activeFireworks->ToArray()[i]);
+    }
+
+    // Set the intensity of the firework directional lights
+    void SetSaveBrightness(float brightness) {
+        getModConfig().brightness.SetValue(brightness);
+        // All light intensity stuff is for DirectionalLights, of which none exist
+        // fireworksController->_lightsIntensity = brightness;
+
         // Clear the pool of FireworkItemControllers so that currently disabled fireworks will have to call FireworkItemControllerSettingsHook again
         fireworksController->_fireworkItemPool->Clear();
         // Loop through and update all of the enabled FireworkItemControllers on the FireworksController
