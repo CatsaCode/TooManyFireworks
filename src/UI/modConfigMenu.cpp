@@ -12,14 +12,6 @@ using namespace UnityEngine;
 
 namespace TooManyFireworks {
 
-    float FormatSliderToFrequency(float sliderValue) {
-        return 100.0 * pow(sliderValue, 3.0);
-    }
-
-    float FormatFrequencyToSlider(float frequency) {
-        return cbrt(frequency / 100.0);
-    }
-
     void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         // Only set up the menu when first clicked
         if(!firstActivation) return;
@@ -28,15 +20,13 @@ namespace TooManyFireworks {
         UnityEngine::GameObject* mainContainer = BSML::Lite::CreateScrollableSettingsContainer(self->transform);
 
         // Create main settings
-        BSML::SliderSetting* minimumFrequencySlider = BSML::Lite::CreateSliderSetting(mainContainer->transform, "Minimum frequency", 0.001f, FormatFrequencyToSlider(getModConfig().minFrequency.GetValue()), 0.0f, 1.0f, [](float value){SetSaveMinFrequency(FormatSliderToFrequency(value));});
-        minimumFrequencySlider->formatter = [](float sliderValue){ return fmt::format("{:.3f}", getModConfig().minFrequency.GetValue()); };
-        BSML::SliderSetting* maximumFrequencySlider = BSML::Lite::CreateSliderSetting(mainContainer->transform, "Maximum frequency", 0.001f, FormatFrequencyToSlider(getModConfig().maxFrequency.GetValue()), 0.0f, 1.0f, [](float value){SetSaveMaxFrequency(FormatSliderToFrequency(value));});
-        maximumFrequencySlider->formatter = [](float sliderValue){ return fmt::format("{:.3f}", getModConfig().maxFrequency.GetValue()); };
+        BSML::SliderSetting* minimumFrequencySlider = BSML::Lite::CreateSliderSetting(mainContainer->transform, "Minimum frequency", 1.0f, getModConfig().minFrequency.GetValue(), 1.0f, 100.0f, [](float value){SetSaveMinFrequency(value);});
+        BSML::SliderSetting* maximumFrequencySlider = BSML::Lite::CreateSliderSetting(mainContainer->transform, "Maximum frequency", 1.0f, getModConfig().maxFrequency.GetValue(), 1.0f, 100.0f, [](float value){SetSaveMaxFrequency(value);});
         BSML::ToggleSetting* rainbowToggle = BSML::Lite::CreateToggle(mainContainer->transform, "Rainbow", getModConfig().rainbow.GetValue(), [](bool value) {SetSaveRainbow(value);});
         BSML::ToggleSetting* enableOnLevelClearToggle = BSML::Lite::CreateToggle(mainContainer->transform, "Enable on level clear", getModConfig().enableOnLevelClear.GetValue(), [](bool value) {getModConfig().enableOnLevelClear.SetValue(value);});
 
         // TODO On cancel
-        BSML::Lite::CreateColorPicker(mainContainer, "Color", getModConfig().color.GetValue(), nullptr, nullptr, [](Color value){SetSaveColor(value);});
+        BSML::ColorSetting* colorColorPicker = BSML::Lite::CreateColorPicker(mainContainer, "Color", getModConfig().color.GetValue(), nullptr, nullptr, [](Color value){SetSaveColor(value);});
 
         // DEBUG Start and stop buttons
         UnityEngine::UI::HorizontalLayoutGroup* enableRow = BSML::Lite::CreateHorizontalLayoutGroup(mainContainer->transform);
@@ -48,6 +38,7 @@ namespace TooManyFireworks {
         BSML::Lite::AddHoverHint(maximumFrequencySlider->transform, "Maximum number of fireworks per second (Default 5)");
         BSML::Lite::AddHoverHint(rainbowToggle->transform, "Whether or not to color fireworks with a random hue (Default false)");
         BSML::Lite::AddHoverHint(enableOnLevelClearToggle->transform, "Show fireworks regardless of high score (Default false)");
+        BSML::Lite::AddHoverHint(colorColorPicker, "Static color of the fireworks (Default 0, 192, 255)");
     }
 
     void InitModConfigMenu() {
