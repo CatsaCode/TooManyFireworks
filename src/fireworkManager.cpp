@@ -48,35 +48,6 @@ namespace TooManyFireworks {
         INSTALL_HOOK(PaperLogger, FindFireworksControllerHook);
     }
 
-    // Set whether or not the fireworks are enabled
-    void SetFireworksEnabled(bool enabled) {
-        fireworksController->enabled = enabled;
-    }
-
-    // Set minimum number of fireworks to spawn every second
-    void SetSaveMinFrequency(float minFrequency) {
-        getModConfig().minFrequency.SetValue(minFrequency);
-        fireworksController->_maxSpawnInterval = 1.0f / minFrequency;
-    }
-
-    // Set maximum number of fireworks to spawn every second
-    void SetSaveMaxFrequency(float maxFrequency) {
-        getModConfig().maxFrequency.SetValue(maxFrequency);
-        fireworksController->_minSpawnInterval = 1.0f / maxFrequency;
-    }
-
-    // Set the center position of the volume where fireworks spawn
-    void SetSaveSpawnVolumeCenter(Vector3 position) {
-        getModConfig().spawnVolumeCenter.SetValue(position);
-        fireworksControllerGo->transform->position = position;
-    }
-
-    // Set the size of the volume where fireworks spawn
-    void SetSaveSpawnVolumeSize(Vector3 size) {
-        getModConfig().spawnVolumeSize.SetValue(size);
-        fireworksController->_spawnSize = size;
-    }
-
     // Return a highly saturated color with a random hue
     UnityEngine::Color RandomSaturatedColor() {
         float h = (rand() % 256) / 256.0f;
@@ -90,40 +61,15 @@ namespace TooManyFireworks {
         Color color = getModConfig().color.GetValue();
         // Switch the color to be random if enabled
         if(getModConfig().rainbow.GetValue()) color = RandomSaturatedColor();
-
-
         // Set the color that gets initialized to the lights and sparks
         fireworkItemController->_lightsColor = color;
-        
         // Update the sparks to use the new color
         // TODO This still doesn't set every color quite right... Perhaps the FireworkItemController is being destroyed from _lightFlashDuration before the ParticleSystem finishes with the sparks?
         // Or it might just be that you can't set the color of particles that have already been launched...?
         fireworkItemController->_particleSystems[0]->_particleSystem->main.startColor = UnityEngine::ParticleSystem::MinMaxGradient(UnityEngine::ParticleSystemGradientMode::Color, nullptr, nullptr, color, color);
+
+        fireworkItemController->_particleSystems[0]->_particleSystem->main.gravityModifierMultiplier = getModConfig().gravity.GetValue();
     }
-
-    void SetSaveColor(Color color) {
-        getModConfig().color.SetValue(color);
-
-        // New FireworkItemControllers will have their settings changed in FireworkItemControllerSettingsHook.
-        // Here, change the settings for the FireworkItemControllers that have already been created
-
-        // Clear the pool of FireworkItemControllers so that currently disabled fireworks will have to call FireworkItemControllerSettingsHook again
-        fireworksController->_fireworkItemPool->Clear();
-
-        // Loop through and update all of the enabled FireworkItemControllers on the FireworksController
-        for(int i = 0; i < fireworksController->_activeFireworks->Count; i++) UpdateFireworkItemController(fireworksController->_activeFireworks->ToArray()[i]);
-    }
-
-    
-
-    void SetSaveRainbow(bool rainbow) {
-        getModConfig().rainbow.SetValue(rainbow);
-        // Clear the pool of FireworkItemControllers so that currently disabled fireworks will have to call FireworkItemControllerSettingsHook again
-        fireworksController->_fireworkItemPool->Clear();
-        // Loop through and update all of the enabled FireworkItemControllers on the FireworksController
-        for(int i = 0; i < fireworksController->_activeFireworks->Count; i++) UpdateFireworkItemController(fireworksController->_activeFireworks->ToArray()[i]);
-    }
-
 
     // Set settings when a FireworkItemController is first initialized
     MAKE_HOOK_MATCH(
@@ -140,6 +86,64 @@ namespace TooManyFireworks {
 
     void InstallFireworkItemControllerSettingsHook() {
         INSTALL_HOOK(PaperLogger, FireworkItemControllerSettingsHook);
+    }
+
+
+
+    // Set whether or not the fireworks are enabled
+    void SetFireworksEnabled(bool enabled) {
+        fireworksController->enabled = enabled;
+    }
+
+    // Set the minimum number of fireworks to spawn every second
+    void SetSaveMinFrequency(float minFrequency) {
+        getModConfig().minFrequency.SetValue(minFrequency);
+        fireworksController->_maxSpawnInterval = 1.0f / minFrequency;
+    }
+
+    // Set the maximum number of fireworks to spawn every second
+    void SetSaveMaxFrequency(float maxFrequency) {
+        getModConfig().maxFrequency.SetValue(maxFrequency);
+        fireworksController->_minSpawnInterval = 1.0f / maxFrequency;
+    }
+
+    // Set the static color of the fireworks
+    void SetSaveColor(Color color) {
+        getModConfig().color.SetValue(color);
+        // Clear the pool of FireworkItemControllers so that currently disabled fireworks will have to call FireworkItemControllerSettingsHook again
+        fireworksController->_fireworkItemPool->Clear();
+        // Loop through and update all of the enabled FireworkItemControllers on the FireworksController
+        for(int i = 0; i < fireworksController->_activeFireworks->Count; i++) UpdateFireworkItemController(fireworksController->_activeFireworks->ToArray()[i]);
+    }
+
+    // Set the fireworks to use a random hue
+    void SetSaveRainbow(bool rainbow) {
+        getModConfig().rainbow.SetValue(rainbow);
+        // Clear the pool of FireworkItemControllers so that currently disabled fireworks will have to call FireworkItemControllerSettingsHook again
+        fireworksController->_fireworkItemPool->Clear();
+        // Loop through and update all of the enabled FireworkItemControllers on the FireworksController
+        for(int i = 0; i < fireworksController->_activeFireworks->Count; i++) UpdateFireworkItemController(fireworksController->_activeFireworks->ToArray()[i]);
+    }
+
+    // Set the gravity multiplier of the firework sparks
+    void SetSaveGravity(float gravity) {
+        getModConfig().gravity.SetValue(gravity);
+        // Clear the pool of FireworkItemControllers so that currently disabled fireworks will have to call FireworkItemControllerSettingsHook again
+        fireworksController->_fireworkItemPool->Clear();
+        // Loop through and update all of the enabled FireworkItemControllers on the FireworksController
+        for(int i = 0; i < fireworksController->_activeFireworks->Count; i++) UpdateFireworkItemController(fireworksController->_activeFireworks->ToArray()[i]);
+    }
+
+    // Set the center position of the volume where fireworks spawn
+    void SetSaveSpawnVolumeCenter(Vector3 position) {
+        getModConfig().spawnVolumeCenter.SetValue(position);
+        fireworksControllerGo->transform->position = position;
+    }
+
+    // Set the size of the volume where fireworks spawn
+    void SetSaveSpawnVolumeSize(Vector3 size) {
+        getModConfig().spawnVolumeSize.SetValue(size);
+        fireworksController->_spawnSize = size;
     }
 
 }

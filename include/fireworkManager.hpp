@@ -11,9 +11,10 @@ namespace TooManyFireworks {
 
     void SetSaveMinFrequency(float minFrequency);
     void SetSaveMaxFrequency(float maxFrequency);
-    void SetSaveSpawnVolumeCenter(UnityEngine::Vector3 position);
-    void SetSaveSpawnVolumeSize(UnityEngine::Vector3 size);
     void SetSaveColor(UnityEngine::Color color);
     void SetSaveRainbow(bool rainbow);
+    void SetSaveGravity(float gravity);
+    void SetSaveSpawnVolumeCenter(UnityEngine::Vector3 position);
+    void SetSaveSpawnVolumeSize(UnityEngine::Vector3 size);
 
 }
