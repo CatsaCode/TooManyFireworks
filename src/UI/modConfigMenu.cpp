@@ -19,12 +19,16 @@ namespace TooManyFireworks {
         // Create container to house all UI elements
         UnityEngine::GameObject* mainContainer = BSML::Lite::CreateScrollableSettingsContainer(self->transform);
 
+        // TODO Reconceptualize min max explosion power and brightness into min max size, fog size ratio, and fog brightness
+
         // Create main settings
-        BSML::SliderSetting* minimumFrequencySlider = BSML::Lite::CreateSliderSetting(mainContainer, "Minimum frequency", 1.0f, getModConfig().minFrequency.GetValue(), 1.0f, 100.0f, [](float value){SetSaveMinFrequency(value);});
-        BSML::SliderSetting* maximumFrequencySlider = BSML::Lite::CreateSliderSetting(mainContainer, "Maximum frequency", 1.0f, getModConfig().maxFrequency.GetValue(), 1.0f, 100.0f, [](float value){SetSaveMaxFrequency(value);});
+        BSML::SliderSetting* minFrequencySlider = BSML::Lite::CreateSliderSetting(mainContainer, "Minimum frequency", 1.0f, getModConfig().minFrequency.GetValue(), 1.0f, 100.0f, [](float value){SetSaveMinFrequency(value);});
+        BSML::SliderSetting* maxFrequencySlider = BSML::Lite::CreateSliderSetting(mainContainer, "Maximum frequency", 1.0f, getModConfig().maxFrequency.GetValue(), 1.0f, 100.0f, [](float value){SetSaveMaxFrequency(value);});
         BSML::ToggleSetting* rainbowToggle = BSML::Lite::CreateToggle(mainContainer, "Rainbow", getModConfig().rainbow.GetValue(), [](bool value) {SetSaveRainbow(value);});
         BSML::ColorSetting* colorColorPicker = BSML::Lite::CreateColorPicker(mainContainer, "Color", getModConfig().color.GetValue(), nullptr, nullptr, [](Color value){SetSaveColor(value);}); // TODO On cancel
         BSML::SliderSetting* brightnessSlider = BSML::Lite::CreateSliderSetting(mainContainer, "Brightness", 0.1f, getModConfig().brightness.GetValue(), 0.0f, 50.0f, [](float value){SetSaveBrightness(value);});
+        BSML::SliderSetting* minExplosionPowerSlider = BSML::Lite::CreateSliderSetting(mainContainer, "Minimum explosion power", 0.1f, getModConfig().minExplosionPower.GetValue(), 0.0f, 100.0f, [](float value){SetSaveMinExplosionPower(value);});
+        BSML::SliderSetting* maxExplosionPowerSlider = BSML::Lite::CreateSliderSetting(mainContainer, "Maximum explosion power", 0.1f, getModConfig().maxExplosionPower.GetValue(), 0.0f, 100.0f, [](float value){SetSaveMaxExplosionPower(value);});
         BSML::SliderSetting* gravitySlider = BSML::Lite::CreateSliderSetting(mainContainer, "Gravity", 0.1f, getModConfig().gravity.GetValue(), -5.0f, 5.0f, [](float value){SetSaveGravity(value);});
         BSML::ToggleSetting* enableOnLevelClearToggle = BSML::Lite::CreateToggle(mainContainer, "Enable on level clear", getModConfig().enableOnLevelClear.GetValue(), [](bool value) {getModConfig().enableOnLevelClear.SetValue(value);});
 
@@ -34,11 +38,13 @@ namespace TooManyFireworks {
         BSML::Lite::CreateUIButton(enableRow, "Stop", [](){SetFireworksEnabled(false);});
 
         // Add more detailed descriptions
-        BSML::Lite::AddHoverHint(minimumFrequencySlider, "Minimum number of fireworks per second (Default 1)");
-        BSML::Lite::AddHoverHint(maximumFrequencySlider, "Maximum number of fireworks per second (Default 5)");
+        BSML::Lite::AddHoverHint(minFrequencySlider, "Minimum number of fireworks per second (Default 1)");
+        BSML::Lite::AddHoverHint(maxFrequencySlider, "Maximum number of fireworks per second (Default 5)");
         BSML::Lite::AddHoverHint(rainbowToggle, "Whether or not to color fireworks with a random hue (Default false)");
         BSML::Lite::AddHoverHint(colorColorPicker, "Static color of the fireworks (Default 0, 192, 255)");
         BSML::Lite::AddHoverHint(brightnessSlider, "Brightness in the center of the fireworks (Default 1)");
+        BSML::Lite::AddHoverHint(minExplosionPowerSlider, "Minimum start speed of the sparks (Default 24)");
+        BSML::Lite::AddHoverHint(maxExplosionPowerSlider, "Maximum start speed of the sparks (Default 34.8)");
         BSML::Lite::AddHoverHint(gravitySlider, "Gravity multiplier for the firework sparks (Default 0)");
         BSML::Lite::AddHoverHint(enableOnLevelClearToggle, "Show fireworks regardless of high score (Default false)");
     }

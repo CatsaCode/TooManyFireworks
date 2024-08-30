@@ -12,7 +12,10 @@ DECLARE_CONFIG(ModConfig,
     CONFIG_VALUE(color, UnityEngine::Color, "color", UnityEngine::Color(0.0f, 192.0f / 255.0f, 1.0f, 1.0f)); // Color of the fireworks
     CONFIG_VALUE(rainbow, bool, "rainbow", false); // Whether or not to color the fireworks with a random hue
 
-    CONFIG_VALUE(brightness, float, "brightness", 1.0f); // Intensity of the firework directional lights
+    CONFIG_VALUE(brightness, float, "brightness", 1.0f); // Intensity of the firework bloom fog
+
+    CONFIG_VALUE(minExplosionPower, float, "minExplosionPower", 24); // Minimum start speed of the firework sparks
+    CONFIG_VALUE(maxExplosionPower, float, "maxExplosionPower", 34.8); // Maximum start speed of the firework sparks
 
     CONFIG_VALUE(gravity, float, "gravity", 0.0f); // Gravity scale for the firework sparks
 
