@@ -99,6 +99,13 @@ namespace TooManyFireworks {
         
         // Gravity
         fireworkItemController->_particleSystems[0]->_particleSystem->main.gravityModifierMultiplier = getModConfig().gravity.GetValue();
+
+        // RateOverTime is not defined in bs-cordl headers. Use an icall to access it
+        fireworkItemController->_particleSystems[0]->_particleSystem->emission.rateOverTime = ParticleSystem::MinMaxCurve(UnityEngine::ParticleSystemCurveMode::Constant, 1.0f, nullptr, nullptr, 1.0f, 1.0f);
+        auto SetRateOverTime = il2cpp_utils::resolve_icall<void, ParticleSystem::EmissionModule*, float>("UnityEngine.ParticleSystem/EmissionModule::set_rateOverTimeMultiplier_Injected");
+        ParticleSystem::EmissionModule emission = fireworkItemController->_particleSystems[0]->_particleSystem->emission;
+        SetRateOverTime(&emission, 1000.0f);
+        // fireworkItemController->_particleSystems[0]->_particleSystem->emission = emission // No setter. The emission variable has a pointer inside that updates the original emission module
     }
 
     // Set settings when a FireworkItemController is first initialized
