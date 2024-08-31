@@ -27,8 +27,8 @@ namespace TooManyFireworks {
         BSML::ToggleSetting* rainbowToggle = BSML::Lite::CreateToggle(mainContainer, "Rainbow", getModConfig().rainbow.GetValue(), [](bool value) {SetSaveRainbow(value);});
         BSML::ColorSetting* colorColorPicker = BSML::Lite::CreateColorPicker(mainContainer, "Color", getModConfig().color.GetValue(), nullptr, nullptr, [](Color value){SetSaveColor(value);}); // TODO On cancel
         BSML::SliderSetting* brightnessSlider = BSML::Lite::CreateSliderSetting(mainContainer, "Brightness", 0.1f, getModConfig().brightness.GetValue(), 0.0f, 50.0f, [](float value){SetSaveBrightness(value);});
-        BSML::SliderSetting* minExplosionPowerSlider = BSML::Lite::CreateSliderSetting(mainContainer, "Minimum explosion power", 0.1f, getModConfig().minExplosionPower.GetValue(), 0.0f, 100.0f, [](float value){SetSaveMinExplosionPower(value);});
-        BSML::SliderSetting* maxExplosionPowerSlider = BSML::Lite::CreateSliderSetting(mainContainer, "Maximum explosion power", 0.1f, getModConfig().maxExplosionPower.GetValue(), 0.0f, 100.0f, [](float value){SetSaveMaxExplosionPower(value);});
+        BSML::SliderSetting* minSize = BSML::Lite::CreateSliderSetting(mainContainer, "Minimum size", 0.01f, getModConfig().minSize.GetValue(), 0.0f, 4.0f, [](float value){SetSaveMinSize(value);});
+        BSML::SliderSetting* maxSize = BSML::Lite::CreateSliderSetting(mainContainer, "Maximum size", 0.01f, getModConfig().maxSize.GetValue(), 0.0f, 4.0f, [](float value){SetSaveMaxSize(value);});
         BSML::SliderSetting* gravitySlider = BSML::Lite::CreateSliderSetting(mainContainer, "Gravity", 0.1f, getModConfig().gravity.GetValue(), -5.0f, 5.0f, [](float value){SetSaveGravity(value);});
         BSML::ToggleSetting* enableOnLevelClearToggle = BSML::Lite::CreateToggle(mainContainer, "Enable on level clear", getModConfig().enableOnLevelClear.GetValue(), [](bool value) {getModConfig().enableOnLevelClear.SetValue(value);});
 
@@ -43,8 +43,8 @@ namespace TooManyFireworks {
         BSML::Lite::AddHoverHint(rainbowToggle, "Whether or not to color fireworks with a random hue (Default false)");
         BSML::Lite::AddHoverHint(colorColorPicker, "Static color of the fireworks (Default 0, 192, 255)");
         BSML::Lite::AddHoverHint(brightnessSlider, "Brightness in the center of the fireworks (Default 1)");
-        BSML::Lite::AddHoverHint(minExplosionPowerSlider, "Minimum start speed of the sparks (Default 24)");
-        BSML::Lite::AddHoverHint(maxExplosionPowerSlider, "Maximum start speed of the sparks (Default 34.8)");
+        BSML::Lite::AddHoverHint(minSize, "Minimum size of the entire firework (Default 0.69)");
+        BSML::Lite::AddHoverHint(maxSize, "Maximum size of the entire firework (Default 1)");
         BSML::Lite::AddHoverHint(gravitySlider, "Gravity multiplier for the firework sparks (Default 0)");
         BSML::Lite::AddHoverHint(enableOnLevelClearToggle, "Show fireworks regardless of high score (Default false)");
     }

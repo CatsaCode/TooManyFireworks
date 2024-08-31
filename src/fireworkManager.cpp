@@ -70,6 +70,11 @@ namespace TooManyFireworks {
         Color color = getModConfig().color.GetValue();
         // Switch the color to be random if enabled
         if(getModConfig().rainbow.GetValue()) color = RandomSaturatedColor();
+
+        // Size of the whole firework
+        float size = (rand() % 1000) / 1000.0 * (getModConfig().maxSize.GetValue() - getModConfig().minSize.GetValue()) + getModConfig().minSize.GetValue();
+
+
         // Set the color used for the bloom fog
         fireworkItemController->_lightsColor = color;
         // Set the color of the sparks
@@ -78,15 +83,19 @@ namespace TooManyFireworks {
         // Brightness
         // Loop through all 4 TubeBloomPrePassLight components
         for(int i = 0; i < fireworkItemController->_lights->get_Length(); i++) {
+            // Set brightness of the light rays
             // fireworkItemController->_lights[i]->bloomFogIntensityMultiplier = 10; // Undefined
             // fireworkItemController->_lights[i]->_bloomFogIntensityMultiplier = 10; // Undefined
             // fireworkItemController->_lights[i]->set_bloomFogIntensityMultiplier(10); // Undefined
             // fireworkItemController->_lights[i]->__cordl_internal_set__bloomFogIntensityMultiplier(10); // Undefined
             fireworkItemController->_lights[i]->____bloomFogIntensityMultiplier = getModConfig().brightness.GetValue(); // Only one that's defined. If I don't make further comments, it will seem like I know what I'm doing
+
+            // Set length of the light rays
+            fireworkItemController->_lights[i]->____length = size * 10.0f;
         }
 
         // Explosion power
-        fireworkItemController->_particleSystems[0]->_particleSystem->main.startSpeedMultiplier = (rand() % 1000) / 1000.0 * (getModConfig().maxExplosionPower.GetValue() - getModConfig().minExplosionPower.GetValue()) + getModConfig().minExplosionPower.GetValue();
+        fireworkItemController->_particleSystems[0]->_particleSystem->main.startSpeedMultiplier = size * 34.8f;
         
         // Gravity
         fireworkItemController->_particleSystems[0]->_particleSystem->main.gravityModifierMultiplier = getModConfig().gravity.GetValue();
@@ -159,18 +168,18 @@ namespace TooManyFireworks {
         for(int i = 0; i < fireworksController->_activeFireworks->Count; i++) UpdateFireworkItemController(fireworksController->_activeFireworks->ToArray()[i]);
     }
 
-    // Set the minimum start speed of the firework sparks
-    void SetSaveMinExplosionPower(float minExplosionPower) {
-        getModConfig().minExplosionPower.SetValue(minExplosionPower);
+    // Set the minimum size of the whole firework
+    void SetSaveMinSize(float minSize) {
+        getModConfig().minSize.SetValue(minSize);
         // Clear the pool of FireworkItemControllers so that currently disabled fireworks will have to call FireworkItemControllerSettingsHook again
         fireworksController->_fireworkItemPool->Clear();
         // Loop through and update all of the enabled FireworkItemControllers on the FireworksController
         for(int i = 0; i < fireworksController->_activeFireworks->Count; i++) UpdateFireworkItemController(fireworksController->_activeFireworks->ToArray()[i]);
     }
 
-    // Set the maximum start speed of the firework sparks
-    void SetSaveMaxExplosionPower(float maxExplosionPower) {
-        getModConfig().maxExplosionPower.SetValue(maxExplosionPower);
+    // Set the maximum size of the whole firework
+    void SetSaveMaxSize(float maxSize) {
+        getModConfig().maxSize.SetValue(maxSize);
         // Clear the pool of FireworkItemControllers so that currently disabled fireworks will have to call FireworkItemControllerSettingsHook again
         fireworksController->_fireworkItemPool->Clear();
         // Loop through and update all of the enabled FireworkItemControllers on the FireworksController

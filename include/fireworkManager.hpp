@@ -14,8 +14,8 @@ namespace TooManyFireworks {
     void SetSaveColor(UnityEngine::Color color);
     void SetSaveRainbow(bool rainbow);
     void SetSaveBrightness(float brightness);
-    void SetSaveMinExplosionPower(float minExplosionPower);
-    void SetSaveMaxExplosionPower(float maxExplosionPower);
+    void SetSaveMinSize(float minSize);
+    void SetSaveMaxSize(float maxSize);
     void SetSaveGravity(float gravity);
     void SetSaveSpawnVolumeCenter(UnityEngine::Vector3 position);
     void SetSaveSpawnVolumeSize(UnityEngine::Vector3 size);

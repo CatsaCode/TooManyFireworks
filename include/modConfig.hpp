@@ -14,8 +14,8 @@ DECLARE_CONFIG(ModConfig,
 
     CONFIG_VALUE(brightness, float, "brightness", 1.0f); // Intensity of the firework bloom fog
 
-    CONFIG_VALUE(minExplosionPower, float, "minExplosionPower", 24); // Minimum start speed of the firework sparks
-    CONFIG_VALUE(maxExplosionPower, float, "maxExplosionPower", 34.8); // Maximum start speed of the firework sparks
+    CONFIG_VALUE(minSize, float, "minSize", 0.69f); // Minimum size of the whole firework (Implies min start speed of 24 is about 70% size)
+    CONFIG_VALUE(maxSize, float, "maxSize", 1.0f); // Maximum size of the whole firework (Implies max start speed of 34.8 is 100% size)
 
     CONFIG_VALUE(gravity, float, "gravity", 0.0f); // Gravity scale for the firework sparks
 
