@@ -102,6 +102,7 @@ namespace TooManyFireworks {
         fireworkItemController->_particleSystems[0]->_particleSystem->main.gravityModifierMultiplier = getModConfig().gravity.GetValue();
 
         // Number of sparks
+        fireworkItemController->_particleSystems[0]->_particleSystem->main.maxParticles = getModConfig().numSparks.GetValue();
         auto GetBurst = il2cpp_utils::resolve_icall<void, ParticleSystem::EmissionModule*, int, ParticleSystemBurst*>("UnityEngine.ParticleSystem/EmissionModule::GetBurst_Injected");
         auto SetBurst = il2cpp_utils::resolve_icall<void, ParticleSystem::EmissionModule*, int, ParticleSystemBurst*>("UnityEngine.ParticleSystem/EmissionModule::SetBurst_Injected");
         ParticleSystemBurst returnedBurst;
