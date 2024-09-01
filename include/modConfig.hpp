@@ -17,6 +17,8 @@ DECLARE_CONFIG(ModConfig,
     CONFIG_VALUE(minSize, float, "minSize", 0.69f); // Minimum size of the whole firework (Implies min start speed of 24 is about 70% size)
     CONFIG_VALUE(maxSize, float, "maxSize", 1.0f); // Maximum size of the whole firework (Implies max start speed of 34.8 is 100% size)
 
+    CONFIG_VALUE(numSparks, int, "numSparks", 70); // Number of sparks in each firework
+
     CONFIG_VALUE(gravity, float, "gravity", 0.0f); // Gravity scale for the firework sparks
 
     CONFIG_VALUE(spawnVolumeCenter, UnityEngine::Vector3, "spawnVolumeCenter", UnityEngine::Vector3(0.0f, 11.39f, 12.57f)); // Center of the firework spawn volume

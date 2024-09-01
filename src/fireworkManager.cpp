@@ -5,6 +5,7 @@
 #include "GlobalNamespace/MainMenuViewController.hpp"
 #include "GlobalNamespace/FireworksController.hpp"
 #include "GlobalNamespace/FireworkItemController.hpp"
+#include "GlobalNamespace/TubeBloomPrePassLight.hpp"
 
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Vector3.hpp"
@@ -13,6 +14,15 @@
 
 using namespace GlobalNamespace;
 using namespace UnityEngine;
+
+// Reimplementation of UnityEngine::ParticleSystem::Burst
+struct ParticleSystemBurst {
+    float time;
+    ParticleSystem::MinMaxCurve count;
+    int repeatCount;
+    float repeatInterval;
+    float invProbability;
+};
 
 namespace TooManyFireworks {
 
@@ -58,13 +68,6 @@ namespace TooManyFireworks {
 
     // Force update the settings on a FireworkItemController
     void UpdateFireworkItemController(FireworkItemController* fireworkItemController) {
-        // PaperLogger.info("FireworkItemController _randomizeSpeed: {}", fireworkItemController->_randomizeSpeed);
-        // PaperLogger.info("FireworkItemController _minSpeedMultiplier: {}", fireworkItemController->_minSpeedMultiplier);
-        // PaperLogger.info("FireworkItemController _maxSpeedMultiplier: {}", fireworkItemController->_maxSpeedMultiplier);
-        // PaperLogger.info("FireworkItemParticleSystem _randomizeSpeed: {}", fireworkItemController->_particleSystems[0]->_randomizeSpeed);
-        // PaperLogger.info("ParticleSystem startSpeedMultiplier: {}", fireworkItemController->_particleSystems[0]->_particleSystem->main.startSpeedMultiplier);
-        // PaperLogger.info("--------------------------------------------------------");
-
         // Color
         // Get the color for the fireworks
         Color color = getModConfig().color.GetValue();
@@ -84,14 +87,12 @@ namespace TooManyFireworks {
         // Loop through all 4 TubeBloomPrePassLight components
         for(int i = 0; i < fireworkItemController->_lights->get_Length(); i++) {
             // Set brightness of the light rays
-            // fireworkItemController->_lights[i]->bloomFogIntensityMultiplier = 10; // Undefined
-            // fireworkItemController->_lights[i]->_bloomFogIntensityMultiplier = 10; // Undefined
-            // fireworkItemController->_lights[i]->set_bloomFogIntensityMultiplier(10); // Undefined
-            // fireworkItemController->_lights[i]->__cordl_internal_set__bloomFogIntensityMultiplier(10); // Undefined
-            fireworkItemController->_lights[i]->____bloomFogIntensityMultiplier = getModConfig().brightness.GetValue(); // Only one that's defined. If I don't make further comments, it will seem like I know what I'm doing
+            fireworkItemController->_lights[i]->bloomFogIntensityMultiplier = getModConfig().brightness.GetValue();
 
             // Set length of the light rays
-            fireworkItemController->_lights[i]->____length = size * 10.0f;
+            fireworkItemController->_lights[i]->length = size * 10.0f;
+
+            // TODO Is it the center property that changes the width of the center light?
         }
 
         // Explosion power
@@ -100,12 +101,14 @@ namespace TooManyFireworks {
         // Gravity
         fireworkItemController->_particleSystems[0]->_particleSystem->main.gravityModifierMultiplier = getModConfig().gravity.GetValue();
 
-        // RateOverTime is not defined in bs-cordl headers. Use an icall to access it
-        fireworkItemController->_particleSystems[0]->_particleSystem->emission.rateOverTime = ParticleSystem::MinMaxCurve(UnityEngine::ParticleSystemCurveMode::Constant, 1.0f, nullptr, nullptr, 1.0f, 1.0f);
-        auto SetRateOverTime = il2cpp_utils::resolve_icall<void, ParticleSystem::EmissionModule*, float>("UnityEngine.ParticleSystem/EmissionModule::set_rateOverTimeMultiplier_Injected");
+        // Number of sparks
+        auto GetBurst = il2cpp_utils::resolve_icall<void, ParticleSystem::EmissionModule*, int, ParticleSystemBurst*>("UnityEngine.ParticleSystem/EmissionModule::GetBurst_Injected");
+        auto SetBurst = il2cpp_utils::resolve_icall<void, ParticleSystem::EmissionModule*, int, ParticleSystemBurst*>("UnityEngine.ParticleSystem/EmissionModule::SetBurst_Injected");
+        ParticleSystemBurst returnedBurst;
         ParticleSystem::EmissionModule emission = fireworkItemController->_particleSystems[0]->_particleSystem->emission;
-        SetRateOverTime(&emission, 1000.0f);
-        // fireworkItemController->_particleSystems[0]->_particleSystem->emission = emission // No setter. The emission variable has a pointer inside that updates the original emission module
+        GetBurst(&emission, 0, &returnedBurst);
+        returnedBurst.count.m_ConstantMax = getModConfig().numSparks.GetValue();
+        SetBurst(&emission, 0, &returnedBurst);
     }
 
     // Set settings when a FireworkItemController is first initialized
@@ -187,6 +190,15 @@ namespace TooManyFireworks {
     // Set the maximum size of the whole firework
     void SetSaveMaxSize(float maxSize) {
         getModConfig().maxSize.SetValue(maxSize);
+        // Clear the pool of FireworkItemControllers so that currently disabled fireworks will have to call FireworkItemControllerSettingsHook again
+        fireworksController->_fireworkItemPool->Clear();
+        // Loop through and update all of the enabled FireworkItemControllers on the FireworksController
+        for(int i = 0; i < fireworksController->_activeFireworks->Count; i++) UpdateFireworkItemController(fireworksController->_activeFireworks->ToArray()[i]);
+    }
+
+    // Set the number of sparks in each firework
+    void SetSaveNumSparks(int numSparks) {
+        getModConfig().numSparks.SetValue(numSparks);
         // Clear the pool of FireworkItemControllers so that currently disabled fireworks will have to call FireworkItemControllerSettingsHook again
         fireworksController->_fireworkItemPool->Clear();
         // Loop through and update all of the enabled FireworkItemControllers on the FireworksController

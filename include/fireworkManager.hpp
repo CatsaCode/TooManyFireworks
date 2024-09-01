@@ -16,6 +16,7 @@ namespace TooManyFireworks {
     void SetSaveBrightness(float brightness);
     void SetSaveMinSize(float minSize);
     void SetSaveMaxSize(float maxSize);
+    void SetSaveNumSparks(int numSparks);
     void SetSaveGravity(float gravity);
     void SetSaveSpawnVolumeCenter(UnityEngine::Vector3 position);
     void SetSaveSpawnVolumeSize(UnityEngine::Vector3 size);

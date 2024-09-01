@@ -29,6 +29,7 @@ namespace TooManyFireworks {
         BSML::SliderSetting* brightnessSlider = BSML::Lite::CreateSliderSetting(mainContainer, "Brightness", 0.1f, getModConfig().brightness.GetValue(), 0.0f, 50.0f, [](float value){SetSaveBrightness(value);});
         BSML::SliderSetting* minSize = BSML::Lite::CreateSliderSetting(mainContainer, "Minimum size", 0.01f, getModConfig().minSize.GetValue(), 0.0f, 4.0f, [](float value){SetSaveMinSize(value);});
         BSML::SliderSetting* maxSize = BSML::Lite::CreateSliderSetting(mainContainer, "Maximum size", 0.01f, getModConfig().maxSize.GetValue(), 0.0f, 4.0f, [](float value){SetSaveMaxSize(value);});
+        BSML::SliderSetting* numSparksSlider = BSML::Lite::CreateSliderSetting(mainContainer, "Number of sparks", 10.0f, getModConfig().numSparks.GetValue(), 0.0f, 10000.0f, [](float value){SetSaveNumSparks((int)value);});
         BSML::SliderSetting* gravitySlider = BSML::Lite::CreateSliderSetting(mainContainer, "Gravity", 0.1f, getModConfig().gravity.GetValue(), -5.0f, 5.0f, [](float value){SetSaveGravity(value);});
         BSML::ToggleSetting* enableOnLevelClearToggle = BSML::Lite::CreateToggle(mainContainer, "Enable on level clear", getModConfig().enableOnLevelClear.GetValue(), [](bool value) {getModConfig().enableOnLevelClear.SetValue(value);});
 
