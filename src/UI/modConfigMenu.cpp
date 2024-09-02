@@ -10,13 +10,44 @@
 #include "UnityEngine/Vector3.hpp"
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 #include "UnityEngine/RectTransform.hpp"
+#include "UnityEngine/PrimitiveType.hpp"
+#include "UnityEngine/Resources.hpp"
+#include "UnityEngine/Material.hpp"
+#include "UnityEngine/MeshRenderer.hpp"
+#include "HMUI/CurvedTextMeshPro.hpp"
 
 using namespace UnityEngine;
 
 namespace TooManyFireworks {
 
+    GameObject* randomCube = nullptr;
+    int currentMaterial = 0;
+    HMUI::CurvedTextMeshPro* materialNameText = nullptr;
+
+    void UpdateMaterial() {
+        // Get list of all materials
+        ArrayW<Material*> materials = Resources::FindObjectsOfTypeAll<Material*>();
+
+        // Make sure currentMaterial is in bounds
+        if(currentMaterial < 0) currentMaterial = 0;
+        if(currentMaterial >= materials.size()) currentMaterial = materials.size() - 1;
+
+        // Print out all material names and highlight the one that's being shown
+        // std::stringstream ss;
+        // for(int i = 0; i < currentMaterial; i++) ss << (std::string)materials[i]->name << " ";
+        // ss << "_____> " << (std::string)materials[currentMaterial]->name << " <_____ ";
+        // for(int i = currentMaterial + 1; i < materials.size(); i++) ss << (std::string)materials[i]->name << " ";
+        // PaperLogger.info("{}", ss.str());
+        
+        // Show what material is being viewed
+        materialNameText->set_text(materials[currentMaterial]->name);
+
+        // Set the material
+        randomCube->GetComponent<MeshRenderer*>()->material = materials[currentMaterial];
+    }
+
     BSML::ModalView* CreateSpawnRangeModal(GameObject* container) {
-        BSML::ModalView* spawnRangeModal = BSML::Lite::CreateModal(container, Vector2(90.0f, 50.0f), nullptr);
+        BSML::ModalView* spawnRangeModal = BSML::Lite::CreateModal(container, Vector2(90.0f, 52.0f), nullptr);
         GameObject* spawnRangeModalContainer = BSML::Lite::CreateScrollableModalContainer(spawnRangeModal);
         // The container is slightly off center for some reason so move it to look a bit more centered
         spawnRangeModalContainer->GetComponent<BSML::ExternalComponents*>()->Get<RectTransform*>()->set_anchoredPosition(Vector2(3.0f, 0.0f));
@@ -28,6 +59,10 @@ namespace TooManyFireworks {
         BSML::Lite::CreateIncrementSetting(spawnRangeModalContainer, "Scale X", 0, 1.0f, getModConfig().spawnRangeSize.GetValue().x, [](float value){Vector3 size = getModConfig().spawnRangeSize.GetValue(); size.x = value; SetSaveSpawnRangeSize(size);});
         BSML::Lite::CreateIncrementSetting(spawnRangeModalContainer, "Scale Y", 0, 1.0f, getModConfig().spawnRangeSize.GetValue().y, [](float value){Vector3 size = getModConfig().spawnRangeSize.GetValue(); size.y = value; SetSaveSpawnRangeSize(size);});
         BSML::Lite::CreateIncrementSetting(spawnRangeModalContainer, "Scale Z", 0, 1.0f, getModConfig().spawnRangeSize.GetValue().z, [](float value){Vector3 size = getModConfig().spawnRangeSize.GetValue(); size.z = value; SetSaveSpawnRangeSize(size);});
+
+        randomCube = GameObject::CreatePrimitive(PrimitiveType::Cube);
+        randomCube->transform->localScale = Vector3(0.5f, 0.5f, 0.5f);
+        randomCube->transform->position = Vector3(-1.0f, 1.0f, 1.0f);
 
         return spawnRangeModal;
     }
@@ -59,6 +94,12 @@ namespace TooManyFireworks {
         UnityEngine::UI::HorizontalLayoutGroup* enableRow = BSML::Lite::CreateHorizontalLayoutGroup(modMenuContainer);
         BSML::Lite::CreateUIButton(enableRow, "Start", [](){SetFireworksEnabled(true);});
         BSML::Lite::CreateUIButton(enableRow, "Stop", [](){SetFireworksEnabled(false);});
+
+        // DEBUG Material buttons
+        materialNameText = BSML::Lite::CreateText(modMenuContainer, "Material name", Vector2(0.0f, 0.0f), Vector2(10.0f, 3.0f));
+        UnityEngine::UI::HorizontalLayoutGroup* materialsRow = BSML::Lite::CreateHorizontalLayoutGroup(modMenuContainer);
+        BSML::Lite::CreateUIButton(materialsRow, "Back", [](){currentMaterial--; UpdateMaterial();});
+        BSML::Lite::CreateUIButton(materialsRow, "Next", [](){currentMaterial++; UpdateMaterial();});
 
         // Add more detailed descriptions
         BSML::Lite::AddHoverHint(minFrequencySlider, "Minimum number of fireworks per second (Default 1)");
