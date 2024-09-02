@@ -18,7 +18,7 @@ namespace TooManyFireworks {
     void SetSaveMaxSize(float maxSize);
     void SetSaveNumSparks(int numSparks);
     void SetSaveGravity(float gravity);
-    void SetSaveSpawnVolumeCenter(UnityEngine::Vector3 position);
-    void SetSaveSpawnVolumeSize(UnityEngine::Vector3 size);
+    void SetSaveSpawnRangeCenter(UnityEngine::Vector3 position);
+    void SetSaveSpawnRangeSize(UnityEngine::Vector3 size);
 
 }

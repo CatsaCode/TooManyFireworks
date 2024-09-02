@@ -216,14 +216,14 @@ namespace TooManyFireworks {
     }
 
     // Set the center position of the volume where fireworks spawn
-    void SetSaveSpawnVolumeCenter(Vector3 position) {
-        getModConfig().spawnVolumeCenter.SetValue(position);
+    void SetSaveSpawnRangeCenter(Vector3 position) {
+        getModConfig().spawnRangeCenter.SetValue(position);
         fireworksControllerGo->transform->position = position;
     }
 
     // Set the size of the volume where fireworks spawn
-    void SetSaveSpawnVolumeSize(Vector3 size) {
-        getModConfig().spawnVolumeSize.SetValue(size);
+    void SetSaveSpawnRangeSize(Vector3 size) {
+        getModConfig().spawnRangeSize.SetValue(size);
         fireworksController->_spawnSize = size;
     }
 
