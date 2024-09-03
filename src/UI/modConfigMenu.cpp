@@ -10,59 +10,105 @@
 #include "UnityEngine/Vector3.hpp"
 #include "UnityEngine/UI/HorizontalLayoutGroup.hpp"
 #include "UnityEngine/RectTransform.hpp"
-#include "UnityEngine/PrimitiveType.hpp"
-#include "UnityEngine/Resources.hpp"
-#include "UnityEngine/Material.hpp"
-#include "UnityEngine/MeshRenderer.hpp"
+
 #include "HMUI/CurvedTextMeshPro.hpp"
+#include <functional>
 
 using namespace UnityEngine;
 
 namespace TooManyFireworks {
 
-    GameObject* randomCube = nullptr;
-    int currentMaterial = 0;
-    HMUI::CurvedTextMeshPro* materialNameText = nullptr;
+    void CreateExtraIncrementSetting(GameObject* parent, std::string label, ConfigUtils::ConfigValue<float>& configVariable, std::function<void(float)> onValueChange = nullptr) {
+        UI::HorizontalLayoutGroup* infoRow = BSML::Lite::CreateHorizontalLayoutGroup(parent);
+        HMUI::CurvedTextMeshPro* labelText = BSML::Lite::CreateText(infoRow, label, Vector2(0, 0), Vector2(1, 1));
+        HMUI::CurvedTextMeshPro* valueText = BSML::Lite::CreateText(infoRow, fmt::format("{:.2f}", configVariable.GetValue()), Vector2(0, 0), Vector2(1, 1));
 
-    void UpdateMaterial() {
-        // Get list of all materials
-        ArrayW<Material*> materials = Resources::FindObjectsOfTypeAll<Material*>();
+        // Function for each button to update the configVariable, the valueText, and also call onValueChange
+        std::function<void(bool, float)> UpdateFunc = [&configVariable, valueText, onValueChange](bool reset, float increment){
+            if(reset) configVariable.SetValue(configVariable.GetDefaultValue());
+            else configVariable.SetValue(configVariable.GetValue() + increment);
+            valueText->set_text(fmt::format("{:.2f}", configVariable.GetValue()));
+            if(onValueChange) onValueChange(configVariable.GetValue());
+        };
 
-        // Make sure currentMaterial is in bounds
-        if(currentMaterial < 0) currentMaterial = 0;
-        if(currentMaterial >= materials.size()) currentMaterial = materials.size() - 1;
+        UI::Button* resetButton = BSML::Lite::CreateUIButton(infoRow, "Reset", std::bind(UpdateFunc, true, 0.0f));
+        BSML::Lite::AddHoverHint(resetButton, fmt::format("Default {}", configVariable.GetDefaultValue()));
 
-        // Print out all material names and highlight the one that's being shown
-        // std::stringstream ss;
-        // for(int i = 0; i < currentMaterial; i++) ss << (std::string)materials[i]->name << " ";
-        // ss << "_____> " << (std::string)materials[currentMaterial]->name << " <_____ ";
-        // for(int i = currentMaterial + 1; i < materials.size(); i++) ss << (std::string)materials[i]->name << " ";
-        // PaperLogger.info("{}", ss.str());
-        
-        // Show what material is being viewed
-        materialNameText->set_text(materials[currentMaterial]->name);
-
-        // Set the material
-        randomCube->GetComponent<MeshRenderer*>()->material = materials[currentMaterial];
+        UI::HorizontalLayoutGroup* extraIncrementsRow = BSML::Lite::CreateHorizontalLayoutGroup(parent);
+        BSML::Lite::CreateUIButton(extraIncrementsRow, "-10",   Vector2(0, 0), Vector2(1, 1), std::bind(UpdateFunc, false, -10.0f));
+        BSML::Lite::CreateUIButton(extraIncrementsRow, "-1",    Vector2(0, 0), Vector2(1, 1), std::bind(UpdateFunc, false, -1.0f));
+        BSML::Lite::CreateUIButton(extraIncrementsRow, "-0.1",  Vector2(0, 0), Vector2(1, 1), std::bind(UpdateFunc, false, -0.1f));
+        BSML::Lite::CreateUIButton(extraIncrementsRow, "-0.01", Vector2(0, 0), Vector2(1, 1), std::bind(UpdateFunc, false, -0.01f));
+        BSML::Lite::CreateUIButton(extraIncrementsRow, "0.01",  Vector2(0, 0), Vector2(1, 1), std::bind(UpdateFunc, false, 0.01f));
+        BSML::Lite::CreateUIButton(extraIncrementsRow, "0.1",   Vector2(0, 0), Vector2(1, 1), std::bind(UpdateFunc, false, 0.1f));
+        BSML::Lite::CreateUIButton(extraIncrementsRow, "1",     Vector2(0, 0), Vector2(1, 1), std::bind(UpdateFunc, false, 1.0f));
+        BSML::Lite::CreateUIButton(extraIncrementsRow, "10",    Vector2(0, 0), Vector2(1, 1), std::bind(UpdateFunc, false, 10.0f));
     }
 
-    BSML::ModalView* CreateSpawnRangeModal(GameObject* container) {
-        BSML::ModalView* spawnRangeModal = BSML::Lite::CreateModal(container, Vector2(90.0f, 52.0f), nullptr);
+    void CreateExtraIncrementSetting(GameObject* parent, std::string label, ConfigUtils::ConfigValue<Vector3>& configVariable, std::function<void(Vector3)> onValueChange = nullptr) {
+        UI::HorizontalLayoutGroup* infoRow = BSML::Lite::CreateHorizontalLayoutGroup(parent);
+        HMUI::CurvedTextMeshPro* labelText = BSML::Lite::CreateText(infoRow, label, Vector2(0, 0), Vector2(1, 1));
+        HMUI::CurvedTextMeshPro* valueText = BSML::Lite::CreateText(infoRow, fmt::format("({:.2f}, {:.2f}, {:.2f})", configVariable.GetValue().x, configVariable.GetValue().y, configVariable.GetValue().z), Vector2(0, 0), Vector2(1, 1));
+
+        // Function for each button to update the configVariable, the valueText, and also call onValueChange
+        std::function<void(bool, Vector3)> UpdateFunc = [&configVariable, valueText, onValueChange](bool reset, Vector3 increment){
+            if(reset) configVariable.SetValue(configVariable.GetDefaultValue());
+            else configVariable.SetValue(Vector3::op_Addition(configVariable.GetValue(), increment));
+            valueText->set_text(fmt::format("({:.2f}, {:.2f}, {:.2f})", configVariable.GetValue().x, configVariable.GetValue().y, configVariable.GetValue().z));
+            if(onValueChange) onValueChange(configVariable.GetValue());
+        };
+
+        UI::Button* resetButton = BSML::Lite::CreateUIButton(infoRow, "Reset", std::bind(UpdateFunc, true, Vector3(0.0f, 0.0f, 0.0f)));
+        BSML::Lite::AddHoverHint(resetButton, fmt::format("Default ({:.2f}, {:.2f}, {:.2f})", configVariable.GetValue().x, configVariable.GetValue().y, configVariable.GetValue().z));
+
+        UI::HorizontalLayoutGroup* extraIncrementsRowX = BSML::Lite::CreateHorizontalLayoutGroup(parent);
+        BSML::Lite::CreateText(extraIncrementsRowX, "X", Vector2(0, 0), Vector2(1, 1));
+        BSML::Lite::CreateUIButton(extraIncrementsRowX, "-10",   Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(-10.0f, 0.0f, 0.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowX, "-1",    Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(-1.0f, 0.0f, 0.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowX, "-0.1",  Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(-0.1f, 0.0f, 0.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowX, "-0.01", Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(-0.01f, 0.0f, 0.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowX, "0.01",  Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.01f, 0.0f, 0.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowX, "0.1",   Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.1f, 0.0f, 0.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowX, "1",     Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(1.0f, 0.0f, 0.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowX, "10",    Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(10.0f, 0.0f, 0.0f)));
+
+        UI::HorizontalLayoutGroup* extraIncrementsRowY = BSML::Lite::CreateHorizontalLayoutGroup(parent);
+        BSML::Lite::CreateText(extraIncrementsRowY, "Y", Vector2(0, 0), Vector2(1, 1));
+        BSML::Lite::CreateUIButton(extraIncrementsRowY, "-10",   Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, -10.0f, 0.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowY, "-1",    Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, -1.0f, 0.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowY, "-0.1",  Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, -0.1f, 0.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowY, "-0.01", Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, -0.01f, 0.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowY, "0.01",  Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, 0.01f, 0.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowY, "0.1",   Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, 0.1f, 0.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowY, "1",     Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, 1.0f, 0.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowY, "10",    Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, 10.0f, 0.0f)));
+
+        UI::HorizontalLayoutGroup* extraIncrementsRowZ = BSML::Lite::CreateHorizontalLayoutGroup(parent);
+        BSML::Lite::CreateText(extraIncrementsRowZ, "Z", Vector2(0, 0), Vector2(1, 1));
+        BSML::Lite::CreateUIButton(extraIncrementsRowZ, "-10",   Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, 0.0f, -10.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowZ, "-1",    Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, 0.0f, -1.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowZ, "-0.1",  Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, 0.0f, -0.1f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowZ, "-0.01", Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, 0.0f, -0.01f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowZ, "0.01",  Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, 0.0f, 0.01f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowZ, "0.1",   Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, 0.0f, 0.1f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowZ, "1",     Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, 0.0f, 1.0f)));
+        BSML::Lite::CreateUIButton(extraIncrementsRowZ, "10",    Vector2(0, 0), Vector2(1, 0), std::bind(UpdateFunc, false, Vector3(0.0f, 0.0f, 10.0f)));
+    }
+
+    BSML::ModalView* CreateSpawnRangeModal(GameObject* parent) {
+        // Popup window
+        BSML::ModalView* spawnRangeModal = BSML::Lite::CreateModal(parent, Vector2(0, 5), Vector2(100.0f, 80.0f), nullptr);
+        // Place each setting one on top of the other
         GameObject* spawnRangeModalContainer = BSML::Lite::CreateScrollableModalContainer(spawnRangeModal);
         // The container is slightly off center for some reason so move it to look a bit more centered
-        spawnRangeModalContainer->GetComponent<BSML::ExternalComponents*>()->Get<RectTransform*>()->set_anchoredPosition(Vector2(3.0f, 0.0f));
+        spawnRangeModalContainer->GetComponent<BSML::ExternalComponents*>()->Get<RectTransform*>()->set_anchoredPosition(Vector2(4.0f, 0.0f));
 
-        BSML::Lite::CreateIncrementSetting(spawnRangeModalContainer, "Position X", 0, 1.0f, getModConfig().spawnRangeCenter.GetValue().x, [](float value){Vector3 position = getModConfig().spawnRangeCenter.GetValue(); position.x = value; SetSaveSpawnRangeCenter(position);});
-        BSML::Lite::CreateIncrementSetting(spawnRangeModalContainer, "Position Y", 0, 1.0f, getModConfig().spawnRangeCenter.GetValue().y, [](float value){Vector3 position = getModConfig().spawnRangeCenter.GetValue(); position.y = value; SetSaveSpawnRangeCenter(position);});
-        BSML::Lite::CreateIncrementSetting(spawnRangeModalContainer, "Position Z", 0, 1.0f, getModConfig().spawnRangeCenter.GetValue().z, [](float value){Vector3 position = getModConfig().spawnRangeCenter.GetValue(); position.z = value; SetSaveSpawnRangeCenter(position);});
-
-        BSML::Lite::CreateIncrementSetting(spawnRangeModalContainer, "Scale X", 0, 1.0f, getModConfig().spawnRangeSize.GetValue().x, [](float value){Vector3 size = getModConfig().spawnRangeSize.GetValue(); size.x = value; SetSaveSpawnRangeSize(size);});
-        BSML::Lite::CreateIncrementSetting(spawnRangeModalContainer, "Scale Y", 0, 1.0f, getModConfig().spawnRangeSize.GetValue().y, [](float value){Vector3 size = getModConfig().spawnRangeSize.GetValue(); size.y = value; SetSaveSpawnRangeSize(size);});
-        BSML::Lite::CreateIncrementSetting(spawnRangeModalContainer, "Scale Z", 0, 1.0f, getModConfig().spawnRangeSize.GetValue().z, [](float value){Vector3 size = getModConfig().spawnRangeSize.GetValue(); size.z = value; SetSaveSpawnRangeSize(size);});
-
-        randomCube = GameObject::CreatePrimitive(PrimitiveType::Cube);
-        randomCube->transform->localScale = Vector3(0.5f, 0.5f, 0.5f);
-        randomCube->transform->position = Vector3(-1.0f, 1.0f, 1.0f);
+        // Vector3 spawnRangeCenter panel
+        CreateExtraIncrementSetting(spawnRangeModalContainer, "Center", getModConfig().spawnRangeCenter, SetSaveSpawnRangeCenter);
+        // Spacer
+        BSML::Lite::CreateText(spawnRangeModalContainer, "", Vector2(0, 0), Vector2(1, 5));
+        // Vector3 spawnRangeSize panel
+        CreateExtraIncrementSetting(spawnRangeModalContainer, "Size", getModConfig().spawnRangeSize, SetSaveSpawnRangeSize);
 
         return spawnRangeModal;
     }
@@ -72,10 +118,10 @@ namespace TooManyFireworks {
         if(!firstActivation) return;
 
         // Create modals
+        BSML::ModalView* spawnRangeModal = CreateSpawnRangeModal(self->gameObject);
 
         // Create container to house all UI elements
         GameObject* modMenuContainer = BSML::Lite::CreateScrollableSettingsContainer(self->gameObject);
-        BSML::ModalView* spawnRangeModal = CreateSpawnRangeModal(modMenuContainer);
 
         // Create main settings
         BSML::SliderSetting* minFrequencySlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Minimum frequency", 1.0f, getModConfig().minFrequency.GetValue(), 1.0f, 100.0f, [](float value){SetSaveMinFrequency(value);});
@@ -94,12 +140,6 @@ namespace TooManyFireworks {
         UnityEngine::UI::HorizontalLayoutGroup* enableRow = BSML::Lite::CreateHorizontalLayoutGroup(modMenuContainer);
         BSML::Lite::CreateUIButton(enableRow, "Start", [](){SetFireworksEnabled(true);});
         BSML::Lite::CreateUIButton(enableRow, "Stop", [](){SetFireworksEnabled(false);});
-
-        // DEBUG Material buttons
-        materialNameText = BSML::Lite::CreateText(modMenuContainer, "Material name", Vector2(0.0f, 0.0f), Vector2(10.0f, 3.0f));
-        UnityEngine::UI::HorizontalLayoutGroup* materialsRow = BSML::Lite::CreateHorizontalLayoutGroup(modMenuContainer);
-        BSML::Lite::CreateUIButton(materialsRow, "Back", [](){currentMaterial--; UpdateMaterial();});
-        BSML::Lite::CreateUIButton(materialsRow, "Next", [](){currentMaterial++; UpdateMaterial();});
 
         // Add more detailed descriptions
         BSML::Lite::AddHoverHint(minFrequencySlider, "Minimum number of fireworks per second (Default 1)");
