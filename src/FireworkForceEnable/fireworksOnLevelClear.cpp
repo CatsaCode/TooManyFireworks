@@ -1,5 +1,7 @@
 #include "main.hpp"
 
+#include "fireworkManager.hpp"
+
 #include "GlobalNamespace/ResultsViewController.hpp"
 #include "GlobalNamespace/LevelCompletionResults.hpp"
 
@@ -21,16 +23,8 @@ namespace TooManyFireworks {
         // Return if not enabled
         if(!getModConfig().enableOnLevelClear.GetValue()) return;
 
-        // Check that is in the original function before starting fireworks
-        if(!addedToHierarchy) return;
-
-        // Don't play if level wasn't cleared
-        if(self->_levelCompletionResults->levelEndStateType != GlobalNamespace::LevelCompletionResults::LevelEndStateType::Cleared) return;
-        // Don't play if the original function already started playing it
-        if(self->_newHighScore) return;
-
         // Enable fireworks manually. Can't figure out coroutines like the original function
-        self->_fireworksController->enabled = true;
+        SetFireworksEnabled(true);
     }
 
     void InstallFireworksOnLevelClearHook() {

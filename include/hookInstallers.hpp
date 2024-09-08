@@ -3,7 +3,7 @@
 namespace TooManyFireworks {
 
     void InstallFindFireworksControllerHook();
-    void InstallFireworkItemControllerSettingsHook();
+    void InstallFireworkItemControllerPropertiesHook();
     void InstallFireworksOnLevelClearHook();
 
 }

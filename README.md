@@ -2,6 +2,11 @@
 
 Tweak the high score fireworks in more ways than you asked for.
 
+## Future Ideas
+
+- Color over time
+- Spark collisions
+
 Use `qpm s build` to build
 Same goes for `qpm s copy` and `qpm s qmod`
 

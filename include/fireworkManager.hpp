@@ -1,24 +1,25 @@
 #pragma once
 
+#include <functional>
+
+namespace GlobalNamespace {
+    class FireworksController;
+    class FireworkItemController;
+}
+
 namespace UnityEngine {
     class Vector3;
     class Color;
+    class GameObject;
 }
 
 namespace TooManyFireworks {
 
-    void SetFireworksEnabled(bool enabled);
+    extern UnityEngine::GameObject* fireworksControllerGo;
+    extern GlobalNamespace::FireworksController* fireworksController;
 
-    void SetSaveMinFrequency(float minFrequency);
-    void SetSaveMaxFrequency(float maxFrequency);
-    void SetSaveColor(UnityEngine::Color color);
-    void SetSaveRainbow(bool rainbow);
-    void SetSaveBrightness(float brightness);
-    void SetSaveMinSize(float minSize);
-    void SetSaveMaxSize(float maxSize);
-    void SetSaveNumSparks(int numSparks);
-    void SetSaveGravity(float gravity);
-    void SetSaveSpawnRangeCenter(UnityEngine::Vector3 position);
-    void SetSaveSpawnRangeSize(UnityEngine::Vector3 size);
+    void ForceUpdateAllFireworks(std::function<void(GlobalNamespace::FireworkItemController*)> fireworkItemControllerUpdateFunc);
+
+    void SetFireworksEnabled(bool enabled);
 
 }
