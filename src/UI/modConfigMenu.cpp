@@ -13,6 +13,10 @@
 #include "UnityEngine/RectTransform.hpp"
 
 #include "HMUI/CurvedTextMeshPro.hpp"
+#include "HMUI/ViewController.hpp"
+
+#include "custom-types/shared/delegate.hpp"
+
 #include <functional>
 
 using namespace UnityEngine;
@@ -152,8 +156,18 @@ namespace TooManyFireworks {
     }
 
     void ModConfigMenuDidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
+        // Enable fireworks when menu is opened
+        SetFireworksEnabled(true);
+
+
         // Only set up the menu when first clicked
         if(!firstActivation) return;
+
+        // Set up fireworks to disable once menu is closed
+        std::function<void(bool, bool)> ModConfigMenuDidDeactivate = [](bool removedFromHierarchy, bool screenSystemDisabling){
+            SetFireworksEnabled(false);
+        };
+        self->add_didDeactivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidDeactivateDelegate*>(ModConfigMenuDidDeactivate));
 
         // Create modals
         BSML::ModalView* spawnRangeModal = CreateSpawnRangeModal(self->gameObject);
