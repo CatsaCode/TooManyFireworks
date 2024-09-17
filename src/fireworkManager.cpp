@@ -39,15 +39,23 @@ namespace TooManyFireworks {
         // Get game object with the FireworksController component
         fireworksControllerGo = GameObject::Find("FireworksController");
         // Make sure game object was found
-        if(fireworksControllerGo == nullptr) PaperLogger.error("Could not find FireworksController game object");
+        if(fireworksControllerGo == nullptr) {
+            PaperLogger.error("Could not find FireworksController game object");
+            return;
+        }
 
         // Get and save FireworksController component
         fireworksController = fireworksControllerGo->GetComponent<FireworksController*>();
+
+        // Make sure fireworksController starts with the correctly set properties
+        ForceUpdateFireworksController();
     }
 
     void InstallFindFireworksControllerHook() {
         INSTALL_HOOK(PaperLogger, FindFireworksControllerHook);
     }
+
+
 
     // Set settings when a FireworkItemController is first initialized
     MAKE_HOOK_MATCH(
@@ -74,12 +82,22 @@ namespace TooManyFireworks {
 
 
     // Update a specific property of each FireworkItemController after it's been initialized
-    void ForceUpdateAllFireworks(std::function<void(FireworkItemController*)> fireworkItemControllerUpdateFunc) {
+    void ForceUpdateEachFirework(std::function<void(FireworkItemController*)> fireworkItemControllerUpdateFunc) {
         // Don't update anything if the FireworksController was never found for any reason
         if(fireworksController == nullptr) return;
 
         // Loop through every FireworkItemController and pass it into the provided property update function
         for(int i = 0; i < fireworksController->_activeFireworks->Count; i++) fireworkItemControllerUpdateFunc(fireworksController->_activeFireworks->ToArray()[i]);
+    }
+    
+    // Update the properties on the FireworksController and its GameObject
+    void ForceUpdateFireworksController() {
+        // Don't update anything if the FireworksController was never found for any reason
+        if(fireworksController == nullptr) return;
+
+        // Set the few properties on the fireworksController and fireworksControllerGO variables
+        UpdateFrequency();
+        UpdateSpawnRange();
     }
 
 
