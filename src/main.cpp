@@ -50,7 +50,7 @@ MOD_EXTERN_FUNC void late_load() noexcept {
 
     // Initialize BSML UI
     BSML::Init();
-    TooManyFireworks::InitModConfigMenu();
+    BSML::Register::RegisterSettingsMenu("Too Many Fireworks", TooManyFireworks::ModConfigMenuDidActivate, false);
 
     // Install hooks to execute custom code
     PaperLogger.info("Installing hooks...");

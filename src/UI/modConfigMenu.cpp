@@ -114,7 +114,7 @@ namespace TooManyFireworks {
         return spawnRangeModal;
     }
 
-    void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
+    void ModConfigMenuDidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         // Only set up the menu when first clicked
         if(!firstActivation) return;
 
@@ -154,10 +154,6 @@ namespace TooManyFireworks {
         BSML::Lite::AddHoverHint(gravitySlider, "Gravity multiplier for the firework sparks (Default 0)");
         BSML::Lite::AddHoverHint(spawnRangeButton, "Move and resize the volume where fireworks can spawn");
         BSML::Lite::AddHoverHint(enableOnLevelClearToggle, "Show fireworks regardless of high score (Default false)");
-    }
-
-    void InitModConfigMenu() {
-        BSML::Register::RegisterSettingsMenu("Too Many Fireworks", DidActivate, false);
     }
 
 }
