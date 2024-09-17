@@ -96,6 +96,43 @@ namespace TooManyFireworks {
         BSML::Lite::CreateUIButton(extraIncrementsRowZ, "10",    Vector2(0.0f, 0.0f), Vector2(1.0f, 0.0f), std::bind(UpdateFunc, false, Vector3(0.0f, 0.0f, 10.0f)));
     }
 
+    std::vector<BSML::SliderSetting*> CreateMinMaxConfigSliderSetting(BSML::Lite::TransformWrapper parent, ConfigUtils::ConfigValue<float>& minConfigVariable, ConfigUtils::ConfigValue<float>& maxConfigVariable, std::string minLabel, std::string maxLabel, float increment, float minValue, float maxValue, std::function<void(float)> onMinValueChange, std::function<void(float)> onMaxValueChange) {
+        // Create both sliders without an onChange function
+        BSML::SliderSetting* minSlider = BSML::Lite::CreateSliderSetting(parent, minLabel, increment, minConfigVariable.GetValue(), minValue, maxValue, nullptr);
+        BSML::SliderSetting* maxSlider = BSML::Lite::CreateSliderSetting(parent, maxLabel, increment, maxConfigVariable.GetValue(), minValue, maxValue, nullptr);
+        
+        // Set the onChange function on each slider
+        minSlider->onChange = [maxSlider, &minConfigVariable, &maxConfigVariable, onMinValueChange](float value){
+            // Update config variable
+            minConfigVariable.SetValue(value);
+            // Update max slider if min slider was set higher
+            if(minConfigVariable.GetValue() > maxConfigVariable.GetValue()) {
+                // Update config variable
+                maxConfigVariable.SetValue(minConfigVariable.GetValue());
+                // Update slider's appearance
+                maxSlider->set_Value(maxConfigVariable.GetValue());
+            }
+            // Call the user defined onChange function
+            if(onMinValueChange != nullptr) onMinValueChange(value);
+        };
+
+        maxSlider->onChange = [minSlider, &minConfigVariable, &maxConfigVariable, onMaxValueChange](float value){
+            // Update config variable
+            maxConfigVariable.SetValue(value);
+            // Update min slider if max slider was set lower
+            if(maxConfigVariable.GetValue() < minConfigVariable.GetValue()) {
+                // Update config variable
+                minConfigVariable.SetValue(maxConfigVariable.GetValue());
+                // Update slider's appearance
+                minSlider->set_Value(minConfigVariable.GetValue());
+            }
+            // Call the user defined onChange function
+            if(onMaxValueChange != nullptr) onMaxValueChange(value);
+        };
+
+        return {minSlider, maxSlider};
+    }
+
     BSML::ModalView* CreateSpawnRangeModal(GameObject* parent) {
         // Popup window
         BSML::ModalView* spawnRangeModal = BSML::Lite::CreateModal(parent, Vector2(0.0f, 5.0f), Vector2(100.0f, 80.0f), nullptr);
@@ -125,13 +162,11 @@ namespace TooManyFireworks {
         GameObject* modMenuContainer = BSML::Lite::CreateScrollableSettingsContainer(self->gameObject);
 
         // Create main settings
-        BSML::SliderSetting* minFrequencySlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Minimum frequency", 1.0f, getModConfig().minFrequency.GetValue(), 1.0f, 100.0f, [](float value){getModConfig().minFrequency.SetValue(value); UpdateFrequency();});
-        BSML::SliderSetting* maxFrequencySlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Maximum frequency", 1.0f, getModConfig().maxFrequency.GetValue(), 1.0f, 100.0f, [](float value){getModConfig().maxFrequency.SetValue(value); UpdateFrequency();});
+        auto frequencySliders = CreateMinMaxConfigSliderSetting(modMenuContainer, getModConfig().minFrequency, getModConfig().maxFrequency, "Minimum frequency", "Maximum frequency", 1.0f, 1.0f, 100.0f, [](float value){UpdateFrequency();}, [](float value){UpdateFrequency();});
         BSML::ToggleSetting* rainbowToggle = BSML::Lite::CreateToggle(modMenuContainer, "Rainbow", getModConfig().rainbow.GetValue(), [](bool value) {getModConfig().rainbow.SetValue(value); ForceUpdateEachFirework(UpdateColor);});
         BSML::ColorSetting* colorColorPicker = BSML::Lite::CreateColorPicker(modMenuContainer, "Color", getModConfig().color.GetValue(), nullptr, nullptr, [](Color value){getModConfig().color.SetValue(value); ForceUpdateEachFirework(UpdateColor);}); // TODO On cancel
         BSML::SliderSetting* brightnessSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Brightness", 0.1f, getModConfig().brightness.GetValue(), 0.0f, 50.0f, [](float value){getModConfig().brightness.SetValue(value); ForceUpdateEachFirework(UpdateBrightness);});
-        BSML::SliderSetting* minSize = BSML::Lite::CreateSliderSetting(modMenuContainer, "Minimum size", 0.01f, getModConfig().minSize.GetValue(), 0.0f, 4.0f, [](float value){getModConfig().minSize.SetValue(value); ForceUpdateEachFirework(UpdateSize);});
-        BSML::SliderSetting* maxSize = BSML::Lite::CreateSliderSetting(modMenuContainer, "Maximum size", 0.01f, getModConfig().maxSize.GetValue(), 0.0f, 4.0f, [](float value){getModConfig().maxSize.SetValue(value); ForceUpdateEachFirework(UpdateSize);});
+        auto sizeSliders = CreateMinMaxConfigSliderSetting(modMenuContainer, getModConfig().minSize, getModConfig().maxSize, "Minimum size", "Maximum size", 0.01f, 0.0f, 4.0f, [](float value){ForceUpdateEachFirework(UpdateSize);}, [](float value){ForceUpdateEachFirework(UpdateSize);});
         BSML::SliderSetting* numSparksSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Number of sparks", 10.0f, getModConfig().numSparks.GetValue(), 0.0f, 10000.0f, [](float value){getModConfig().numSparks.SetValue(value); ForceUpdateEachFirework(UpdateNumSparks);});
         BSML::SliderSetting* gravitySlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Gravity", 0.1f, getModConfig().gravity.GetValue(), -5.0f, 5.0f, [](float value){getModConfig().gravity.SetValue(value); ForceUpdateEachFirework(UpdateGravity);});
         UI::Button* spawnRangeButton = BSML::Lite::CreateUIButton(modMenuContainer, "Set Range", [spawnRangeModal](){spawnRangeModal->Show();});
@@ -143,13 +178,13 @@ namespace TooManyFireworks {
         BSML::Lite::CreateUIButton(enableRow, "Stop", [](){SetFireworksEnabled(false);});
 
         // Add more detailed descriptions
-        BSML::Lite::AddHoverHint(minFrequencySlider, "Minimum number of fireworks per second (Default 1)");
-        BSML::Lite::AddHoverHint(maxFrequencySlider, "Maximum number of fireworks per second (Default 5)");
+        BSML::Lite::AddHoverHint(frequencySliders[0], "Minimum number of fireworks per second (Default 1)");
+        BSML::Lite::AddHoverHint(frequencySliders[1], "Maximum number of fireworks per second (Default 5)");
         BSML::Lite::AddHoverHint(rainbowToggle, "Whether or not to color fireworks with a random hue (Default false)");
         BSML::Lite::AddHoverHint(colorColorPicker, "Static color of the fireworks (Default 0, 192, 255)");
         BSML::Lite::AddHoverHint(brightnessSlider, "Brightness in the center of the fireworks (Default 1)");
-        BSML::Lite::AddHoverHint(minSize, "Minimum size of the entire firework (Default 0.69)");
-        BSML::Lite::AddHoverHint(maxSize, "Maximum size of the entire firework (Default 1)");
+        BSML::Lite::AddHoverHint(sizeSliders[0], "Minimum size of the entire firework (Default 0.69)");
+        BSML::Lite::AddHoverHint(sizeSliders[1], "Maximum size of the entire firework (Default 1)");
         BSML::Lite::AddHoverHint(numSparksSlider, "Number of sparks in each firework (Default 70)");
         BSML::Lite::AddHoverHint(gravitySlider, "Gravity multiplier for the firework sparks (Default 0)");
         BSML::Lite::AddHoverHint(spawnRangeButton, "Move and resize the volume where fireworks can spawn");

@@ -3,7 +3,6 @@
 #include "fireworkManager.hpp"
 
 #include "GlobalNamespace/ResultsViewController.hpp"
-#include "GlobalNamespace/LevelCompletionResults.hpp"
 
 namespace TooManyFireworks {
 
