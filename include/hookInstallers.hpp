@@ -4,6 +4,7 @@ namespace TooManyFireworks {
 
     void InstallFindFireworksControllerHook();
     void InstallFireworkItemControllerPropertiesHook();
-    void InstallFireworksOnLevelClearHook();
+
+    void InstallForceEnableLevelResultsHook();
 
 }

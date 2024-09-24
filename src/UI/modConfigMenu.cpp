@@ -184,12 +184,9 @@ namespace TooManyFireworks {
         BSML::SliderSetting* numSparksSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Number of sparks", 10.0f, getModConfig().numSparks.GetValue(), 0.0f, 10000.0f, [](float value){getModConfig().numSparks.SetValue(value); ForceUpdateEachFirework(UpdateNumSparks);});
         BSML::SliderSetting* gravitySlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Gravity", 0.1f, getModConfig().gravity.GetValue(), -5.0f, 5.0f, [](float value){getModConfig().gravity.SetValue(value); ForceUpdateEachFirework(UpdateGravity);});
         UI::Button* spawnRangeButton = BSML::Lite::CreateUIButton(modMenuContainer, "Set Range", [spawnRangeModal](){spawnRangeModal->Show();});
-        BSML::ToggleSetting* enableOnLevelClearToggle = BSML::Lite::CreateToggle(modMenuContainer, "Enable on level clear", getModConfig().enableOnLevelClear.GetValue(), [](bool value) {getModConfig().enableOnLevelClear.SetValue(value);});
-
-        // DEBUG Start and stop buttons
-        UnityEngine::UI::HorizontalLayoutGroup* enableRow = BSML::Lite::CreateHorizontalLayoutGroup(modMenuContainer);
-        BSML::Lite::CreateUIButton(enableRow, "Start", [](){SetFireworksEnabled(true);});
-        BSML::Lite::CreateUIButton(enableRow, "Stop", [](){SetFireworksEnabled(false);});
+        BSML::ToggleSetting* enableOnResultsHighscoreToggle = BSML::Lite::CreateToggle(modMenuContainer, "Enable on highscore", getModConfig().enableOnResultsHighscore.GetValue(), [](bool value) {getModConfig().enableOnResultsHighscore.SetValue(value);});
+        BSML::ToggleSetting* enableOnResultsClearToggle = BSML::Lite::CreateToggle(modMenuContainer, "Enable on level clear", getModConfig().enableOnResultsClear.GetValue(), [](bool value) {getModConfig().enableOnResultsClear.SetValue(value);});
+        BSML::ToggleSetting* enableOnResultsFailToggle = BSML::Lite::CreateToggle(modMenuContainer, "Enable on level fail", getModConfig().enableOnResultsFail.GetValue(), [](bool value) {getModConfig().enableOnResultsFail.SetValue(value);});
 
         // Add more detailed descriptions
         BSML::Lite::AddHoverHint(frequencySliders[0], "Minimum number of fireworks per second (Default 1)");
@@ -202,7 +199,9 @@ namespace TooManyFireworks {
         BSML::Lite::AddHoverHint(numSparksSlider, "Number of sparks in each firework (Default 70)");
         BSML::Lite::AddHoverHint(gravitySlider, "Gravity multiplier for the firework sparks (Default 0)");
         BSML::Lite::AddHoverHint(spawnRangeButton, "Move and resize the volume where fireworks can spawn");
-        BSML::Lite::AddHoverHint(enableOnLevelClearToggle, "Show fireworks regardless of high score (Default false)");
+        BSML::Lite::AddHoverHint(enableOnResultsHighscoreToggle, "Show fireworks on the results screen when a new highscore was achieved (Default true)");
+        BSML::Lite::AddHoverHint(enableOnResultsClearToggle, "Show fireworks on the results screen when the level was cleared without a highscore (Default false)");
+        BSML::Lite::AddHoverHint(enableOnResultsFailToggle, "Show fireworks on the results screen when the level was failed (Default false)");
     }
 
 }

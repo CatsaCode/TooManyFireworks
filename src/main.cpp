@@ -57,7 +57,8 @@ MOD_EXTERN_FUNC void late_load() noexcept {
 
     TooManyFireworks::InstallFindFireworksControllerHook();
     TooManyFireworks::InstallFireworkItemControllerPropertiesHook();
-    TooManyFireworks::InstallFireworksOnLevelClearHook();
+
+    TooManyFireworks::InstallForceEnableLevelResultsHook();
 
     PaperLogger.info("Installed all hooks!");
 }

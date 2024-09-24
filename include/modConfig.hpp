@@ -24,5 +24,7 @@ DECLARE_CONFIG(ModConfig,
     CONFIG_VALUE(spawnRangeCenter, UnityEngine::Vector3, "spawnRangeCenter", UnityEngine::Vector3(0.0f, 11.39f, 12.57f)); // Center of the firework spawn volume
     CONFIG_VALUE(spawnRangeSize, UnityEngine::Vector3, "spawnRangeSize", UnityEngine::Vector3(20.0f, 10.0f, 2.0f)); // Size of the firework spawn volume
 
-    CONFIG_VALUE(enableOnLevelClear, bool, "enableOnLevelClear", false) // Whether or not to show the fireworks on any level clear instead of just high score
+    CONFIG_VALUE(enableOnResultsHighscore, bool, "enableOnResultsHighscore", true); // Whether or not to show the fireworks when results show a new highscore
+    CONFIG_VALUE(enableOnResultsClear, bool, "enableOnResultsClear", false); // Whether or not to show the fireworks when a level is cleared with no highscore
+    CONFIG_VALUE(enableOnResultsFail, bool, "enableOnResultsFail", false); // Whether or not to show the fireworks when a level is failed
 )

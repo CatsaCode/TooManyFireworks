@@ -12,7 +12,9 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Number of sparks
 - Gravity
 - Spawn range
+- Show on highscore
 - Show on level clear
+- Show on level fail
 
 ## Known Bugs
 
@@ -25,10 +27,8 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 
 - Show in menu
 - Show in level select
-- Show on high score
-- Show on clear
-- Show on fail
-- Show on rank
+- Show on score percentage
+- Show on scoreboard rank
 - Collisions
 - Bounce strength / dampen
 - Color over time
@@ -58,15 +58,3 @@ Follow the instructions [here](https://bsmg.wiki/modding/quest-mod-dev-intro.htm
 * [zoller27osu](https://github.com/zoller27osu), [Sc2ad](https://github.com/Sc2ad) and [jakibaki](https://github.com/jakibaki) - [beatsaber-hook](https://github.com/sc2ad/beatsaber-hook)
 * [raftario](https://github.com/raftario)
 * [Lauriethefish](https://github.com/Lauriethefish), [danrouse](https://github.com/danrouse) and [Bobby Shmurner](https://github.com/BobbyShmurner) for [this template](https://github.com/Lauriethefish/quest-mod-template)
-
-
-
-
-
-
-
-
-
-
-
-
