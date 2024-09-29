@@ -2,6 +2,11 @@
 
 Don't think there's enough fireworks? This mod adds a variety of settings that can make fireworks powerful enough to explode the game itself!
 
+<p>
+<img src="docs/images/modConfigMenu.jpg" alt="Mod configuration menu under mod settings" width="200" />
+<img src="docs/images/lowFrameRate.gif" alt="10000 sparks reducing frame rate" width="200" />
+</p>
+
 ## Current Options
 
 - Min / max frequency
@@ -20,7 +25,7 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 
 - Color will flicker when a slider is moved with rainbow color on
 - Light rays will flicker when a size slider is moved
-- Sounds don’t quiet down with song selection and other menus
+- Canceling color select will not revert color
 - Sound is tied to SFX volume. If fireworks are silent, check to see if this is zero
 
 ## Future Ideas
@@ -51,7 +56,7 @@ Or, I might create a new mod that allows customizability to the whole Unity Part
 
 ## Build Instructions
 
-Follow the instructions [here](https://bsmg.wiki/modding/quest-mod-dev-intro.html) to set up the software and learn the basics of compiling mods. Key terminal commands will be `qpm restore` and `qpm s qmod`.
+Follow the instructions [here](https://bsmg.wiki/modding/quest-mod-dev-intro.html) to set up the software and learn the basics of compiling mods. After cloning this repository, key terminal commands will be `qpm restore` and `qpm s qmod`.
 
 ## Credits
 
