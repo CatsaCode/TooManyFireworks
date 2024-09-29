@@ -34,8 +34,8 @@ on:
         - 'fix/*'
 
 env:
-    module_id: "second-mod"
-    qmod_name: "Second Mod"
+    module_id: "too-many-fireworks"
+    qmod_name: "Too Many Fireworks"
 
 jobs:
   build:

@@ -1,14 +1,14 @@
 {
-  "version": "0.1.0",
+  "version": "1.0.0",
   "sharedDir": "shared",
   "dependenciesDir": "extern",
   "info": {
     "name": "Too Many Fireworks",
     "id": "too-many-fireworks",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "url": null,
     "additionalData": {
-      "overrideSoName": "libtoomanyfireworks.so",
+      "overrideSoName": "libtoo-many-fireworks.so",
       "cmake": true
     }
   },
