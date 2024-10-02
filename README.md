@@ -27,6 +27,7 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Light rays will flicker when a size slider is moved
 - Canceling color select will not revert color
 - Sound is tied to SFX volume. If fireworks are silent, check to see if this is zero
+- As of 10 minutes before v1.0.0, the configuration file is now stored by magic
 
 ## Future Ideas
 
