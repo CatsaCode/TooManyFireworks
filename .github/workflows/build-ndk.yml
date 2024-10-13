@@ -36,8 +36,8 @@ on:
         - 'fix/*'
 
 env:
-    module_id: "too-many-fireworks"
-    qmod_name: "Too Many Fireworks"
+    module_id: "toomanyfireworks"
+    qmod_name: "TooManyFireworks"
 
 jobs:
   build:

@@ -3,12 +3,12 @@
   "sharedDir": "shared",
   "dependenciesDir": "extern",
   "info": {
-    "name": "Too Many Fireworks",
-    "id": "too-many-fireworks",
+    "name": "TooManyFireworks",
+    "id": "toomanyfireworks",
     "version": "1.1.0",
     "url": null,
     "additionalData": {
-      "overrideSoName": "libtoo-many-fireworks.so",
+      "overrideSoName": "libtoomanyfireworks.so",
       "cmake": true
     }
   },
@@ -45,7 +45,7 @@
       "./extern/libs"
     ],
     "qmodIncludeFiles": [],
-    "qmodOutput": "./Too Many Fireworks.qmod"
+    "qmodOutput": "./TooManyFireworks.qmod"
   },
   "dependencies": [
     {
