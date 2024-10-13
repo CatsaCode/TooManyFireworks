@@ -16,5 +16,6 @@ namespace TooManyFireworks {
     void UpdateSize(GlobalNamespace::FireworkItemController* fireworkItemController);
     void UpdateNumSparks(GlobalNamespace::FireworkItemController* fireworkItemController);
     void UpdateGravity(GlobalNamespace::FireworkItemController* fireworkItemController);
+    void UpdateCollision(GlobalNamespace::FireworkItemController* fireworkItemController);
 
 }

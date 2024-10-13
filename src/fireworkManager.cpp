@@ -73,6 +73,7 @@ namespace TooManyFireworks {
         UpdateSize(self);
         UpdateNumSparks(self);
         UpdateGravity(self);
+        UpdateCollision(self);
     }
 
     void InstallFireworkItemControllerPropertiesHook() {

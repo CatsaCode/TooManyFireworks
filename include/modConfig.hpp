@@ -21,6 +21,8 @@ DECLARE_CONFIG(ModConfig,
 
     CONFIG_VALUE(gravity, float, "gravity", 0.0f); // Gravity scale for the firework sparks
 
+    CONFIG_VALUE(collision, bool, "collision", false); // Whether or not spark collisions are enabled
+
     CONFIG_VALUE(spawnRangeCenter, UnityEngine::Vector3, "spawnRangeCenter", UnityEngine::Vector3(0.0f, 11.39f, 12.57f)); // Center of the firework spawn volume
     CONFIG_VALUE(spawnRangeSize, UnityEngine::Vector3, "spawnRangeSize", UnityEngine::Vector3(20.0f, 10.0f, 2.0f)); // Size of the firework spawn volume
 

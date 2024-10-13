@@ -16,6 +16,7 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Min / max size
 - Number of sparks
 - Gravity
+- Collisions
 - Spawn range
 - Show on highscore
 - Show on level clear
@@ -28,6 +29,7 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Canceling color select will not revert color
 - Sound is tied to SFX volume. If fireworks are silent, check to see if this is zero
 - As of 10 minutes before v1.0.0, the configuration file is now stored by magic
+- Many firework explosions will override other sounds
 
 ## Future Ideas
 
@@ -35,7 +37,6 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Show in level select
 - Show on score percentage
 - Show on scoreboard rank
-- Collisions
 - Bounce strength / dampen
 - Color over time
 - Spark size
