@@ -17,6 +17,7 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Number of sparks
 - Gravity
 - Collisions
+- Bounce strength / dampen
 - Spawn range
 - Show on highscore
 - Show on level clear
@@ -36,7 +37,6 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Show in level select
 - Show on score percentage
 - Show on scoreboard rank
-- Bounce strength / dampen
 - Color over time
 - Spark size
 - Turbulence
