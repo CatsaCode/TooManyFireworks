@@ -15,6 +15,7 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Brightness
 - Min / max size
 - Number of sparks
+- Duration
 - Gravity
 - Collisions
 - Bounce strength / dampen
@@ -48,7 +49,6 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Custom sprite
 - Smooth disable
 - Cheerleading
-- Duration
 - Custom shapes
 - Quick preset buttons
 

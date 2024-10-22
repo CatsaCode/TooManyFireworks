@@ -21,6 +21,8 @@ DECLARE_CONFIG(ModConfig,
 
     CONFIG_VALUE(gravity, float, "gravity", 0.0f); // Gravity scale for the firework sparks
 
+    CONFIG_VALUE(duration, float, "duration", 1.5f); // How many seconds fireworks last for
+
     CONFIG_VALUE(collision, bool, "collision", false); // Whether or not spark collisions are enabled
     CONFIG_VALUE(dampen, float, "dampen", 0.2f); // How much spark velocity is dampened on collision (Arbitrary default. Technically 0, but a value unused in the base game promotes artistic liberty)
     CONFIG_VALUE(bounce, float, "bounce", 0.2f); // How much spark velocity is reflected on collision (Arbitrary default. Technically 1, but see above)

@@ -72,6 +72,7 @@ namespace TooManyFireworks {
         UpdateBrightness(self);
         UpdateSize(self);
         UpdateNumSparks(self);
+        UpdateDuration(self);
         UpdateGravity(self);
         UpdateCollision(self);
         UpdateDampenBounce(self);

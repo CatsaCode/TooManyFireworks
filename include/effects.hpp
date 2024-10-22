@@ -15,6 +15,7 @@ namespace TooManyFireworks {
     void UpdateBrightness(GlobalNamespace::FireworkItemController* fireworkItemController);
     void UpdateSize(GlobalNamespace::FireworkItemController* fireworkItemController);
     void UpdateNumSparks(GlobalNamespace::FireworkItemController* fireworkItemController);
+    void UpdateDuration(GlobalNamespace::FireworkItemController* fireworkItemController);
     void UpdateGravity(GlobalNamespace::FireworkItemController* fireworkItemController);
     void UpdateCollision(GlobalNamespace::FireworkItemController* fireworkItemController);
     void UpdateDampenBounce(GlobalNamespace::FireworkItemController* fireworkItemController);
