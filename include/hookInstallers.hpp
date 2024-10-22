@@ -7,4 +7,6 @@ namespace TooManyFireworks {
 
     void InstallForceEnableLevelResultsHook();
 
+    void InstallExplosionSoundHotfixHook();
+
 }

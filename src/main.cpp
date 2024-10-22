@@ -40,5 +40,7 @@ MOD_EXTERN_FUNC void late_load() noexcept {
 
     TooManyFireworks::InstallForceEnableLevelResultsHook();
 
+    TooManyFireworks::InstallExplosionSoundHotfixHook();
+
     PaperLogger.info("Installed all hooks!");
 }
