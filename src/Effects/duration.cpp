@@ -13,6 +13,7 @@ namespace TooManyFireworks {
     void UpdateDuration(FireworkItemController* fireworkItemController) {
         // Set light duration and object time limit of the FireworkItemController itself
         fireworkItemController->_lightFlashDuration = getModConfig().duration.GetValue();
+        if(getModConfig().duration.GetValue() == 0.0f) fireworkItemController->_lightFlashDuration = 0.01f; // Game isn't crashing, but, I'm still pretty sure division by zero errors are being spammed without this line
 
         // Get functions to update properties in the ParticleSystem
         static auto SetDuration = il2cpp_utils::resolve_icall<void, ParticleSystem::MainModule*, float>("UnityEngine.ParticleSystem/MainModule::set_duration_Injected");
