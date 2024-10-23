@@ -4,11 +4,11 @@
   "dependenciesDir": "extern",
   "info": {
     "name": "TooManyFireworks",
-    "id": "toomanyfireworks",
+    "id": "too-many-fireworks",
     "version": "1.1.0",
     "url": null,
     "additionalData": {
-      "overrideSoName": "libtoomanyfireworks.so",
+      "overrideSoName": "libtoo-many-fireworks.so",
       "cmake": true
     }
   },
