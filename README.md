@@ -23,6 +23,7 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Show on highscore
 - Show on level clear
 - Show on level fail
+- Smooth disable
 
 ## Known Bugs
 
@@ -30,6 +31,7 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Light rays will flicker when a size slider is moved
 - Canceling color select will not revert color
 - Sound is tied to SFX volume. If fireworks are silent, check to see if this is zero
+- Smooth disable will delete fireworks even if they started again
 
 ## Future Ideas
 
@@ -47,7 +49,6 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Change random sound pitch
 - Change audio clips
 - Custom sprite
-- Smooth disable
 - Cheerleading
 - Custom shapes
 - Quick preset buttons
