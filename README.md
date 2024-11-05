@@ -18,7 +18,9 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Duration
 - Gravity
 - Collisions
-- Bounce strength / dampen
+- Bounce strength
+- Dampen strength
+- Volume
 - Spawn range
 - Show on highscore
 - Show on level clear
@@ -45,7 +47,6 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Minimum spark speed multiplier
 - Different type of firework for each condition
 - Color palettes
-- Mute sounds / Sound probability
 - Change random sound pitch
 - Change audio clips
 - Custom sprite
