@@ -18,7 +18,7 @@ namespace TooManyFireworks {
 
     // Hook overriding the explosion sfx function to stop Unity from reaching maximum number of sfx
     MAKE_HOOK_MATCH(
-        ExplosionSoundHotfixHookA,
+        MaxExplosionSoundsHotfixHookA,
         &FireworkItemController::PlayExplosionSound,
         void,
         FireworkItemController* self
@@ -30,7 +30,7 @@ namespace TooManyFireworks {
         }
 
         // Run original function
-        ExplosionSoundHotfixHookA(self);
+        MaxExplosionSoundsHotfixHookA(self);
 
         // Start tracking this audio source as actively playing
         activeFireworkAudioSources.push_back(self->_audioSource.ptr());
@@ -38,7 +38,7 @@ namespace TooManyFireworks {
 
     // Hook to remove an audio source from activeFireworkAudioSources once the firework is over
     MAKE_HOOK_MATCH(
-        ExplosionSoundHotfixHookB,
+        MaxExplosionSoundsHotfixHookB,
         &FireworkItemController::OnDisable,
         void,
         FireworkItemController* self
@@ -48,12 +48,12 @@ namespace TooManyFireworks {
         if(index != activeFireworkAudioSources.end()) activeFireworkAudioSources.erase(index);
 
         // Run original function
-        ExplosionSoundHotfixHookB(self);
+        MaxExplosionSoundsHotfixHookB(self);
     }
 
-    void InstallExplosionSoundHotfixHook() {
-        INSTALL_HOOK(PaperLogger, ExplosionSoundHotfixHookA);
-        INSTALL_HOOK(PaperLogger, ExplosionSoundHotfixHookB);
+    void InstallMaxExplosionSoundsHotfixHook() {
+        INSTALL_HOOK(PaperLogger, MaxExplosionSoundsHotfixHookA);
+        INSTALL_HOOK(PaperLogger, MaxExplosionSoundsHotfixHookB);
     }
 
     
