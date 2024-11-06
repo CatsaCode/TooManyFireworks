@@ -2,7 +2,8 @@
 
 namespace TooManyFireworks {
 
-    void InstallFindFireworksControllerHook();
+    void InstallFindSoloFireworksControllerHook();
+    void InstallFindMultiplayerFireworksControllerHook();
     void InstallFireworkItemControllerPropertiesHook();
 
     void InstallSmoothDisableHook();

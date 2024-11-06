@@ -15,11 +15,12 @@ namespace UnityEngine {
 
 namespace TooManyFireworks {
 
-    extern UnityEngine::GameObject* fireworksControllerGo;
-    extern GlobalNamespace::FireworksController* fireworksController;
+    extern GlobalNamespace::FireworksController* soloFireworksController;
+    extern GlobalNamespace::FireworksController* multiplayerFireworksController;
 
     void ForceUpdateEachFirework(std::function<void(GlobalNamespace::FireworkItemController*)> fireworkItemControllerUpdateFunc);
-    void ForceUpdateFireworksController();
+    void ForceUpdateEachFireworksController(std::function<void(GlobalNamespace::FireworksController*)> fireworksControllerUpdateFunc);
+    void ForceUpdateEachFireworksController();
 
     void SetFireworksEnabled(bool enabled);
 
