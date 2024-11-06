@@ -32,7 +32,6 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Color will flicker when a slider is moved with rainbow color on
 - Light rays will flicker when a size slider is moved
 - Canceling color select will not revert color
-- Sound is tied to SFX volume. If fireworks are silent, check to see if this is zero
 - Smooth disable will delete fireworks even if they started again
 
 ## Future Ideas
