@@ -30,6 +30,7 @@ MOD_EXTERN_FUNC void late_load() noexcept {
 
     // Initialize BSML UI
     BSML::Init();
+    BSML::Register::RegisterMainMenu("TooManyFireworks", "TooManyFireworks", "Customize the fireworks!", TooManyFireworks::ModConfigMenuDidActivate);
     BSML::Register::RegisterSettingsMenu("TooManyFireworks", TooManyFireworks::ModConfigMenuDidActivate, false);
 
     // Install hooks to execute custom code
