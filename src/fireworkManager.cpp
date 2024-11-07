@@ -15,14 +15,12 @@ using namespace UnityEngine;
 
 namespace TooManyFireworks {
 
-    // GameObject named "FireworksController" with the FireworksController component
-    GameObject* fireworksControllerGo = nullptr;
-    // Component that manages all the fireworks
-    FireworksController* fireworksController = nullptr;
+    // Component that manages all the fireworks in the main menu area
+    FireworksController* mainFireworksController = nullptr;
 
-    // Hook to get the FireworksController component
+    // Hook to get the main FireworksController component as soon as the main menu loads
     MAKE_HOOK_MATCH(
-        FindFireworksControllerHook,
+        FindMainFireworksControllerHook,
         &MainMenuViewController::DidActivate,
         void,
         MainMenuViewController* self,
@@ -31,31 +29,45 @@ namespace TooManyFireworks {
         bool screenSystemEnabling
     ) {
         // Run original function
-        FindFireworksControllerHook(self, firstActivation, addedToHierarchy, screenSystemEnabling);
+        FindMainFireworksControllerHook(self, firstActivation, addedToHierarchy, screenSystemEnabling);
 
-        // Only get FireworksController at the start of the game
+        // Only get FireworksController when the menu is loaded for the first time
         if(!firstActivation) return;
 
-        // Get game object with the FireworksController component
-        fireworksControllerGo = GameObject::Find("FireworksController");
-        // Make sure game object was found
-        if(fireworksControllerGo == nullptr) {
-            PaperLogger.error("Could not find FireworksController game object");
+        // Get the main FireworksController component
+        mainFireworksController = GameObject::FindObjectOfType<FireworksController*>();
+        // Make sure component was found
+        if(mainFireworksController == nullptr) {
+            PaperLogger.error("Could not find main FireworksController");
             return;
         }
-
-        // Get and save FireworksController component
-        fireworksController = fireworksControllerGo->GetComponent<FireworksController*>();
-
-        // Make sure fireworksController starts with the correctly set properties
-        ForceUpdateFireworksController();
     }
 
-    void InstallFindFireworksControllerHook() {
-        INSTALL_HOOK(PaperLogger, FindFireworksControllerHook);
+    void InstallFindMainFireworksControllerHook() {
+        INSTALL_HOOK(PaperLogger, FindMainFireworksControllerHook);
     }
 
 
+
+    // Hook to ensure that both the main and new FireworksControllers created for multiplayer have their settings updated
+    MAKE_HOOK_MATCH(
+        FireworksControllersPropertiesHook,
+        &FireworksController::OnEnable,
+        void,
+        FireworksController* self
+    ) {
+        // Set all of the properties for this FireworksController
+        UpdateFrequency(self);
+        UpdateSpawnRange(self);
+
+        // Run original function
+        // Done at the end so that the first coroutine has the correct frequency
+        FireworksControllersPropertiesHook(self);
+    }
+
+    void InstallFireworksControllersPropertiesHook() {
+        INSTALL_HOOK(PaperLogger, FireworksControllersPropertiesHook);
+    }
 
     // Set settings when a FireworkItemController is first initialized
     MAKE_HOOK_MATCH(
@@ -86,34 +98,33 @@ namespace TooManyFireworks {
 
 
     // Update a specific property of each FireworkItemController after it's been initialized
-    void ForceUpdateEachFirework(std::function<void(FireworkItemController*)> fireworkItemControllerUpdateFunc) {
-        // Don't update anything if the FireworksController was never found for any reason
-        if(fireworksController == nullptr) return;
+    void ForceUpdateEachMainFirework(std::function<void(FireworkItemController*)> fireworkItemControllerUpdateFunc) {
+        // Don't update anything if the mainFireworksController was never found for any reason
+        if(mainFireworksController == nullptr) return;
 
         // Loop through every FireworkItemController and pass it into the provided property update function
-        for(int i = 0; i < fireworksController->_activeFireworks->Count; i++) fireworkItemControllerUpdateFunc(fireworksController->_activeFireworks->ToArray()[i]);
-    }
-    
-    // Update the properties on the FireworksController and its GameObject
-    void ForceUpdateFireworksController() {
-        // Don't update anything if the FireworksController was never found for any reason
-        if(fireworksController == nullptr) return;
-
-        // Set the few properties on the fireworksController and fireworksControllerGO variables
-        UpdateFrequency();
-        UpdateSpawnRange();
+        for(int i = 0; i < mainFireworksController->_activeFireworks->Count; i++) fireworkItemControllerUpdateFunc(mainFireworksController->_activeFireworks->ToArray()[i]);
     }
 
+    // Update a specific property of the main FireworksController
+    void ForceUpdateMainFireworksController(std::function<void(FireworksController*)> fireworksControllerUpdateFunc) {
+        // Don't update anything if the mainFireworksController was never found for any reason
+        if(mainFireworksController == nullptr) return;
+
+        // Give the main FireworksController to the update function
+        fireworksControllerUpdateFunc(mainFireworksController);
+    }
 
 
-    // Set whether or not the fireworks are enabled
-    void SetFireworksEnabled(bool enabled) {
-        // Return if the FireworksController was never found for any reason
-        if(fireworksController == nullptr) return;
 
-        // Enable the FireworksController component to make it start spawning fireworks
+    // Set whether or not the main menu's fireworks are enabled
+    void SetMainFireworksEnabled(bool enabled) {
+        // Return if mainFireworksController was never found for any reason
+        if(mainFireworksController == nullptr) return;
+
+        // Enable the main FireworksController component to make it start spawning fireworks
         // or disable it to make it delete all spawned fireworks and stop spawning more
-        fireworksController->enabled = enabled;
+        mainFireworksController->enabled = enabled;
     }
 
 }

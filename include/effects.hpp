@@ -1,14 +1,15 @@
 #pragma once
 
 namespace GlobalNamespace {
+    class FireworksController;
     class FireworkItemController;
 }
 
 namespace TooManyFireworks {
 
     // These effects use the fireworksControllerGo and fireworksController variables in fireworksManager.hpp
-    void UpdateFrequency();
-    void UpdateSpawnRange();
+    void UpdateFrequency(GlobalNamespace::FireworksController* fireworksController);
+    void UpdateSpawnRange(GlobalNamespace::FireworksController* fireworksController);
 
     // These effects modify properties in each firework individually
     void UpdateColor(GlobalNamespace::FireworkItemController* fireworkItemController);

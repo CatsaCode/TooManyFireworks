@@ -36,7 +36,8 @@ MOD_EXTERN_FUNC void late_load() noexcept {
     PaperLogger.info("Installing hooks...");
 
     // General effect hooks
-    TooManyFireworks::InstallFindFireworksControllerHook();
+    TooManyFireworks::InstallFindMainFireworksControllerHook();
+    TooManyFireworks::InstallFireworksControllersPropertiesHook();
     TooManyFireworks::InstallFireworkItemControllerPropertiesHook();
 
     // Specific effect hooks

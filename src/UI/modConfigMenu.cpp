@@ -146,18 +146,18 @@ namespace TooManyFireworks {
         spawnRangeModalContainer->GetComponent<BSML::ExternalComponents*>()->Get<RectTransform*>()->set_anchoredPosition(Vector2(4.0f, 0.0f));
 
         // Vector3 spawnRangeCenter panel
-        CreateExtraIncrementSetting(spawnRangeModalContainer, "Center", getModConfig().spawnRangeCenter, [](Vector3 value){UpdateSpawnRange();}); // TODO Change the name of this function. Not needing to set the config value like everything else looks weird. Look into config-utils shortcut things
+        CreateExtraIncrementSetting(spawnRangeModalContainer, "Center", getModConfig().spawnRangeCenter, [](Vector3 value){ForceUpdateMainFireworksController(UpdateSpawnRange);}); // TODO Change the name of this function. Not needing to set the config value like everything else looks weird. Look into config-utils shortcut things
         // Spacer
         BSML::Lite::CreateText(spawnRangeModalContainer, "", Vector2(0.0f, 0.0f), Vector2(1.0f, 5.0f));
         // Vector3 spawnRangeSize panel
-        CreateExtraIncrementSetting(spawnRangeModalContainer, "Size", getModConfig().spawnRangeSize, [](Vector3 value){UpdateSpawnRange();});
+        CreateExtraIncrementSetting(spawnRangeModalContainer, "Size", getModConfig().spawnRangeSize, [](Vector3 value){ForceUpdateMainFireworksController(UpdateSpawnRange);});
 
         return spawnRangeModal;
     }
 
     void ModConfigMenuDidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         // Enable fireworks when menu is opened
-        SetFireworksEnabled(true);
+        SetMainFireworksEnabled(true);
 
 
         // Only set up the menu when first clicked
@@ -165,7 +165,7 @@ namespace TooManyFireworks {
 
         // Set up fireworks to disable once menu is closed
         std::function<void(bool, bool)> ModConfigMenuDidDeactivate = [](bool removedFromHierarchy, bool screenSystemDisabling){
-            SetFireworksEnabled(false);
+            SetMainFireworksEnabled(false);
         };
         self->add_didDeactivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidDeactivateDelegate*>(ModConfigMenuDidDeactivate));
 
@@ -176,18 +176,18 @@ namespace TooManyFireworks {
         GameObject* modMenuContainer = BSML::Lite::CreateScrollableSettingsContainer(self->gameObject);
 
         // Create main settings
-        auto frequencySliders = CreateMinMaxConfigSliderSetting(modMenuContainer, getModConfig().minFrequency, getModConfig().maxFrequency, "Minimum frequency", "Maximum frequency", 1.0f, 1.0f, 100.0f, [](float value){UpdateFrequency();}, [](float value){UpdateFrequency();});
-        BSML::ToggleSetting* rainbowToggle = BSML::Lite::CreateToggle(modMenuContainer, "Rainbow", getModConfig().rainbow.GetValue(), [](bool value) {getModConfig().rainbow.SetValue(value); ForceUpdateEachFirework(UpdateColor);});
-        BSML::ColorSetting* colorColorPicker = BSML::Lite::CreateColorPicker(modMenuContainer, "Color", getModConfig().color.GetValue(), nullptr, nullptr, [](Color value){getModConfig().color.SetValue(value); ForceUpdateEachFirework(UpdateColor);}); // TODO On cancel
-        BSML::SliderSetting* brightnessSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Brightness", 0.1f, getModConfig().brightness.GetValue(), 0.0f, 50.0f, [](float value){getModConfig().brightness.SetValue(value); ForceUpdateEachFirework(UpdateBrightness);});
-        auto sizeSliders = CreateMinMaxConfigSliderSetting(modMenuContainer, getModConfig().minSize, getModConfig().maxSize, "Minimum size", "Maximum size", 0.01f, 0.0f, 4.0f, [](float value){ForceUpdateEachFirework(UpdateSize);}, [](float value){ForceUpdateEachFirework(UpdateSize);});
-        BSML::SliderSetting* numSparksSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Number of sparks", 10.0f, getModConfig().numSparks.GetValue(), 0.0f, 10000.0f, [](float value){getModConfig().numSparks.SetValue(value); ForceUpdateEachFirework(UpdateNumSparks);});
-        BSML::SliderSetting* durationSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Duration", 0.1f, getModConfig().duration.GetValue(), 0.0f, 10.0f, [](float value){getModConfig().duration.SetValue(value); ForceUpdateEachFirework(UpdateDuration);});
-        BSML::SliderSetting* gravitySlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Gravity", 0.1f, getModConfig().gravity.GetValue(), -5.0f, 5.0f, [](float value){getModConfig().gravity.SetValue(value); ForceUpdateEachFirework(UpdateGravity);});
-        BSML::ToggleSetting* collisionToggle = BSML::Lite::CreateToggle(modMenuContainer, "Collision", getModConfig().collision.GetValue(), [](bool value) {getModConfig().collision.SetValue(value); ForceUpdateEachFirework(UpdateCollision);});
-        BSML::SliderSetting* dampenSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Dampen", 0.1f, getModConfig().dampen.GetValue(), 0.0f, 1.0f, [](float value){getModConfig().dampen.SetValue(value); ForceUpdateEachFirework(UpdateDampenBounce);});
-        BSML::SliderSetting* bounceSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Bounce", 0.1f, getModConfig().bounce.GetValue(), 0.0f, 10.0f, [](float value){getModConfig().bounce.SetValue(value); ForceUpdateEachFirework(UpdateDampenBounce);});
-        BSML::SliderSetting* volumeSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Volume", 0.05f, getModConfig().volume.GetValue(), 0.0f, 1.0f, [](float value){getModConfig().volume.SetValue(value); ForceUpdateEachFirework(UpdateVolume);});
+        auto frequencySliders = CreateMinMaxConfigSliderSetting(modMenuContainer, getModConfig().minFrequency, getModConfig().maxFrequency, "Minimum frequency", "Maximum frequency", 1.0f, 1.0f, 100.0f, [](float value){ForceUpdateMainFireworksController(UpdateFrequency);}, [](float value){ForceUpdateMainFireworksController(UpdateFrequency);});
+        BSML::ToggleSetting* rainbowToggle = BSML::Lite::CreateToggle(modMenuContainer, "Rainbow", getModConfig().rainbow.GetValue(), [](bool value) {getModConfig().rainbow.SetValue(value); ForceUpdateEachMainFirework(UpdateColor);});
+        BSML::ColorSetting* colorColorPicker = BSML::Lite::CreateColorPicker(modMenuContainer, "Color", getModConfig().color.GetValue(), nullptr, nullptr, [](Color value){getModConfig().color.SetValue(value); ForceUpdateEachMainFirework(UpdateColor);}); // TODO On cancel
+        BSML::SliderSetting* brightnessSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Brightness", 0.1f, getModConfig().brightness.GetValue(), 0.0f, 50.0f, [](float value){getModConfig().brightness.SetValue(value); ForceUpdateEachMainFirework(UpdateBrightness);});
+        auto sizeSliders = CreateMinMaxConfigSliderSetting(modMenuContainer, getModConfig().minSize, getModConfig().maxSize, "Minimum size", "Maximum size", 0.01f, 0.0f, 4.0f, [](float value){ForceUpdateEachMainFirework(UpdateSize);}, [](float value){ForceUpdateEachMainFirework(UpdateSize);});
+        BSML::SliderSetting* numSparksSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Number of sparks", 10.0f, getModConfig().numSparks.GetValue(), 0.0f, 10000.0f, [](float value){getModConfig().numSparks.SetValue(value); ForceUpdateEachMainFirework(UpdateNumSparks);});
+        BSML::SliderSetting* durationSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Duration", 0.1f, getModConfig().duration.GetValue(), 0.0f, 10.0f, [](float value){getModConfig().duration.SetValue(value); ForceUpdateEachMainFirework(UpdateDuration);});
+        BSML::SliderSetting* gravitySlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Gravity", 0.1f, getModConfig().gravity.GetValue(), -5.0f, 5.0f, [](float value){getModConfig().gravity.SetValue(value); ForceUpdateEachMainFirework(UpdateGravity);});
+        BSML::ToggleSetting* collisionToggle = BSML::Lite::CreateToggle(modMenuContainer, "Collision", getModConfig().collision.GetValue(), [](bool value) {getModConfig().collision.SetValue(value); ForceUpdateEachMainFirework(UpdateCollision);});
+        BSML::SliderSetting* dampenSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Dampen", 0.1f, getModConfig().dampen.GetValue(), 0.0f, 1.0f, [](float value){getModConfig().dampen.SetValue(value); ForceUpdateEachMainFirework(UpdateDampenBounce);});
+        BSML::SliderSetting* bounceSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Bounce", 0.1f, getModConfig().bounce.GetValue(), 0.0f, 10.0f, [](float value){getModConfig().bounce.SetValue(value); ForceUpdateEachMainFirework(UpdateDampenBounce);});
+        BSML::SliderSetting* volumeSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Volume", 0.05f, getModConfig().volume.GetValue(), 0.0f, 1.0f, [](float value){getModConfig().volume.SetValue(value); ForceUpdateEachMainFirework(UpdateVolume);});
         UI::Button* spawnRangeButton = BSML::Lite::CreateUIButton(modMenuContainer, "Set Range", [spawnRangeModal](){spawnRangeModal->Show();});
         BSML::ToggleSetting* enableOnResultsHighscoreToggle = BSML::Lite::CreateToggle(modMenuContainer, "Enable on highscore", getModConfig().enableOnResultsHighscore.GetValue(), [](bool value) {getModConfig().enableOnResultsHighscore.SetValue(value);});
         BSML::ToggleSetting* enableOnResultsClearToggle = BSML::Lite::CreateToggle(modMenuContainer, "Enable on level clear", getModConfig().enableOnResultsClear.GetValue(), [](bool value) {getModConfig().enableOnResultsClear.SetValue(value);});

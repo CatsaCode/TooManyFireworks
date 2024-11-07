@@ -27,11 +27,11 @@ namespace TooManyFireworks {
 
         // Level fail
         if(self->_levelCompletionResults->levelEndStateType != LevelCompletionResults::LevelEndStateType::Cleared) {
-            SetFireworksEnabled(getModConfig().enableOnResultsFail.GetValue());
+            SetMainFireworksEnabled(getModConfig().enableOnResultsFail.GetValue());
         }
         // Highscore
         else if(self->_newHighScore) {
-            SetFireworksEnabled(getModConfig().enableOnResultsHighscore.GetValue());
+            SetMainFireworksEnabled(getModConfig().enableOnResultsHighscore.GetValue());
             // Stop coroutine so they aren't later enabled by the original function
             if(self->_startFireworksAfterDelayCoroutine != nullptr) self->StopCoroutine(self->_startFireworksAfterDelayCoroutine);
             self->_startFireworksAfterDelayCoroutine = nullptr;
@@ -39,7 +39,7 @@ namespace TooManyFireworks {
         }
         // Level clear
         else if(self->_levelCompletionResults->levelEndStateType == LevelCompletionResults::LevelEndStateType::Cleared) {
-            SetFireworksEnabled(getModConfig().enableOnResultsClear.GetValue());
+            SetMainFireworksEnabled(getModConfig().enableOnResultsClear.GetValue());
             return;
         }
     }
