@@ -6,24 +6,24 @@
 #include "UnityEngine/Vector3.hpp"
 
 DECLARE_CONFIG(ModConfig, 
-    CONFIG_VALUE(minFrequency, float, "minFrequency", 1.0f); // Minimum fireworks per second
-    CONFIG_VALUE(maxFrequency, float, "maxFrequency", 5.0f); // Maximum fireworks per second
+    CONFIG_VALUE(minFrequency, float, "minFrequency", 3.0f); // Minimum fireworks per second
+    CONFIG_VALUE(maxFrequency, float, "maxFrequency", 10.0f); // Maximum fireworks per second
 
     CONFIG_VALUE(color, UnityEngine::Color, "color", UnityEngine::Color(0.0f, 192.0f / 255.0f, 1.0f, 1.0f)); // Color of the fireworks
-    CONFIG_VALUE(rainbow, bool, "rainbow", false); // Whether or not to color the fireworks with a random hue
+    CONFIG_VALUE(rainbow, bool, "rainbow", true); // Whether or not to color the fireworks with a random hue
 
     CONFIG_VALUE(brightness, float, "brightness", 1.0f); // Intensity of the firework bloom fog
 
     CONFIG_VALUE(minSize, float, "minSize", 0.69f); // Minimum size of the whole firework (Implies min start speed of 24 is about 70% size)
     CONFIG_VALUE(maxSize, float, "maxSize", 1.0f); // Maximum size of the whole firework (Implies max start speed of 34.8 is 100% size)
 
-    CONFIG_VALUE(numSparks, int, "numSparks", 70); // Number of sparks in each firework
+    CONFIG_VALUE(numSparks, int, "numSparks", 500); // Number of sparks in each firework
 
-    CONFIG_VALUE(gravity, float, "gravity", 0.0f); // Gravity scale for the firework sparks
+    CONFIG_VALUE(gravity, float, "gravity", 0.2f); // Gravity scale for the firework sparks
 
     CONFIG_VALUE(duration, float, "duration", 1.5f); // How many seconds fireworks last for
 
-    CONFIG_VALUE(collision, bool, "collision", false); // Whether or not spark collisions are enabled
+    CONFIG_VALUE(collision, bool, "collision", true); // Whether or not spark collisions are enabled
     CONFIG_VALUE(dampen, float, "dampen", 0.2f); // How much spark velocity is dampened on collision (Arbitrary default. Technically 0, but a value unused in the base game promotes artistic liberty)
     CONFIG_VALUE(bounce, float, "bounce", 0.2f); // How much spark velocity is reflected on collision (Arbitrary default. Technically 1, but see above)
 
@@ -36,5 +36,5 @@ DECLARE_CONFIG(ModConfig,
     CONFIG_VALUE(enableOnResultsClear, bool, "enableOnResultsClear", false); // Whether or not to show the fireworks when a level is cleared with no highscore
     CONFIG_VALUE(enableOnResultsFail, bool, "enableOnResultsFail", false); // Whether or not to show the fireworks when a level is failed
 
-    CONFIG_VALUE(smoothDisable, bool, "smoothDisable", false); // Whether or not firework disablement will wait for sparks to disappear
+    CONFIG_VALUE(smoothDisable, bool, "smoothDisable", true); // Whether or not firework disablement will wait for sparks to disappear
 )
