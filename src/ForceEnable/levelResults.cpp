@@ -25,23 +25,20 @@ namespace TooManyFireworks {
         // Run original function
         ForceEnableLevelResultsHook(self, firstActivation, addedToHierarchy, screenSystemEnabling);
 
-        // Level fail
-        if(self->_levelCompletionResults->levelEndStateType != LevelCompletionResults::LevelEndStateType::Cleared) {
-            SetMainFireworksEnabled(getModConfig().enableOnResultsFail.GetValue());
-        }
-        // Highscore
-        else if(self->_newHighScore) {
-            SetMainFireworksEnabled(getModConfig().enableOnResultsHighscore.GetValue());
-            // Stop coroutine so they aren't later enabled by the original function
-            if(self->_startFireworksAfterDelayCoroutine != nullptr) self->StopCoroutine(self->_startFireworksAfterDelayCoroutine);
-            self->_startFireworksAfterDelayCoroutine = nullptr;
-            return;
-        }
-        // Level clear
-        else if(self->_levelCompletionResults->levelEndStateType == LevelCompletionResults::LevelEndStateType::Cleared) {
-            SetMainFireworksEnabled(getModConfig().enableOnResultsClear.GetValue());
-            return;
-        }
+        // Stop fireworks start coroutine so they aren't later enabled by the original function
+        if(self->_startFireworksAfterDelayCoroutine != nullptr) self->StopCoroutine(self->_startFireworksAfterDelayCoroutine);
+        self->_startFireworksAfterDelayCoroutine = nullptr;
+
+        // Enable fireworks if the results match the mod preferences
+        SetMainFireworksEnabled(
+            ( // "Asked to turn on"
+                (getModConfig().enableOnResultsFail.GetValue() && self->_levelCompletionResults->levelEndStateType != LevelCompletionResults::LevelEndStateType::Cleared) ||
+                (getModConfig().enableOnResultsHighscore.GetValue() && self->_newHighScore) ||
+                (getModConfig().enableOnResultsClear.GetValue() && self->_levelCompletionResults->levelEndStateType == LevelCompletionResults::LevelEndStateType::Cleared)
+            ) && ( // "Required to turn on"
+                (!getModConfig().resultsRequireFullCombo.GetValue() || self->_levelCompletionResults->fullCombo)
+            )
+        );
     }
 
     void InstallForceEnableLevelResultsHook() {

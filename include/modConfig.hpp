@@ -35,6 +35,7 @@ DECLARE_CONFIG(ModConfig,
     CONFIG_VALUE(enableOnResultsHighscore, bool, "enableOnResultsHighscore", true); // Whether or not to show the fireworks when results show a new highscore
     CONFIG_VALUE(enableOnResultsClear, bool, "enableOnResultsClear", false); // Whether or not to show the fireworks when a level is cleared with no highscore
     CONFIG_VALUE(enableOnResultsFail, bool, "enableOnResultsFail", false); // Whether or not to show the fireworks when a level is failed
+    CONFIG_VALUE(resultsRequireFullCombo, bool, "resultsRequireFullCombo", false); // Whether or not a full combo is required to show fireworks at the end of a level
 
     CONFIG_VALUE(smoothDisable, bool, "smoothDisable", true); // Whether or not firework disablement will wait for sparks to disappear
 )

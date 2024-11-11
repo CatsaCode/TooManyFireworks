@@ -22,9 +22,10 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Dampen strength
 - Volume
 - Spawn range
-- Show on highscore
+- Show on high score
 - Show on level clear
 - Show on level fail
+- Show on full combo
 - Smooth disable
 
 ## Known Bugs
