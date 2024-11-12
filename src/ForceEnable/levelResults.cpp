@@ -4,6 +4,7 @@
 
 #include "GlobalNamespace/ResultsViewController.hpp"
 #include "GlobalNamespace/LevelCompletionResults.hpp"
+#include "GlobalNamespace/ScoreController.hpp"
 
 #include "UnityEngine/Coroutine.hpp"
 
@@ -11,6 +12,9 @@ using namespace GlobalNamespace;
 using namespace UnityEngine;
 
 namespace TooManyFireworks {
+
+    // Variable used to calculate the accuracy percentage at the level results screen
+    int trackedMaxScore = 0;
 
     // Hook to enable fireworks when level was cleared but no high score
     MAKE_HOOK_MATCH(
@@ -32,17 +36,37 @@ namespace TooManyFireworks {
         // Enable fireworks if the results match the mod preferences
         SetMainFireworksEnabled(
             ( // "Asked to turn on"
-                (getModConfig().enableOnResultsFail.GetValue() && self->_levelCompletionResults->levelEndStateType != LevelCompletionResults::LevelEndStateType::Cleared) ||
-                (getModConfig().enableOnResultsHighscore.GetValue() && self->_newHighScore) ||
-                (getModConfig().enableOnResultsClear.GetValue() && self->_levelCompletionResults->levelEndStateType == LevelCompletionResults::LevelEndStateType::Cleared)
+                ( getModConfig().enableOnResultsFail.GetValue()       &&  self->_levelCompletionResults->levelEndStateType != LevelCompletionResults::LevelEndStateType::Cleared     ) ||
+                ( getModConfig().enableOnResultsHighscore.GetValue()  &&  self->_newHighScore                                                                                        ) ||
+                ( getModConfig().enableOnResultsClear.GetValue()      &&  self->_levelCompletionResults->levelEndStateType == LevelCompletionResults::LevelEndStateType::Cleared     )
             ) && ( // "Required to turn on"
-                (!getModConfig().resultsRequireFullCombo.GetValue() || self->_levelCompletionResults->fullCombo)
+                ( !getModConfig().resultsRequireFullCombo.GetValue()  ||  self->_levelCompletionResults->fullCombo                                                                   ) &&
+                ( getModConfig().resultsMinimumAccuracy.GetValue()    <=  (trackedMaxScore != 0 ? (float)self->_levelCompletionResults->modifiedScore / trackedMaxScore * 100 : 100) )    // If the map has a possible score then calculate the score, otherwise assume 100% accuracy
             )
         );
     }
 
     void InstallForceEnableLevelResultsHook() {
         INSTALL_HOOK(PaperLogger, ForceEnableLevelResultsHook);
+    }
+
+
+    // Hook to keep track of the maximum score so that it can be used to calculate the accuracy percentage at the level results screen
+    MAKE_HOOK_MATCH(
+        MaxScoreTrackerHook,
+        &ScoreController::LateUpdate,
+        void,
+        ScoreController* self
+    ) {
+        // Run original function
+        MaxScoreTrackerHook(self);
+
+        // Save the maximum score to a variable so it can be retrieved at the results screen
+        trackedMaxScore = self->_immediateMaxPossibleModifiedScore;
+    }
+
+    void InstallMaxScoreTrackerHook() {
+        INSTALL_HOOK(PaperLogger, MaxScoreTrackerHook);
     }
 
 }

@@ -26,6 +26,7 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Show on level clear
 - Show on level fail
 - Show on full combo
+- Show on accuracy
 - Smooth disable
 
 ## Known Bugs
@@ -39,7 +40,6 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 
 - Show in menu
 - Show in level select
-- Show on score percentage
 - Show on scoreboard rank
 - Color over time
 - Spark size
