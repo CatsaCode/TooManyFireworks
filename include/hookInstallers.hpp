@@ -10,6 +10,7 @@ namespace TooManyFireworks {
 
     void InstallForceEnableLevelResultsHook();
     void InstallMaxScoreTrackerHook();
+    void InstallForceEnableMainMenuHook();
 
     void InstallMaxExplosionSoundsHotfixHook();
 
