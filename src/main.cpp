@@ -49,6 +49,8 @@ MOD_EXTERN_FUNC void late_load() noexcept {
     TooManyFireworks::InstallMaxScoreTrackerHook();
     TooManyFireworks::InstallForceEnableMainMenuHook();
     TooManyFireworks::InstallForceEnableLevelSelectionHook();
+    TooManyFireworks::InstallForceEnableGameplayHook();
+    TooManyFireworks::InstallForceEnablePauseMenuHook();
 
     // Hotfix hooks
     TooManyFireworks::InstallMaxExplosionSoundsHotfixHook();

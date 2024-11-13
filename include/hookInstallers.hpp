@@ -12,6 +12,8 @@ namespace TooManyFireworks {
     void InstallMaxScoreTrackerHook();
     void InstallForceEnableMainMenuHook();
     void InstallForceEnableLevelSelectionHook();
+    void InstallForceEnableGameplayHook();
+    void InstallForceEnablePauseMenuHook();
 
     void InstallMaxExplosionSoundsHotfixHook();
 

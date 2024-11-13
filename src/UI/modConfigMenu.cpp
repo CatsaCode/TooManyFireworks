@@ -196,6 +196,8 @@ namespace TooManyFireworks {
         BSML::SliderSetting* resultsMinimumAccuracySlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Minimum accuracy", 1.0f, getModConfig().resultsMinimumAccuracy.GetValue(), 0.0f, 100.0f, [](float value){getModConfig().resultsMinimumAccuracy.SetValue(value);});
         BSML::ToggleSetting* enableInMainMenuToggle = BSML::Lite::CreateToggle(modMenuContainer, "Enable in main menu", getModConfig().enableInMainMenu.GetValue(), [](bool value){getModConfig().enableInMainMenu.SetValue(value);});
         BSML::ToggleSetting* enableInLevelSelectionToggle = BSML::Lite::CreateToggle(modMenuContainer, "Enable in level selection", getModConfig().enableInLevelSelection.GetValue(), [](bool value){getModConfig().enableInLevelSelection.SetValue(value);});
+        BSML::ToggleSetting* enableInGameplayToggle = BSML::Lite::CreateToggle(modMenuContainer, "Enable in gameplay", getModConfig().enableInGameplay.GetValue(), [](bool value){getModConfig().enableInGameplay.SetValue(value);});
+        BSML::ToggleSetting* enableInPauseMenuToggle = BSML::Lite::CreateToggle(modMenuContainer, "Enable in pause menu", getModConfig().enableInPauseMenu.GetValue(), [](bool value){getModConfig().enableInPauseMenu.SetValue(value);});
         BSML::ToggleSetting* smoothDisableToggle = BSML::Lite::CreateToggle(modMenuContainer, "Smooth disable", getModConfig().smoothDisable.GetValue(), [](bool value){getModConfig().smoothDisable.SetValue(value);});
 
         // Add more detailed descriptions
@@ -221,6 +223,8 @@ namespace TooManyFireworks {
         BSML::Lite::AddHoverHint(resultsMinimumAccuracySlider, "Minimum accuracy required for the fireworks to show at the end of a level (Default 0)");
         BSML::Lite::AddHoverHint(enableInMainMenuToggle, "Whether or not to show fireworks in the main menu (Default false)");
         BSML::Lite::AddHoverHint(enableInLevelSelectionToggle, "Whether or not to show fireworks in the menu for selecting levels (Default false)");
+        BSML::Lite::AddHoverHint(enableInGameplayToggle, "Whether or not to show fireworks while actively slicing notes (Default false)");
+        BSML::Lite::AddHoverHint(enableInPauseMenuToggle, "Whether or not to show fireworks while the game is paused (Default false)");
         BSML::Lite::AddHoverHint(smoothDisableToggle, "Whether or not firework disablement will wait for sparks to disappear (Default false)");
     }
 

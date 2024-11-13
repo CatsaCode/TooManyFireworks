@@ -41,6 +41,10 @@ namespace TooManyFireworks {
             PaperLogger.error("Could not find main FireworksController");
             return;
         }
+
+        // Allow main fireworks to exist outside of the main menu scene
+        mainFireworksController->transform->parent = nullptr;
+        GameObject::DontDestroyOnLoad(mainFireworksController->gameObject);
     }
 
     void InstallFindMainFireworksControllerHook() {
