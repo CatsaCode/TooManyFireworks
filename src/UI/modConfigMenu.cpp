@@ -165,7 +165,7 @@ namespace TooManyFireworks {
 
         // Set up fireworks to disable once menu is closed
         std::function<void(bool, bool)> ModConfigMenuDidDeactivate = [](bool removedFromHierarchy, bool screenSystemDisabling){
-            SetMainFireworksEnabled(false);
+            SetMainFireworksEnabled(getModConfig().enableInMainMenu.GetValue());
         };
         self->add_didDeactivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidDeactivateDelegate*>(ModConfigMenuDidDeactivate));
 
@@ -195,6 +195,7 @@ namespace TooManyFireworks {
         BSML::ToggleSetting* resultsRequireFullComboToggle = BSML::Lite::CreateToggle(modMenuContainer, "Require full combo", getModConfig().resultsRequireFullCombo.GetValue(), [](bool value){getModConfig().resultsRequireFullCombo.SetValue(value);});
         BSML::SliderSetting* resultsMinimumAccuracySlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Minimum accuracy", 1.0f, getModConfig().resultsMinimumAccuracy.GetValue(), 0.0f, 100.0f, [](float value){getModConfig().resultsMinimumAccuracy.SetValue(value);});
         BSML::ToggleSetting* enableInMainMenuToggle = BSML::Lite::CreateToggle(modMenuContainer, "Enable in main menu", getModConfig().enableInMainMenu.GetValue(), [](bool value){getModConfig().enableInMainMenu.SetValue(value);});
+        BSML::ToggleSetting* enableInLevelSelectionToggle = BSML::Lite::CreateToggle(modMenuContainer, "Enable in level selection", getModConfig().enableInLevelSelection.GetValue(), [](bool value){getModConfig().enableInLevelSelection.SetValue(value);});
         BSML::ToggleSetting* smoothDisableToggle = BSML::Lite::CreateToggle(modMenuContainer, "Smooth disable", getModConfig().smoothDisable.GetValue(), [](bool value){getModConfig().smoothDisable.SetValue(value);});
 
         // Add more detailed descriptions
@@ -219,6 +220,7 @@ namespace TooManyFireworks {
         BSML::Lite::AddHoverHint(resultsRequireFullComboToggle, "Require a full combo to show fireworks on the results screen (Default false)");
         BSML::Lite::AddHoverHint(resultsMinimumAccuracySlider, "Minimum accuracy required for the fireworks to show at the end of a level (Default 0)");
         BSML::Lite::AddHoverHint(enableInMainMenuToggle, "Whether or not to show fireworks in the main menu (Default false)");
+        BSML::Lite::AddHoverHint(enableInLevelSelectionToggle, "Whether or not to show fireworks in the menu for selecting levels (Default false)");
         BSML::Lite::AddHoverHint(smoothDisableToggle, "Whether or not firework disablement will wait for sparks to disappear (Default false)");
     }
 

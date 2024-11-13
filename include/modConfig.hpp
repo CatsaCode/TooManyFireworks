@@ -38,6 +38,7 @@ DECLARE_CONFIG(ModConfig,
     CONFIG_VALUE(resultsRequireFullCombo, bool, "resultsRequireFullCombo", false); // Whether or not a full combo is required to show fireworks at the end of a level
     CONFIG_VALUE(resultsMinimumAccuracy, float, "resultsMinimumAccuracy", 0.0f); // Minimum accuracy required for the fireworks to show at the end of a level
     CONFIG_VALUE(enableInMainMenu, bool, "enableInMainMenu", false); // Whether or not to show fireworks in the main menu
+    CONFIG_VALUE(enableInLevelSelection, bool, "enableInLevelSelection", false); // Whether or not to show fireworks in the menu for selecting levels
 
     CONFIG_VALUE(smoothDisable, bool, "smoothDisable", true); // Whether or not firework disablement will wait for sparks to disappear
 )
