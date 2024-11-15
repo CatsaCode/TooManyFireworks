@@ -1,7 +1,6 @@
 #include "main.hpp"
 
 #include "GlobalNamespace/FireworksController.hpp"
-#include "GlobalNamespace/FireworkItemController.hpp"
 
 #include "bsml/shared/BSML/MainThreadScheduler.hpp"
 
@@ -24,7 +23,9 @@ namespace TooManyFireworks {
         }
 
         // Call the original function with a delay of how long one firework will last
-        BSML::MainThreadScheduler::ScheduleAfterTime(getModConfig().duration.GetValue(), [self](){SmoothDisableHook(self);});
+        BSML::MainThreadScheduler::ScheduleAfterTime(getModConfig().duration.GetValue(), [self](){
+            if(!self->enabled) SmoothDisableHook(self); // Only delete fireworks if the FireworksController wasn't re-enabled in between the delay
+        });
     }
 
     void InstallSmoothDisableHook() {

@@ -18,15 +18,19 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Duration
 - Gravity
 - Collisions
-- Bounce strength
 - Dampen strength
+- Bounce strength
 - Volume
 - Spawn range
-- Show on high score
-- Show on level clear
-- Show on level fail
-- Show on full combo
-- Show on accuracy
+- Enable on high score
+- Enable on level clear
+- Enable on level fail
+- Enable on full combo
+- Enable on accuracy
+- Enable in main menu
+- Enable in level selection
+- Enable in gameplay
+- Enable in pause menu
 - Smooth disable
 
 ## Known Bugs
@@ -34,12 +38,9 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Color will flicker when a slider is moved with rainbow color on
 - Light rays will flicker when a size slider is moved
 - Canceling color select will not revert color
-- Smooth disable will delete fireworks even if they started again
 
 ## Future Ideas
 
-- Show in menu
-- Show in level select
 - Show on scoreboard rank
 - Color over time
 - Spark size
