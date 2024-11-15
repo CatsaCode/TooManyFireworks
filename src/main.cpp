@@ -54,6 +54,7 @@ MOD_EXTERN_FUNC void late_load() noexcept {
 
     // Hotfix hooks
     TooManyFireworks::InstallMaxExplosionSoundsHotfixHook();
+    TooManyFireworks::InstallDespawnOnSceneTransitionHotfixHook();
 
     PaperLogger.info("Installed all hooks!");
 }

@@ -16,5 +16,6 @@ namespace TooManyFireworks {
     void InstallForceEnablePauseMenuHook();
 
     void InstallMaxExplosionSoundsHotfixHook();
+    void InstallDespawnOnSceneTransitionHotfixHook();
 
 }
