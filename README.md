@@ -38,7 +38,7 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Color will flicker when a slider is moved with rainbow color on
 - Light rays will flicker when a size slider is moved
 - Canceling color select will not revert color
-- Going from the results screen to the level selection screen will double the number of fireworks
+- Updating mod menu from main menu will not update values in mod menu from mod settings and vice versa
 
 ## Future Ideas
 

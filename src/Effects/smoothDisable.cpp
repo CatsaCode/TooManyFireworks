@@ -16,6 +16,9 @@ namespace TooManyFireworks {
         void,
         FireworksController* self
     ) {
+        // Manually stop the SpawningCoroutine function, which normally only stops when the component is disabled during the time that the next firework is supposed to launch
+        self->StopAllCoroutines();
+
         // Run function as normal if smoothDisable is off
         if(!getModConfig().smoothDisable.GetValue()) {
             SmoothDisableHook(self);

@@ -46,23 +46,8 @@ namespace TooManyFireworks {
         );
     }
 
-    // Hook to stop fireworks from disabling upon exiting the level results screen because it interferes with enableOnLevelSelection
-    MAKE_HOOK_MATCH(
-        DisableLevelResultsDeactivationHook,
-        &ResultsViewController::DidDeactivate,
-        void,
-        ResultsViewController* self,
-        bool addedToHierarchy, 
-        bool screenSystemEnabling
-    ) {
-        // Stop fireworks start coroutine like the original function
-        if(self->_startFireworksAfterDelayCoroutine != nullptr) self->StopCoroutine(self->_startFireworksAfterDelayCoroutine);
-        self->_startFireworksAfterDelayCoroutine = nullptr;
-    }
-
     void InstallForceEnableLevelResultsHook() {
         INSTALL_HOOK(PaperLogger, ForceEnableLevelResultsHook);
-        INSTALL_HOOK(PaperLogger, DisableLevelResultsDeactivationHook);
     }
 
 
