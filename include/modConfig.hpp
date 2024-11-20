@@ -43,4 +43,6 @@ DECLARE_CONFIG(ModConfig,
     CONFIG_VALUE(enableInPauseMenu, bool, "enableInPauseMenu", false); // Whether or not to show fireworks while the game is paused
 
     CONFIG_VALUE(smoothDisable, bool, "smoothDisable", true); // Whether or not firework disablement will wait for sparks to disappear
+
+    CONFIG_VALUE(mainMenuButton, bool, "mainMenuButton", false); // Show the mod menu button in the main menu instead of the mod settings menu
 )
