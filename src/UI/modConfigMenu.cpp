@@ -4,6 +4,7 @@
 #include "effects.hpp"
 
 #include "UI/creation.hpp"
+#include "UI/presets.hpp"
 
 #include "bsml/shared/BSML.hpp"
 #include "bsml/shared/BSML/Components/ExternalComponents.hpp"
@@ -12,6 +13,9 @@
 #include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/Vector3.hpp"
 #include "UnityEngine/RectTransform.hpp"
+#include "UnityEngine/UI/Button.hpp"
+#include "UnityEngine/UI/ContentSizeFitter.hpp"
+#include "UnityEngine/UI/LayoutElement.hpp"
 
 #include "HMUI/CurvedTextMeshPro.hpp"
 #include "HMUI/ViewController.hpp"
@@ -23,6 +27,33 @@
 using namespace UnityEngine;
 
 namespace TooManyFireworks {
+
+    // Function that will manually update all of the UI and fireworks to reflect any latest changes to mod config
+    std::function<void()> ForceUpdateModMenu = nullptr;
+
+    BSML::ModalView* CreatePresetsModal(GameObject* parent) {
+        // Popup window
+        float modalWidth = 70.0f;
+        float modalHeight = 40.0f;
+        BSML::ModalView* presetsModal = BSML::Lite::CreateModal(parent, Vector2(0.0f, 5.0f), Vector2(modalWidth, modalHeight), nullptr);
+        
+        // Create grid
+        auto vertical = BSML::Lite::CreateVerticalLayoutGroup(presetsModal);
+        vertical->GetComponent<UI::LayoutElement*>()->preferredWidth = modalWidth - 5.0f;
+        auto row1 = BSML::Lite::CreateHorizontalLayoutGroup(vertical);
+        auto row2 = BSML::Lite::CreateHorizontalLayoutGroup(vertical);
+
+        // Add each preset button to the grid
+        CreateHorizontallyUnconstrainedButton(row1, "Furzz", PresetFurzz);
+        CreateHorizontallyUnconstrainedButton(row1, "Furzz", PresetFurzz);
+        CreateHorizontallyUnconstrainedButton(row1, "Furzz", PresetFurzz);
+
+        CreateHorizontallyUnconstrainedButton(row2, "Furzz", PresetFurzz);
+        CreateHorizontallyUnconstrainedButton(row2, "Furzz", PresetFurzz);
+        CreateHorizontallyUnconstrainedButton(row2, "Furzz", PresetFurzz);
+
+        return presetsModal;
+    }
 
     BSML::ModalView* CreateSpawnRangeModal(GameObject* parent) {
         // Popup window
@@ -57,12 +88,14 @@ namespace TooManyFireworks {
         self->add_didDeactivateEvent(custom_types::MakeDelegate<HMUI::ViewController::DidDeactivateDelegate*>(ModConfigMenuDidDeactivate));
 
         // Create modals
+        BSML::ModalView* presetsModal = CreatePresetsModal(self->gameObject);
         BSML::ModalView* spawnRangeModal = CreateSpawnRangeModal(self->gameObject);
 
         // Create container to house all UI elements
         GameObject* modMenuContainer = BSML::Lite::CreateScrollableSettingsContainer(self->gameObject);
 
         // Create main settings
+        UI::Button* presetsModalButton = BSML::Lite::CreateUIButton(modMenuContainer, "Presets", [presetsModal](){presetsModal->Show();});
         auto frequencySliders = CreateMinMaxConfigSliderSetting(modMenuContainer, getModConfig().minFrequency, getModConfig().maxFrequency, "Minimum frequency", "Maximum frequency", 1.0f, 1.0f, 100.0f, [](float value){ForceUpdateMainFireworksController(UpdateFrequency);}, [](float value){ForceUpdateMainFireworksController(UpdateFrequency);});
         BSML::ToggleSetting* rainbowToggle = BSML::Lite::CreateToggle(modMenuContainer, "Rainbow", getModConfig().rainbow.GetValue(), [](bool value) {getModConfig().rainbow.SetValue(value); ForceUpdateEachMainFirework(UpdateColor);});
         BSML::ColorSetting* colorColorPicker = BSML::Lite::CreateColorPicker(modMenuContainer, "Color", getModConfig().color.GetValue(), nullptr, nullptr, [](Color value){getModConfig().color.SetValue(value); ForceUpdateEachMainFirework(UpdateColor);}); // TODO On cancel
@@ -86,9 +119,10 @@ namespace TooManyFireworks {
         BSML::ToggleSetting* enableInGameplayToggle = BSML::Lite::CreateToggle(modMenuContainer, "Enable in gameplay", getModConfig().enableInGameplay.GetValue(), [](bool value){getModConfig().enableInGameplay.SetValue(value);});
         BSML::ToggleSetting* enableInPauseMenuToggle = BSML::Lite::CreateToggle(modMenuContainer, "Enable in pause menu", getModConfig().enableInPauseMenu.GetValue(), [](bool value){getModConfig().enableInPauseMenu.SetValue(value);});
         BSML::ToggleSetting* smoothDisableToggle = BSML::Lite::CreateToggle(modMenuContainer, "Smooth disable", getModConfig().smoothDisable.GetValue(), [](bool value){getModConfig().smoothDisable.SetValue(value);});
-        BSML::ToggleSetting* mainMenuButtonToggle = BSML::Lite::CreateToggle(modMenuContainer, "Main menu button (requires restart)", getModConfig().mainMenuButton.GetValue(), [](bool value){getModConfig().mainMenuButton.SetValue(true);});
+        BSML::ToggleSetting* mainMenuButtonToggle = BSML::Lite::CreateToggle(modMenuContainer, "Main menu button (requires restart)", getModConfig().mainMenuButton.GetValue(), [](bool value){getModConfig().mainMenuButton.SetValue(value);});
 
         // Add more detailed descriptions
+        BSML::Lite::AddHoverHint(presetsModalButton, "Quickly choose settings from a variety of presets");
         BSML::Lite::AddHoverHint(frequencySliders[0], "Minimum number of fireworks per second (Default 1)");
         BSML::Lite::AddHoverHint(frequencySliders[1], "Maximum number of fireworks per second (Default 5)");
         BSML::Lite::AddHoverHint(rainbowToggle, "Whether or not to color fireworks with a random hue (Default false)");
@@ -115,6 +149,37 @@ namespace TooManyFireworks {
         BSML::Lite::AddHoverHint(enableInPauseMenuToggle, "Whether or not to show fireworks while the game is paused (Default false)");
         BSML::Lite::AddHoverHint(smoothDisableToggle, "Whether or not firework disablement will wait for sparks to disappear (Default false)");
         BSML::Lite::AddHoverHint(mainMenuButtonToggle, "Show the mod menu button in the main menu instead of the mod settings menu (Default false)");
+
+        // Create a function that will manually update all of the UI and fireworks to reflect the latest config, which may be modified manually by presets
+        ForceUpdateModMenu = [=](){
+            frequencySliders[0]->set_Value(getModConfig().minFrequency.GetValue()); // Updated later
+            frequencySliders[1]->set_Value(getModConfig().maxFrequency.GetValue()); ForceUpdateMainFireworksController(UpdateFrequency);
+            rainbowToggle->set_Value(getModConfig().rainbow.GetValue()); // Updated later
+            colorColorPicker->set_currentColor(getModConfig().color.GetValue()); ForceUpdateEachMainFirework(UpdateColor);
+            brightnessSlider->set_Value(getModConfig().brightness.GetValue()); ForceUpdateEachMainFirework(UpdateBrightness);
+            sizeSliders[0]->set_Value(getModConfig().minSize.GetValue()); // Updated later
+            sizeSliders[1]->set_Value(getModConfig().maxSize.GetValue()); ForceUpdateEachMainFirework(UpdateSize);
+            numSparksSlider->set_Value(getModConfig().numSparks.GetValue()); ForceUpdateEachMainFirework(UpdateNumSparks);
+            durationSlider->set_Value(getModConfig().duration.GetValue()); ForceUpdateEachMainFirework(UpdateDuration);
+            gravitySlider->set_Value(getModConfig().gravity.GetValue()); ForceUpdateEachMainFirework(UpdateGravity);
+            collisionToggle->set_Value(getModConfig().collision.GetValue()); ForceUpdateEachMainFirework(UpdateCollision);
+            dampenSlider->set_Value(getModConfig().dampen.GetValue()); // Updated later
+            bounceSlider->set_Value(getModConfig().bounce.GetValue()); ForceUpdateEachMainFirework(UpdateDampenBounce);
+            volumeSlider->set_Value(getModConfig().volume.GetValue()); ForceUpdateEachMainFirework(UpdateVolume);
+            spawnRangeModal->GetComponentsInChildren<HMUI::CurvedTextMeshPro*>()->First([](HMUI::CurvedTextMeshPro* x){return x->text[0] == '(';})->set_text(fmt::format("({:.2f}, {:.2f}, {:.2f})", getModConfig().spawnRangeCenter.GetValue().x, getModConfig().spawnRangeCenter.GetValue().y, getModConfig().spawnRangeCenter.GetValue().z)); // Updated later
+            spawnRangeModal->GetComponentsInChildren<HMUI::CurvedTextMeshPro*>()->Last([](HMUI::CurvedTextMeshPro* x){return x->text[0] == '(';})->set_text(fmt::format("({:.2f}, {:.2f}, {:.2f})", getModConfig().spawnRangeSize.GetValue().x, getModConfig().spawnRangeSize.GetValue().y, getModConfig().spawnRangeSize.GetValue().z)); ForceUpdateMainFireworksController(UpdateSpawnRange);
+            enableOnResultsHighscoreToggle->set_Value(getModConfig().enableOnResultsHighscore.GetValue());
+            enableOnResultsClearToggle->set_Value(getModConfig().enableOnResultsClear.GetValue());
+            enableOnResultsFailToggle->set_Value(getModConfig().enableOnResultsFail.GetValue());
+            resultsRequireFullComboToggle->set_Value(getModConfig().resultsRequireFullCombo.GetValue());
+            resultsMinimumAccuracySlider->set_Value(getModConfig().resultsMinimumAccuracy.GetValue());
+            enableInMainMenuToggle->set_Value(getModConfig().enableInMainMenu.GetValue());
+            enableInLevelSelectionToggle->set_Value(getModConfig().enableInLevelSelection.GetValue());
+            enableInGameplayToggle->set_Value(getModConfig().enableInGameplay.GetValue());
+            enableInPauseMenuToggle->set_Value(getModConfig().enableInPauseMenu.GetValue());
+            smoothDisableToggle->set_Value(getModConfig().smoothDisable.GetValue());
+            mainMenuButtonToggle->set_Value(getModConfig().mainMenuButton.GetValue());
+        };
     }
 
 }

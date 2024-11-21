@@ -1,9 +1,18 @@
 #include "main.hpp"
 
+#include "UnityEngine/UI/ContentSizeFitter.hpp"
+
 using namespace GlobalNamespace;
 using namespace UnityEngine;
 
 namespace TooManyFireworks {
+
+    // Create a button that will dynamically adjust its width
+    UI::Button* CreateHorizontallyUnconstrainedButton(const BSML::Lite::TransformWrapper& parent, std::string label, std::function<void()> onClick = nullptr) {
+        UI::Button* button = BSML::Lite::CreateUIButton(parent, label, onClick);
+        button->GetComponent<UI::ContentSizeFitter*>()->horizontalFit = UI::ContentSizeFitter::FitMode::Unconstrained;
+        return button;
+    }
 
     // Create a panel of buttons that can increment a float config value by -10, -1, -0.1, -0.01, 0.01, 0.1, 1, and 10
     void CreateExtraIncrementSetting(GameObject* parent, std::string label, ConfigUtils::ConfigValue<float>& configVariable, std::function<void(float)> onValueChange = nullptr) {

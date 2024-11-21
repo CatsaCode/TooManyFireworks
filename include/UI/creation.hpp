@@ -5,11 +5,14 @@
 
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Vector3.hpp"
+#include "UnityEngine/UI/Button.hpp"
 
 #include <string>
 #include <functional>
 
 namespace TooManyFireworks {
+
+    UnityEngine::UI::Button* CreateHorizontallyUnconstrainedButton(const BSML::Lite::TransformWrapper& parent, std::string label, std::function<void()> onClick = nullptr);
 
     void CreateExtraIncrementSetting(UnityEngine::GameObject* parent, std::string label, ConfigUtils::ConfigValue<float>& configVariable, std::function<void(float)> onValueChange = nullptr);
     void CreateExtraIncrementSetting(UnityEngine::GameObject* parent, std::string label, ConfigUtils::ConfigValue<UnityEngine::Vector3>& configVariable, std::function<void(UnityEngine::Vector3)> onValueChange = nullptr);
