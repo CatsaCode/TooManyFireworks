@@ -42,15 +42,17 @@ namespace TooManyFireworks {
         vertical->GetComponent<UI::LayoutElement*>()->preferredWidth = modalWidth - 5.0f;
         auto row1 = BSML::Lite::CreateHorizontalLayoutGroup(vertical);
         auto row2 = BSML::Lite::CreateHorizontalLayoutGroup(vertical);
+        auto row3 = BSML::Lite::CreateHorizontalLayoutGroup(vertical);
 
         // Add each preset button to the grid
-        CreateHorizontallyUnconstrainedButton(row1, "Furzz", PresetFurzz);
-        CreateHorizontallyUnconstrainedButton(row1, "Furzz", PresetFurzz);
-        CreateHorizontallyUnconstrainedButton(row1, "Furzz", PresetFurzz);
+        CreateHorizontallyUnconstrainedButton(row1, "Default", PresetDefault);
+        CreateHorizontallyUnconstrainedButton(row1, "Enhanced Default", PresetEnhancedDefault);
 
-        CreateHorizontallyUnconstrainedButton(row2, "Furzz", PresetFurzz);
-        CreateHorizontallyUnconstrainedButton(row2, "Furzz", PresetFurzz);
-        CreateHorizontallyUnconstrainedButton(row2, "Furzz", PresetFurzz);
+        CreateHorizontallyUnconstrainedButton(row2, "Light show", PresetLightShow);
+        CreateHorizontallyUnconstrainedButton(row2, "Rain", PresetRain);
+        CreateHorizontallyUnconstrainedButton(row2, "Snow", PresetSnow);
+
+        CreateHorizontallyUnconstrainedButton(row3, "Fire", PresetFire);
 
         return presetsModal;
     }
