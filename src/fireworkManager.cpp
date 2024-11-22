@@ -92,6 +92,7 @@ namespace TooManyFireworks {
         UpdateGravity(self);
         UpdateCollision(self);
         UpdateDampenBounce(self);
+        UpdateWind(self);
         UpdateVolume(self);
     }
 

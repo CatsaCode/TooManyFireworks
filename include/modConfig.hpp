@@ -27,6 +27,10 @@ DECLARE_CONFIG(ModConfig,
     CONFIG_VALUE(dampen, float, "dampen", 0.2f); // How much spark velocity is dampened on collision (Arbitrary default. Technically 0, but a value unused in the base game promotes artistic liberty)
     CONFIG_VALUE(bounce, float, "bounce", 0.2f); // How much spark velocity is reflected on collision (Arbitrary default. Technically 1, but see above)
 
+    CONFIG_VALUE(windStrength, float, "windStrength", 0.0f); // How much a spark's velocity is affected by noisy air patterns
+    CONFIG_VALUE(windTurbulence, float, "windTurbulence", 0.5f); // How detailed the noisy air patterns are
+    CONFIG_VALUE(windEvolution, float, "windEvolution", 0.0f); // How quickly the noisy air patterns change over time
+
     CONFIG_VALUE(volume, float, "volume", 0.6f); // Volume of the explosion sound effects
 
     CONFIG_VALUE(spawnRangeCenter, UnityEngine::Vector3, "spawnRangeCenter", UnityEngine::Vector3(0.0f, 11.39f, 12.57f)); // Center of the firework spawn volume
