@@ -110,9 +110,8 @@ namespace TooManyFireworks {
         BSML::ToggleSetting* collisionToggle = BSML::Lite::CreateToggle(modMenuContainer, "Collision", getModConfig().collision.GetValue(), [](bool value) {getModConfig().collision.SetValue(value); ForceUpdateEachMainFirework(UpdateCollision);});
         BSML::SliderSetting* dampenSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Dampen", 0.1f, getModConfig().dampen.GetValue(), 0.0f, 1.0f, [](float value){getModConfig().dampen.SetValue(value); ForceUpdateEachMainFirework(UpdateDampenBounce);});
         BSML::SliderSetting* bounceSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Bounce", 0.1f, getModConfig().bounce.GetValue(), 0.0f, 10.0f, [](float value){getModConfig().bounce.SetValue(value); ForceUpdateEachMainFirework(UpdateDampenBounce);});
-        BSML::SliderSetting* windStrengthSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Wind strength", 0.1f, getModConfig().windStrength.GetValue(), 0.0f, 3.0f, [](float value){getModConfig().windStrength.SetValue(value); ForceUpdateEachMainFirework(UpdateWind);});
+        BSML::SliderSetting* windStrengthSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Wind strength", 0.1f, getModConfig().windStrength.GetValue(), 0.0f, 5.0f, [](float value){getModConfig().windStrength.SetValue(value); ForceUpdateEachMainFirework(UpdateWind);});
         BSML::SliderSetting* windTurbulenceSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Wind turbulence", 0.1f, getModConfig().windTurbulence.GetValue(), 0.0f, 5.0f, [](float value){getModConfig().windTurbulence.SetValue(value); ForceUpdateEachMainFirework(UpdateWind);});
-        BSML::SliderSetting* windEvolutionSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Wind evolution", 0.1f, getModConfig().windEvolution.GetValue(), 0.0f, 5.0f, [](float value){getModConfig().windEvolution.SetValue(value); ForceUpdateEachMainFirework(UpdateWind);});
         BSML::SliderSetting* volumeSlider = BSML::Lite::CreateSliderSetting(modMenuContainer, "Volume", 0.05f, getModConfig().volume.GetValue(), 0.0f, 1.0f, [](float value){getModConfig().volume.SetValue(value); ForceUpdateEachMainFirework(UpdateVolume);});
         UI::Button* spawnRangeButton = BSML::Lite::CreateUIButton(modMenuContainer, "Set Range", [spawnRangeModal](){spawnRangeModal->Show();});
         BSML::ToggleSetting* enableOnResultsHighscoreToggle = BSML::Lite::CreateToggle(modMenuContainer, "Enable on highscore", getModConfig().enableOnResultsHighscore.GetValue(), [](bool value) {getModConfig().enableOnResultsHighscore.SetValue(value);});
@@ -142,9 +141,8 @@ namespace TooManyFireworks {
         BSML::Lite::AddHoverHint(collisionToggle, "Whether or not sparks will collide with objects (Default false)");
         BSML::Lite::AddHoverHint(dampenSlider, "How much spark velocity is dampened on collision (Default 0.2)");
         BSML::Lite::AddHoverHint(bounceSlider, "How much spark velocity is reflected on collision (Default 0.2)");
-        BSML::Lite::AddHoverHint(windStrengthSlider, "How much a spark's velocity is affected by noisy air patterns (Default 0)");
+        BSML::Lite::AddHoverHint(windStrengthSlider, "How much a spark's position is affected by noisy air patterns (Default 0)");
         BSML::Lite::AddHoverHint(windTurbulenceSlider, "How detailed the noisy air patterns are (Default 0.5)");
-        BSML::Lite::AddHoverHint(windEvolutionSlider, "How quickly the noisy air patterns change over time (Default 0)");
         BSML::Lite::AddHoverHint(volumeSlider, "Volume of the explosion sound effects (Default 0.6)");
         BSML::Lite::AddHoverHint(spawnRangeButton, "Move and resize the volume where fireworks can spawn");
         BSML::Lite::AddHoverHint(enableOnResultsHighscoreToggle, "Show fireworks on the results screen when a new highscore was achieved (Default true)");
@@ -175,8 +173,7 @@ namespace TooManyFireworks {
             dampenSlider->set_Value(getModConfig().dampen.GetValue()); // Updated later
             bounceSlider->set_Value(getModConfig().bounce.GetValue()); ForceUpdateEachMainFirework(UpdateDampenBounce);
             windStrengthSlider->set_Value(getModConfig().windStrength.GetValue()); // Updated later
-            windTurbulenceSlider->set_Value(getModConfig().windTurbulence.GetValue()); // Updated later
-            windEvolutionSlider->set_Value(getModConfig().windEvolution.GetValue()); ForceUpdateEachMainFirework(UpdateWind);
+            windTurbulenceSlider->set_Value(getModConfig().windTurbulence.GetValue()); ForceUpdateEachMainFirework(UpdateWind);
             volumeSlider->set_Value(getModConfig().volume.GetValue()); ForceUpdateEachMainFirework(UpdateVolume);
             spawnRangeModal->GetComponentsInChildren<HMUI::CurvedTextMeshPro*>()->First([](HMUI::CurvedTextMeshPro* x){return x->text[0] == '(';})->set_text(fmt::format("({:.2f}, {:.2f}, {:.2f})", getModConfig().spawnRangeCenter.GetValue().x, getModConfig().spawnRangeCenter.GetValue().y, getModConfig().spawnRangeCenter.GetValue().z)); // Updated later
             spawnRangeModal->GetComponentsInChildren<HMUI::CurvedTextMeshPro*>()->Last([](HMUI::CurvedTextMeshPro* x){return x->text[0] == '(';})->set_text(fmt::format("({:.2f}, {:.2f}, {:.2f})", getModConfig().spawnRangeSize.GetValue().x, getModConfig().spawnRangeSize.GetValue().y, getModConfig().spawnRangeSize.GetValue().z)); ForceUpdateMainFireworksController(UpdateSpawnRange);

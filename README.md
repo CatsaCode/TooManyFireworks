@@ -23,7 +23,6 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Bounce strength
 - Wind strength
 - Wind turbulence
-- Wind evolution
 - Volume
 - Spawn range
 - Enable on high score
@@ -43,7 +42,6 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Color will flicker when a slider is moved with rainbow color on
 - Light rays will flicker when a size slider is moved
 - Canceling color select will not revert color
-- Updating mod menu from main menu will not update values in mod menu from mod settings and vice versa
 
 ## Future Ideas
 
