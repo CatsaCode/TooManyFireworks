@@ -2,8 +2,6 @@
 
 #include "fireworkManager.hpp"
 
-#include "GlobalNamespace/FireworksController.hpp"
-
 #include "UnityEngine/SceneManagement/SceneManager.hpp"
 #include "UnityEngine/SceneManagement/Scene.hpp"
 
@@ -26,13 +24,7 @@ namespace TooManyFireworks {
         // Check in the original function
         if(!newActiveScene.IsValid()) return;
 
-        // Don't try to despawn fireworks if the mainFireworksController hasn't been created yet
-        if(mainFireworksController == nullptr) return;
-
-        // Loop through each active firework and call the unhooked instant despawn function
-        for(int i = mainFireworksController->_activeFireworks->Count - 1; i >= 0; i--) {
-			mainFireworksController->ClearFireworkItemController(mainFireworksController->_activeFireworks->ToArray()[i]);
-		}
+        DespawnAllActiveMainFireworks();
     }
 
     void InstallDespawnOnSceneTransitionHotfixHook() {

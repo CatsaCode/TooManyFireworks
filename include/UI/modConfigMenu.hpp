@@ -8,7 +8,7 @@ namespace HMUI {
 
 namespace TooManyFireworks {
 
-    extern std::function<void()> ForceUpdateModMenu;
+    extern std::function<void(bool)> ForceUpdateModMenu;
 
     void ModConfigMenuDidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
 

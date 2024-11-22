@@ -29,7 +29,7 @@ using namespace UnityEngine;
 namespace TooManyFireworks {
 
     // Function that will manually update all of the UI and fireworks to reflect any latest changes to mod config
-    std::function<void()> ForceUpdateModMenu = nullptr;
+    std::function<void(bool)> ForceUpdateModMenu = nullptr;
 
     BSML::ModalView* CreatePresetsModal(GameObject* parent) {
         // Popup window
@@ -153,7 +153,7 @@ namespace TooManyFireworks {
         BSML::Lite::AddHoverHint(mainMenuButtonToggle, "Show the mod menu button in the main menu instead of the mod settings menu (Default false)");
 
         // Create a function that will manually update all of the UI and fireworks to reflect the latest config, which may be modified manually by presets
-        ForceUpdateModMenu = [=](){
+        ForceUpdateModMenu = [=](bool smoothTransition){
             frequencySliders[0]->set_Value(getModConfig().minFrequency.GetValue()); // Updated later
             frequencySliders[1]->set_Value(getModConfig().maxFrequency.GetValue()); ForceUpdateMainFireworksController(UpdateFrequency);
             rainbowToggle->set_Value(getModConfig().rainbow.GetValue()); // Updated later
@@ -181,6 +181,9 @@ namespace TooManyFireworks {
             enableInPauseMenuToggle->set_Value(getModConfig().enableInPauseMenu.GetValue());
             smoothDisableToggle->set_Value(getModConfig().smoothDisable.GetValue());
             mainMenuButtonToggle->set_Value(getModConfig().mainMenuButton.GetValue());
+
+            // With such an abrupt change to every parameter, the transition may be so sharp that completely removing it might look better
+            if(!smoothTransition) DespawnAllActiveMainFireworks();
         };
     }
 

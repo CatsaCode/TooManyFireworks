@@ -35,7 +35,7 @@ namespace TooManyFireworks {
         getModConfig().enableInPauseMenu.SetValue(false);
         getModConfig().smoothDisable.SetValue(false);
 
-        if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu();
+        if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu(false);
     }
 
     void PresetEnhancedDefault() {
@@ -66,7 +66,7 @@ namespace TooManyFireworks {
         getModConfig().enableInPauseMenu.SetValue(false);
         getModConfig().smoothDisable.SetValue(true);
 
-        if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu();
+        if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu(false);
     }
 
     void PresetLightShow() {
@@ -82,7 +82,7 @@ namespace TooManyFireworks {
         getModConfig().spawnRangeCenter.SetValue(Vector3(0.0f, 0.0f, 0.0f));
         getModConfig().spawnRangeSize.SetValue(Vector3(20.0f, 20.5f, 20.0f));
 
-        if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu();
+        if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu(false);
     }
 
     void PresetRain() {
@@ -103,7 +103,7 @@ namespace TooManyFireworks {
         getModConfig().spawnRangeCenter.SetValue(Vector3(0.0f, 25.0f, 0.0f));
         getModConfig().spawnRangeSize.SetValue(Vector3(10.0f, 0.0f, 10.0f));
 
-        if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu();
+        if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu(false);
     }
 
     void PresetSnow() {
@@ -124,7 +124,7 @@ namespace TooManyFireworks {
         getModConfig().spawnRangeCenter.SetValue(Vector3(0.0f, 6.0f, 0.0f));
         getModConfig().spawnRangeSize.SetValue(Vector3(10.0f, 0.0f, 10.0f));
 
-        if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu();
+        if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu(false);
     }
 
     void PresetFire() {
@@ -143,7 +143,7 @@ namespace TooManyFireworks {
         getModConfig().spawnRangeCenter.SetValue(Vector3(0.0f, -4.0f, 0.0f));
         getModConfig().spawnRangeSize.SetValue(Vector3(20.0f, 0.0f, 20.0f));
 
-        if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu();
+        if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu(false);
     }
 
     void PresetFurzz() {
@@ -174,7 +174,7 @@ namespace TooManyFireworks {
         getModConfig().enableInPauseMenu.SetValue(false);
         getModConfig().smoothDisable.SetValue(true);
 
-        if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu();
+        if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu(false);
     }
 
 }

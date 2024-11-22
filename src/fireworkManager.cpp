@@ -121,6 +121,18 @@ namespace TooManyFireworks {
 
 
 
+    // Instantly delete all of the currently visible fireworks on the mainFireworksController
+    void DespawnAllActiveMainFireworks() {
+        // Return if mainFireworksController was never found for any reason
+        if(mainFireworksController == nullptr) return;
+
+        // Loop through each active firework and call the unhooked instant despawn function
+        for(int i = mainFireworksController->_activeFireworks->Count - 1; i >= 0; i--) {
+			mainFireworksController->ClearFireworkItemController(mainFireworksController->_activeFireworks->ToArray()[i]);
+		}
+    }
+
+
     // Set whether or not the main menu's fireworks are enabled
     void SetMainFireworksEnabled(bool enabled) {
         // Return if mainFireworksController was never found for any reason
