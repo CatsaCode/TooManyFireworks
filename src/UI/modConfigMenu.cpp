@@ -34,7 +34,7 @@ namespace TooManyFireworks {
     BSML::ModalView* CreatePresetsModal(GameObject* parent) {
         // Popup window
         float modalWidth = 70.0f;
-        float modalHeight = 40.0f;
+        float modalHeight = 30.0f;
         BSML::ModalView* presetsModal = BSML::Lite::CreateModal(parent, Vector2(0.0f, 5.0f), Vector2(modalWidth, modalHeight), nullptr);
         
         // Create grid
@@ -48,11 +48,12 @@ namespace TooManyFireworks {
         CreateHorizontallyUnconstrainedButton(row1, "Default", PresetDefault);
         CreateHorizontallyUnconstrainedButton(row1, "Enhanced Default", PresetEnhancedDefault);
 
-        CreateHorizontallyUnconstrainedButton(row2, "Light show", PresetLightShow);
         CreateHorizontallyUnconstrainedButton(row2, "Rain", PresetRain);
+        CreateHorizontallyUnconstrainedButton(row2, "Fire", PresetFire);
         CreateHorizontallyUnconstrainedButton(row2, "Snow", PresetSnow);
 
-        CreateHorizontallyUnconstrainedButton(row3, "Fire", PresetFire);
+        CreateHorizontallyUnconstrainedButton(row3, "Light Show", PresetLightShow);
+        CreateHorizontallyUnconstrainedButton(row3, "Confetti", PresetConfetti);
 
         return presetsModal;
     }
