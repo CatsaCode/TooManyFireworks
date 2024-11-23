@@ -178,4 +178,23 @@ namespace TooManyFireworks {
         if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu(false);
     }
 
+    void PresetSwirls() {
+        getModConfig().minFrequency.SetValue(10.0f);
+        getModConfig().maxFrequency.SetValue(50.0f);
+        getModConfig().rainbow.SetValue(true);
+        getModConfig().brightness.SetValue(0.0f);
+        getModConfig().minSize.SetValue(0.01f);
+        getModConfig().maxSize.SetValue(0.02f);
+        getModConfig().numSparks.SetValue(1500.0f);
+        getModConfig().duration.SetValue(2.5f);
+        getModConfig().gravity.SetValue(0.0f);
+        getModConfig().windStrength.SetValue(5.0f);
+        getModConfig().windTurbulence.SetValue(0.6f);
+        getModConfig().volume.SetValue(0.0f);
+        getModConfig().spawnRangeCenter.SetValue(Vector3(0.0f, 5.5f, 14.5f));
+        getModConfig().spawnRangeSize.SetValue(Vector3(20.0f, 10.5f, 10.0f));
+
+        if(ForceUpdateModMenu != nullptr) ForceUpdateModMenu(false);
+    }
+
 }

@@ -9,5 +9,6 @@ namespace TooManyFireworks {
     void PresetSnow();
     void PresetLightShow();
     void PresetConfetti();
+    void PresetSwirls();
 
 }
