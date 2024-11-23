@@ -21,6 +21,8 @@ namespace TooManyFireworks {
         getModConfig().collision.SetValue(false);
         getModConfig().dampen.SetValue(0.0f);
         getModConfig().bounce.SetValue(1.0f);
+        getModConfig().windStrength.SetValue(0.0f);
+        getModConfig().windTurbulence.SetValue(0.5f);
         getModConfig().volume.SetValue(0.6f);
         getModConfig().spawnRangeCenter.SetValue(Vector3(0.0f, 11.39f, 12.57f));
         getModConfig().spawnRangeSize.SetValue(Vector3(20.0f, 10.5f, 2.0f));
@@ -52,6 +54,8 @@ namespace TooManyFireworks {
         getModConfig().collision.SetValue(true);
         getModConfig().dampen.SetValue(0.2f);
         getModConfig().bounce.SetValue(0.2f);
+        getModConfig().windStrength.SetValue(0.0f);
+        getModConfig().windTurbulence.SetValue(0.5f);
         getModConfig().volume.SetValue(0.6f);
         getModConfig().spawnRangeCenter.SetValue(Vector3(0.0f, 11.39f, 12.57f));
         getModConfig().spawnRangeSize.SetValue(Vector3(20.0f, 10.5f, 2.0f));
@@ -83,6 +87,8 @@ namespace TooManyFireworks {
         getModConfig().collision.SetValue(true);
         getModConfig().dampen.SetValue(0.1f);
         getModConfig().bounce.SetValue(0.3f);
+        getModConfig().windStrength.SetValue(0.0f);
+        getModConfig().windTurbulence.SetValue(0.5f);
         getModConfig().volume.SetValue(0.15f);
         getModConfig().spawnRangeCenter.SetValue(Vector3(0.0f, 25.0f, 0.0f));
         getModConfig().spawnRangeSize.SetValue(Vector3(10.0f, 0.0f, 10.0f));
@@ -102,6 +108,8 @@ namespace TooManyFireworks {
         getModConfig().duration.SetValue(4.8f);
         getModConfig().gravity.SetValue(-1.0f);
         getModConfig().collision.SetValue(false);
+        getModConfig().windStrength.SetValue(1.3f);
+        getModConfig().windTurbulence.SetValue(0.2f);
         getModConfig().volume.SetValue(0.15f);
         getModConfig().spawnRangeCenter.SetValue(Vector3(0.0f, -4.0f, 0.0f));
         getModConfig().spawnRangeSize.SetValue(Vector3(20.0f, 0.0f, 20.0f));
@@ -123,6 +131,8 @@ namespace TooManyFireworks {
         getModConfig().collision.SetValue(true);
         getModConfig().dampen.SetValue(0.1f);
         getModConfig().bounce.SetValue(0.1f);
+        getModConfig().windStrength.SetValue(0.5f);
+        getModConfig().windTurbulence.SetValue(0.3f);
         getModConfig().volume.SetValue(0.0f);
         getModConfig().spawnRangeCenter.SetValue(Vector3(0.0f, 6.0f, 0.0f));
         getModConfig().spawnRangeSize.SetValue(Vector3(10.0f, 0.0f, 10.0f));
@@ -159,6 +169,8 @@ namespace TooManyFireworks {
         getModConfig().collision.SetValue(true);
         getModConfig().dampen.SetValue(0.2f);
         getModConfig().bounce.SetValue(0.2f);
+        getModConfig().windStrength.SetValue(0.0f);
+        getModConfig().windTurbulence.SetValue(0.5f);
         getModConfig().volume.SetValue(0.3f);
         getModConfig().spawnRangeCenter.SetValue(Vector3(0.0f, 10.5f, 4.5f));
         getModConfig().spawnRangeSize.SetValue(Vector3(20.0f, 10.5f, 10.0f));
