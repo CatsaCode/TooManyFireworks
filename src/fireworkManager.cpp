@@ -41,6 +41,10 @@ namespace TooManyFireworks {
             PaperLogger.error("Could not find main FireworksController");
             return;
         }
+
+        // Allow main fireworks to exist outside of the main menu scene
+        mainFireworksController->transform->parent = nullptr;
+        GameObject::DontDestroyOnLoad(mainFireworksController->gameObject);
     }
 
     void InstallFindMainFireworksControllerHook() {
@@ -88,6 +92,7 @@ namespace TooManyFireworks {
         UpdateGravity(self);
         UpdateCollision(self);
         UpdateDampenBounce(self);
+        UpdateWind(self);
         UpdateVolume(self);
     }
 
@@ -115,6 +120,18 @@ namespace TooManyFireworks {
         fireworksControllerUpdateFunc(mainFireworksController);
     }
 
+
+
+    // Instantly delete all of the currently visible fireworks on the mainFireworksController
+    void DespawnAllActiveMainFireworks() {
+        // Return if mainFireworksController was never found for any reason
+        if(mainFireworksController == nullptr) return;
+
+        // Loop through each active firework and call the unhooked instant despawn function
+        for(int i = mainFireworksController->_activeFireworks->Count - 1; i >= 0; i--) {
+			mainFireworksController->ClearFireworkItemController(mainFireworksController->_activeFireworks->ToArray()[i]);
+		}
+    }
 
 
     // Set whether or not the main menu's fireworks are enabled

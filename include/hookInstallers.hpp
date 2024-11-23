@@ -9,7 +9,13 @@ namespace TooManyFireworks {
     void InstallSmoothDisableHook();
 
     void InstallForceEnableLevelResultsHook();
+    void InstallMaxScoreTrackerHook();
+    void InstallForceEnableMainMenuHook();
+    void InstallForceEnableLevelSelectionHook();
+    void InstallForceEnableGameplayHook();
+    void InstallForceEnablePauseMenuHook();
 
     void InstallMaxExplosionSoundsHotfixHook();
+    void InstallDespawnOnSceneTransitionHotfixHook();
 
 }

@@ -27,6 +27,9 @@ DECLARE_CONFIG(ModConfig,
     CONFIG_VALUE(dampen, float, "dampen", 0.2f); // How much spark velocity is dampened on collision (Arbitrary default. Technically 0, but a value unused in the base game promotes artistic liberty)
     CONFIG_VALUE(bounce, float, "bounce", 0.2f); // How much spark velocity is reflected on collision (Arbitrary default. Technically 1, but see above)
 
+    CONFIG_VALUE(windStrength, float, "windStrength", 0.0f); // How much a spark's position is affected by noisy air patterns
+    CONFIG_VALUE(windTurbulence, float, "windTurbulence", 0.5f); // How detailed the noisy air patterns are
+
     CONFIG_VALUE(volume, float, "volume", 0.6f); // Volume of the explosion sound effects
 
     CONFIG_VALUE(spawnRangeCenter, UnityEngine::Vector3, "spawnRangeCenter", UnityEngine::Vector3(0.0f, 11.39f, 12.57f)); // Center of the firework spawn volume
@@ -35,6 +38,14 @@ DECLARE_CONFIG(ModConfig,
     CONFIG_VALUE(enableOnResultsHighscore, bool, "enableOnResultsHighscore", true); // Whether or not to show the fireworks when results show a new highscore
     CONFIG_VALUE(enableOnResultsClear, bool, "enableOnResultsClear", false); // Whether or not to show the fireworks when a level is cleared with no highscore
     CONFIG_VALUE(enableOnResultsFail, bool, "enableOnResultsFail", false); // Whether or not to show the fireworks when a level is failed
+    CONFIG_VALUE(resultsRequireFullCombo, bool, "resultsRequireFullCombo", false); // Whether or not a full combo is required to show fireworks at the end of a level
+    CONFIG_VALUE(resultsMinimumAccuracy, float, "resultsMinimumAccuracy", 0.0f); // Minimum accuracy required for the fireworks to show at the end of a level
+    CONFIG_VALUE(enableInMainMenu, bool, "enableInMainMenu", false); // Whether or not to show fireworks in the main menu
+    CONFIG_VALUE(enableInLevelSelection, bool, "enableInLevelSelection", false); // Whether or not to show fireworks in the menu for selecting levels
+    CONFIG_VALUE(enableInGameplay, bool, "enableInGameplay", false); // Whether or not to show fireworks while actively slicing notes
+    CONFIG_VALUE(enableInPauseMenu, bool, "enableInPauseMenu", false); // Whether or not to show fireworks while the game is paused
 
     CONFIG_VALUE(smoothDisable, bool, "smoothDisable", true); // Whether or not firework disablement will wait for sparks to disappear
+
+    CONFIG_VALUE(mainMenuButton, bool, "mainMenuButton", false); // Show the mod menu button in the main menu instead of the mod settings menu
 )

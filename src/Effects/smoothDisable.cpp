@@ -1,7 +1,6 @@
 #include "main.hpp"
 
 #include "GlobalNamespace/FireworksController.hpp"
-#include "GlobalNamespace/FireworkItemController.hpp"
 
 #include "bsml/shared/BSML/MainThreadScheduler.hpp"
 
@@ -17,6 +16,9 @@ namespace TooManyFireworks {
         void,
         FireworksController* self
     ) {
+        // Manually stop the SpawningCoroutine function, which normally only stops when the component is disabled during the time that the next firework is supposed to launch
+        self->StopAllCoroutines();
+
         // Run function as normal if smoothDisable is off
         if(!getModConfig().smoothDisable.GetValue()) {
             SmoothDisableHook(self);
@@ -24,7 +26,9 @@ namespace TooManyFireworks {
         }
 
         // Call the original function with a delay of how long one firework will last
-        BSML::MainThreadScheduler::ScheduleAfterTime(getModConfig().duration.GetValue(), [self](){SmoothDisableHook(self);});
+        BSML::MainThreadScheduler::ScheduleAfterTime(getModConfig().duration.GetValue(), [self](){
+            if(!self->enabled) SmoothDisableHook(self); // Only delete fireworks if the FireworksController wasn't re-enabled in between the delay
+        });
     }
 
     void InstallSmoothDisableHook() {

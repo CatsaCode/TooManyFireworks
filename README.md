@@ -9,6 +9,7 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 
 ## Current Options
 
+- Quick preset buttons
 - Min / max frequency
 - Rainbow color
 - Specific color
@@ -18,31 +19,35 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Duration
 - Gravity
 - Collisions
-- Bounce strength
 - Dampen strength
+- Bounce strength
+- Wind strength
+- Wind turbulence
 - Volume
 - Spawn range
-- Show on highscore
-- Show on level clear
-- Show on level fail
+- Enable on high score
+- Enable on level clear
+- Enable on level fail
+- Enable on full combo
+- Enable on accuracy
+- Enable in main menu
+- Enable in level selection
+- Enable in gameplay
+- Enable in pause menu
 - Smooth disable
+- Mod menu button in mod settings menu or main menu
 
 ## Known Bugs
 
 - Color will flicker when a slider is moved with rainbow color on
 - Light rays will flicker when a size slider is moved
 - Canceling color select will not revert color
-- Smooth disable will delete fireworks even if they started again
 
 ## Future Ideas
 
-- Show in menu
-- Show in level select
-- Show on score percentage
 - Show on scoreboard rank
 - Color over time
 - Spark size
-- Turbulence
 - Minimum spark speed multiplier
 - Different type of firework for each condition
 - Color palettes
@@ -51,7 +56,6 @@ Don't think there's enough fireworks? This mod adds a variety of settings that c
 - Custom sprite
 - Cheerleading
 - Custom shapes
-- Quick preset buttons
 
 Or, I might create a new mod that allows customizability to the whole Unity Particle System for anything and everything!
 

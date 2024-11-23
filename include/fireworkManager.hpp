@@ -20,6 +20,8 @@ namespace TooManyFireworks {
     void ForceUpdateEachMainFirework(std::function<void(GlobalNamespace::FireworkItemController*)> fireworkItemControllerUpdateFunc);
     void ForceUpdateMainFireworksController(std::function<void(GlobalNamespace::FireworksController*)> fireworksControllerUpdateFunc);
 
+    void DespawnAllActiveMainFireworks();
+
     void SetMainFireworksEnabled(bool enabled);
 
 }
