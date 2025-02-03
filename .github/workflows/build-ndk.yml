@@ -7,8 +7,6 @@ on:
       - "v*"
     branches:
       - 'master'
-      - 'main'
-      - 'dev'
       - 'dev/*'
       - 'feat/*'
       - 'fix/*'
@@ -27,23 +25,18 @@ on:
       - '**.md'
       - '.gitignore'
   pull_request:
-    branches:
-        - 'master'
-        - 'main'
-        - 'dev'
-        - 'dev/*'
-        - 'feat/*'
-        - 'fix/*'
+    branches: master
 
 env:
-    module_id: "too-many-fireworks"
-    qmod_name: "TooManyFireworks"
+    module_id: too-many-fireworks
+    qmod_name: TooManyFireworks
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: FranzDiebold/github-env-vars-action@v2
     - uses: actions/checkout@v2
       name: Checkout
       with:
@@ -52,14 +45,9 @@ jobs:
 
     - uses: seanmiddleditch/gha-setup-ninja@v3
 
-    # Use canary NDK to avoid lesser known compile bugs
-    - name: Setup canary NDK
-      id: setup-ndk
-      uses: ./.github/actions/canary-ndk
-
     - name: Create ndkpath.txt
       run: |
-        echo ${{ steps.setup-ndk.outputs.ndk-path }} > ${GITHUB_WORKSPACE}/ndkpath.txt
+        echo $ANDROID_NDK_HOME > ${GITHUB_WORKSPACE}/ndkpath.txt
         cat ${GITHUB_WORKSPACE}/ndkpath.txt
 
     # get version from pushed tag
@@ -70,13 +58,31 @@ jobs:
         echo "TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_OUTPUT}
         echo "VERSION=${GITHUB_REF#refs/tags/v}" >> ${GITHUB_OUTPUT}
 
+    # if we don't have a tag, don't do anything special
     - name: Setup qpm
-      uses: Fernthedev/qpm-action@main
+      if: ${{ !startsWith(github.ref, 'refs/tags/v') }}
+      uses: Fernthedev/qpm-action@v1
       with:
         workflow_token: ${{ secrets.GITHUB_TOKEN }}
         restore: true
         cache: true
         publish: false
+
+    # if we have a tag, we are making a qpm release
+    - name: Setup qpm for release
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: Fernthedev/qpm-action@v1
+      with:
+        workflow_token: ${{ secrets.GITHUB_TOKEN }}
+        restore: true
+        cache: true
+        publish: 'late'
+        publish_token: ${{ secrets.QPM_KEY }}
+        version: ${{ steps.version.outputs.VERSION }}
+        tag: ${{ steps.version.outputs.TAG }}
+        qpm_release_bin: true
+        qpm_debug_bin: true
+        qpm_qmod: ${{ env.qmod_name }}.qmod
 
     - name: Build & Create Qmod
       run: |
@@ -91,11 +97,21 @@ jobs:
         files=( $pattern )
         echo "NAME=${files[0]}" >> ${GITHUB_OUTPUT}
 
-    - name: Upload artifact
+    - name: Rename debug artifact
+      run: mv "./build/debug/${{ steps.libname.outputs.NAME }}" "./build/debug_${{ steps.libname.outputs.NAME }}"
+
+    - name: Upload non-debug artifact
       uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.libname.outputs.NAME }}
         path: ./build/${{ steps.libname.outputs.NAME }}
+        if-no-files-found: error
+
+    - name: Upload debug artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: debug_${{ steps.libname.outputs.NAME }}
+        path: ./build/debug_${{ steps.libname.outputs.NAME }}
         if-no-files-found: error
 
     - name: Upload qmod artifact
@@ -112,8 +128,6 @@ jobs:
       uses: softprops/action-gh-release@v0.1.15
       with:
         tag_name: ${{ github.event.inputs.version }}
-        draft: true
-        generate_release_notes: true
         files: |
           ./build/${{ steps.libname.outputs.NAME }}
           ./build/debug_${{ steps.libname.outputs.NAME }}
