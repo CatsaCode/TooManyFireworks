@@ -41,6 +41,7 @@ namespace TooManyFireworks {
                 ( getModConfig().enableOnResultsClear.GetValue()      &&  self->_levelCompletionResults->levelEndStateType == LevelCompletionResults::LevelEndStateType::Cleared     )
             ) && ( // "Required to turn on"
                 ( !getModConfig().resultsRequireFullCombo.GetValue()  ||  self->_levelCompletionResults->fullCombo                                                                   ) &&
+                ( getModConfig().enableOnResultsFail.GetValue()       ||  self->_levelCompletionResults->levelEndStateType == LevelCompletionResults::LevelEndStateType::Cleared     ) && // Don't enable fireworks if the level was failed without on fail checked
                 ( getModConfig().resultsMinimumAccuracy.GetValue()    <=  (trackedMaxScore != 0 ? (float)self->_levelCompletionResults->modifiedScore / trackedMaxScore * 100 : 100) )    // If the map has a possible score then calculate the score, otherwise assume 100% accuracy
             )
         );
