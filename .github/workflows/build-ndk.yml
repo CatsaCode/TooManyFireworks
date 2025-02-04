@@ -42,7 +42,6 @@ jobs:
       with:
         submodules: true
         lfs: true
-
     - uses: seanmiddleditch/gha-setup-ninja@v3
 
     - name: Create ndkpath.txt
@@ -76,8 +75,7 @@ jobs:
         workflow_token: ${{ secrets.GITHUB_TOKEN }}
         restore: true
         cache: true
-        publish: 'late'
-        publish_token: ${{ secrets.QPM_KEY }}
+        publish: false
         version: ${{ steps.version.outputs.VERSION }}
         tag: ${{ steps.version.outputs.TAG }}
         qpm_release_bin: true
@@ -87,7 +85,7 @@ jobs:
     - name: Build & Create Qmod
       run: |
         cd ${GITHUB_WORKSPACE}
-        qpm s qmod
+        qpm qmod zip
 
     - name: Get Library Name
       id: libname
