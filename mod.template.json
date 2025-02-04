@@ -4,7 +4,7 @@
   "name": "${mod_name}",
   "id": "${mod_id}",
   "author": "CatsaCode",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "packageId": "com.beatgames.beatsaber",
   "packageVersion": "1.37.0_9064817954",
   "description": "Don't think there's enough fireworks? This mod adds a variety of settings that can make fireworks powerful enough to explode the game itself!",
