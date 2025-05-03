@@ -7,6 +7,7 @@ on:
       - "v*"
     branches:
       - 'master'
+      - 'main'
       - 'dev/*'
       - 'feat/*'
       - 'fix/*'
@@ -25,7 +26,9 @@ on:
       - '**.md'
       - '.gitignore'
   pull_request:
-    branches: master
+    branches:
+      - 'master'
+      - 'main'
 
 env:
     module_id: too-many-fireworks
