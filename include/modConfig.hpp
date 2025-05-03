@@ -5,7 +5,7 @@
 #include "UnityEngine/Color.hpp"
 #include "UnityEngine/Vector3.hpp"
 
-DECLARE_CONFIG(ModConfig, 
+DECLARE_CONFIG(ModConfig) {
     CONFIG_VALUE(minFrequency, float, "minFrequency", 3.0f); // Minimum fireworks per second
     CONFIG_VALUE(maxFrequency, float, "maxFrequency", 10.0f); // Maximum fireworks per second
 
@@ -48,4 +48,4 @@ DECLARE_CONFIG(ModConfig,
     CONFIG_VALUE(smoothDisable, bool, "smoothDisable", true); // Whether or not firework disablement will wait for sparks to disappear
 
     CONFIG_VALUE(mainMenuButton, bool, "mainMenuButton", false); // Show the mod menu button in the main menu instead of the mod settings menu
-)
+};

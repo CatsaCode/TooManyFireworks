@@ -13,8 +13,6 @@
 #include "beatsaber-hook/shared/utils/logging.hpp"
 
 
-#include "paper/shared/logger.hpp"
-
 #include "_config.hpp"
 
 #include "modConfig.hpp"
