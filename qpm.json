@@ -5,7 +5,7 @@
   "info": {
     "name": "TooManyFireworks",
     "id": "too-many-fireworks",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "url": null,
     "additionalData": {
       "overrideSoName": "libtoo-many-fireworks.so",
