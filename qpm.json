@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/QuestPackageManager/QPM.Package/refs/heads/main/qpm.schema.json",
   "version": "0.1.0",
   "sharedDir": "shared",
   "dependenciesDir": "extern",
@@ -50,25 +51,18 @@
   },
   "dependencies": [
     {
-      "id": "scotland2",
-      "versionRange": "^0.1.4",
-      "additionalData": {
-        "includeQmod": false
-      }
-    },
-    {
-      "id": "paper2_scotland2",
-      "versionRange": "^4.6.1",
+      "id": "beatsaber-hook",
+      "versionRange": "^6.4.1",
       "additionalData": {}
     },
     {
       "id": "bs-cordl",
-      "versionRange": "^4004.0.0",
+      "versionRange": "^4005.*",
       "additionalData": {}
     },
     {
-      "id": "beatsaber-hook",
-      "versionRange": "^6.4.1",
+      "id": "bsml",
+      "versionRange": "^0.4.52",
       "additionalData": {}
     },
     {
@@ -77,14 +71,21 @@
       "additionalData": {}
     },
     {
-      "id": "bsml",
-      "versionRange": "^0.4.51",
-      "additionalData": {}
-    },
-    {
       "id": "custom-types",
       "versionRange": "^0.18.2",
       "additionalData": {}
+    },
+    {
+      "id": "paper2_scotland2",
+      "versionRange": "^4.6.1",
+      "additionalData": {}
+    },
+    {
+      "id": "scotland2",
+      "versionRange": "^0.1.6",
+      "additionalData": {
+        "includeQmod": false
+      }
     }
   ]
 }
