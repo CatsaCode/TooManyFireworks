@@ -20,4 +20,4 @@
 // Define these functions here so that we can easily read configuration and
 // log information from other files
 
-constexpr auto PaperLogger = Paper::ConstLoggerContext("TooManyFireworks");
+constexpr auto PaperLogger = Paper::ConstLoggerContext("too-many-fireworks");
