@@ -1,11 +1,12 @@
 {
+  "$schema": "https://raw.githubusercontent.com/QuestPackageManager/QPM.Package/refs/heads/main/qpm.schema.json",
   "version": "0.1.0",
   "sharedDir": "shared",
   "dependenciesDir": "extern",
   "info": {
     "name": "TooManyFireworks",
     "id": "too-many-fireworks",
-    "version": "1.2.4",
+    "version": "1.2.5",
     "url": null,
     "additionalData": {
       "overrideSoName": "libtoo-many-fireworks.so",
@@ -40,7 +41,7 @@
         "pwsh ./scripts/pull-tombstone.ps1"
       ]
     },
-    "ndk": "^27.2.12479018",
+    "ndk": "^27.3.13750724",
     "qmodIncludeDirs": [
       "./build",
       "./extern/libs"
@@ -63,7 +64,7 @@
     },
     {
       "id": "bs-cordl",
-      "versionRange": "4007.*",
+      "versionRange": "4008.*",
       "additionalData": {}
     },
     {
@@ -78,7 +79,7 @@
     },
     {
       "id": "bsml",
-      "versionRange": "^0.4.54",
+      "versionRange": "^0.4.55",
       "additionalData": {}
     },
     {
